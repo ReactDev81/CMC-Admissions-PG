@@ -1,4 +1,4 @@
-import InputField from "../../components/forms/inputfield";
+import InputField from "../../components/forms/Inputfield";
 import Button from "../../components/ui/Button";
 import InputLink from "../../components/forms/InputLink";
 import { useForm } from "react-hook-form";
