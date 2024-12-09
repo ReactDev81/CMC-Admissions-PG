@@ -1,0 +1,241 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+:root {
+    font-family: "Ubuntu", sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.87);
+    background-color:theme('colors.white.300');
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number]{
+    -moz-appearance: textfield;
+}
+
+input[type="file"]::file-selector-button {
+    margin-right: 20px;
+    padding:12px 16px;
+    border-radius: 6px;
+    border: 0;
+}
+
+input[type="file"] {
+    padding: 0px 16px 0px 0px;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base{
+
+    input{
+        color: theme('colors.black.300')
+    }
+
+    input:focus{
+        border-color: theme('colors.primary.default')
+    }
+
+    body{
+        font-family: theme('fontFamily.ubuntu');
+        /* background-color: theme('colors.white.300'); */
+    }
+
+    h1{
+        font-size: theme('fontSize.3xl'); /* font-22px, line-22px */
+        font-weight: theme('fontWeight.medium'); /* medium: 500 */
+    }
+
+    h2{
+        font-size: theme('fontSize.2xl'); /* font-20px, line-22px */
+        font-weight: theme('fontWeight.bold'); /* bold: 700 */
+    }
+
+    h3{
+        font-size: theme('fontSize.xl'); /* font-18px, line-20px */
+        font-weight: theme('fontWeight.medium'); /* medium: 500 */
+    }
+
+    h4{
+        font-size: theme('fontSize.lg'); /* font-16px, line-20px */
+        font-weight: theme('fontWeight.medium'); /* medium: 500 */
+    }
+
+    h5{
+        font-size: theme('fontSize.base'); /* font-14px, line-20px */
+        font-weight: theme('fontWeight.bold'); /* bold: 700 */
+    }
+
+    h6{
+        font-size: theme('fontSize.base'); /* font-14px, line-22px */
+        font-weight: theme('fontWeight.medium'); /* medium: 500 */
+    }
+
+    p{
+        font-size: theme('fontSize.base'); /* font-14px, line-20px */
+        font-weight: theme('fontWeight.medium'); /* medium: 500 */
+    }
+
+    small{
+        font-size: theme('fontSize.sm'); /* font-12px, line-20px */
+        font-weight: theme('fontWeight.medium'); /* medium: 500 */
+    }
+
+    input,
+    select {
+        outline: none;
+    }
+
+    label {
+        font-size: theme("fontSize.lg"); /* font-16px, line-20px */
+        font-weight: theme("fontWeight.medium"); /* medium: 500 */
+    }
+
+    select {
+        -webkit-appearance: none;
+        background-image: url(/src/assets/icons/down-arrow.png);
+        background-repeat: no-repeat;
+        background-size: 16px;
+        background-position: center right 16px;
+    }
+
+    input[type="file"]::file-selector-button {
+        margin-right: 20px;
+        padding: 12px 16px;
+        border-radius: 6px;
+        border: 0;
+    }
+
+    input[type="file"] {
+        padding: 0px 16px 0px 0px;
+    }
+
+    th {
+        font-size: theme("fontSize.base"); /* font-14px, line-20px */
+        font-weight: theme("fontWeight.medium"); /* medium: 500 */
+        padding: 10px 20px;
+        text-align: left;
+    }
+
+    td {
+        font-size: theme("fontSize.base"); /* font-14px, line-20px */
+        font-weight: theme("fontWeight.normal"); /* medium: 400 */
+        padding: 10px 20px;
+    }
+}
+
+
+/* React Calander - start*/
+.react-calendar {
+    width: 100%;
+    background: #FFFFFF;
+    border-radius: 12px;
+}
+.react-calendar__navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 20px;
+}
+.react-calendar__navigation button {
+    background: none;
+    border: none;
+    color: #000;
+    font-size: 1rem;
+    line-height: 20px;
+    font-weight: 500;
+    cursor: pointer;
+}
+.react-calendar__navigation button:hover {
+    color: #007BFF; 
+}
+.react-calendar__navigation__label {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+.react-calendar__month-view__weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid #EDEDED;
+}
+abbr:where([title]) {
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    color: #4D4D4D;
+}
+.react-calendar__month-view__weekdays__weekday.react-calendar__month-view__weekdays__weekday--weekend,
+button.react-calendar__tile.react-calendar__month-view__days__day.react-calendar__month-view__days__day--weekend {
+    color: red;
+}
+button.react-calendar__tile.react-calendar__month-view__days__day.react-calendar__month-view__days__day--neighboringMonth {
+    opacity: 0.3;
+}
+.react-calendar__month-view__weekdays__weekday {
+    padding: 0.5rem;
+}
+.react-calendar__tile {
+    text-align: center;
+    padding: 10px 5px;
+    border-radius: 6px;
+    transition: background 0.3s ease, color 0.3s ease;
+    cursor: pointer;
+    color: #4D4D4D;
+}
+.react-calendar__tile--now {
+    background: #E3F2FD;
+    color: #007BFF;
+    font-weight: bold;
+}
+.react-calendar__tile--active {
+    background: #004C40 !important;
+    color: #FFFFFF;
+    font-weight: bold;
+    padding: 10px 5px;
+}
+.react-calendar__tile:hover {
+    background: #F5F5F5;
+}
+.react-calendar__tile--disabled {
+    color: #ccc;
+    background: none;
+    cursor: not-allowed;
+}
+.react-calendar__month-view__days {
+    display: grid !important;
+    grid-template-columns: repeat(7, 1fr) !important;
+    gap: 4px;
+}
+.react-calendar__navigation button:disabled {
+    color: #ccc;
+    cursor: not-allowed;
+}
+.react-calendar__navigation button:enabled:hover {
+    color: #007BFF;
+}
+.react-calendar__tile--now.react-calendar__tile--active {
+    background: #004C40;
+    color: #FFFFFF;
+}
+button.react-calendar__tile.react-calendar__tile--now.react-calendar__tile--active.react-calendar__tile--range.react-calendar__tile--rangeStart.react-calendar__tile--rangeEnd.react-calendar__tile--rangeBothEnds.react-calendar__month-view__days__day {
+    outline: none;
+}
+.react-calendar__navigation__label__labelText:hover{
+    color: #004C40;
+}
+
+/* React Calander - End*/  
