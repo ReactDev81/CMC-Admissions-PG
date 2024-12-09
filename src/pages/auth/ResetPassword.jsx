@@ -1,5 +1,5 @@
 import { useState, useEffect} from "react";
-import InputField from "../../components/forms/inputfield";
+import InputField from "../../components/forms/Inputfield";
 import Button from "../../components/ui/Button";
 import { AiOutlineEyeInvisible, AiOutlineEye} from "react-icons/ai";
 import { useForm } from "react-hook-form";

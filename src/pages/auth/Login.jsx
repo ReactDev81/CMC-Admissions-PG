@@ -4,7 +4,7 @@ import { useState, useContext, useEffect } from "react";
 import { AiOutlineEyeInvisible, AiOutlineEye} from "react-icons/ai";
 import { UserContext } from "../../context/UserContext";
 import useAxios from '../../hooks/UseAxios';
-import InputField from "../../components/forms/inputfield";
+import InputField from '../../components/forms/Inputfield';
 import Button from "../../components/ui/Button";
 import InputLink from "../../components/forms/InputLink";
 
