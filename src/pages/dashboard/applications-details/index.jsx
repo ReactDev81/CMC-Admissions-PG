@@ -4,7 +4,7 @@ import ApplicationDocument from "./ApplicationDocument";
 import TransactionDetail from "./TransactionDetail";
 import ApplicationDetailCard from "./ApplicationDetailCard";
 import { FaRegUser } from "react-icons/fa";
-import UseTab from "../../../hooks/usetab";
+import UseTab from "../../../hooks/UseTab";
 
 const ApplicationDetails = () => {
   const tabsData = [
