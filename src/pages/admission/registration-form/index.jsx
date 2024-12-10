@@ -1,62 +1,10 @@
-// import PersonalInfo from "./PersonalInfo";
-// import UseTab from "../../../hooks/UseTab";
-// import { FaRegUser } from "react-icons/fa";
-
-// const RegistrationForm = () => {
-
-//     const tabsData = [
-//         {
-//             label: {
-//                 icon: <FaRegUser />,
-//                 text: 'Personal Information'
-//             },
-//             content: <PersonalInfo />
-//         },
-//         {
-//             label: {
-//                 icon: <FaRegUser />,
-//                 text: 'Acedemic Details'
-//             },
-//             content: 'Acedemic Details Content'
-//         },
-//         {
-//             label: {
-//                 icon: <FaRegUser />,
-//                 text: 'Documents'
-//             },
-//             content: 'Documents Content'
-//         },
-//         {
-//             label: {
-//                 icon: <FaRegUser />,
-//                 text: 'Transactions Details'
-//             },
-//             content: 'Transactions Details Content'
-//         }
-//     ]
-
-//     return(
-//         <div className="text-black-default flex flex-col items-center">
-//             <div>
-//                 <h1>Registration form</h1>
-//             </div>
-//             <div>
-//                 <UseTab tabs={tabsData} TabStyle={2} />
-//             </div>
-//         </div>
-//     )
-// }
-
-// export default RegistrationForm;
-
-
 import PersonalInfo from "./PersonalInfo";
 import AcademicInfo from "./AcademicInfo";
 import Document from "./Document";
 import Payment from "./Payment";
 import StudentHeader from "../../../components/common/StudentHeader";
 import { FaRegUser } from "react-icons/fa";
-import UseTab from "../../../hooks/usetab";
+import UseTab from "../../../hooks/UseTab";
 
 const RegistrationForm = () => {
   const tabsData = [

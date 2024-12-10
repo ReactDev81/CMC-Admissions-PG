@@ -2,7 +2,7 @@ import Sidebar from '../components/common/Sidebar'
 import Header from '../components/common/Header'
 import { Outlet } from 'react-router-dom';
 
-const MainLayout = ({children}) => {
+const MainLayout = () => {
     return(
         <div className="flex h-screen overflow-hidden">
 
