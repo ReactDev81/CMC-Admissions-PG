@@ -66,7 +66,7 @@ const Login = () => {
                                 </span>
                             </div>
 
-                            <Button classname="mt-8" text={loading ? "Loading in..." : "Submit"} disabled={loading} />
+                            <Button classname="mt-8 w-full" text={loading ? "Loading in..." : "Submit"} disabled={loading} />
                             <div className="w-full text-center mt-2.5">
                                 <InputLink href="/forget-password" text="Forget Password?" />
                             </div>

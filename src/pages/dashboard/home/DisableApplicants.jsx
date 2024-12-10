@@ -17,7 +17,7 @@ const DisableApplicants = () => {
       <div className="text-black-default flex flex-wrap justify-between items-center pt-4">
         <div className="flex flex-wrap items-center">
           <img
-            src="src/assets/images/default-applicants-image.jpeg"
+            src="/assets/images/default-applicants-image.jpeg"
             alt=""
             className="h-10 w-10 object-cover rounded-full mr-[10px]"
           />
@@ -31,7 +31,7 @@ const DisableApplicants = () => {
       <div className="text-black-default flex flex-wrap justify-between items-center pt-4">
         <div className="flex flex-wrap items-center">
           <img
-            src="src/assets/images/default-applicants-image.jpeg"
+            src="/assets/images/default-applicants-image.jpeg"
             alt=""
             className="h-10 w-10 object-cover rounded-full mr-[10px]"
           />
@@ -45,7 +45,7 @@ const DisableApplicants = () => {
       <div className="text-black-default flex flex-wrap justify-between items-center pt-4">
         <div className="flex flex-wrap items-center">
           <img
-            src="src/assets/images/default-applicants-image.jpeg"
+            src="/assets/images/default-applicants-image.jpeg"
             alt=""
             className="h-10 w-10 object-cover rounded-full mr-[10px]"
           />
@@ -59,7 +59,7 @@ const DisableApplicants = () => {
       <div className="text-black-default flex flex-wrap justify-between items-center pt-4">
         <div className="flex flex-wrap items-center">
           <img
-            src="src/assets/images/default-applicants-image.jpeg"
+            src="/assets/images/default-applicants-image.jpeg"
             alt=""
             className="h-10 w-10 object-cover rounded-full mr-[10px]"
           />

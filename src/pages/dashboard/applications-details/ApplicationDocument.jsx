@@ -42,7 +42,7 @@ const ApplicationDocument = () => {
 
       {/* Student Data -1 */}
       <StudentsDocumentData
-        documentsrc="../src/assets/images/default-applicants-image.jpeg"
+        documentsrc="/assets/images/default-applicants-image.jpeg"
         documentname="NEET PG-2024 Admit Card"
         date="23 June 2022"
         verified={<SelectField
@@ -58,7 +58,7 @@ const ApplicationDocument = () => {
 
       {/* Student Data -2 */}
       <StudentsDocumentData
-        documentsrc="../src/assets/images/default-applicants-image.jpeg"
+        documentsrc="/assets/images/default-applicants-image.jpeg"
         documentname="NEET PG-2024 Score Card"
         date="23 June 2022"
         verified={<SelectField
@@ -74,7 +74,7 @@ const ApplicationDocument = () => {
 
       {/* Student Data -3 */}
       <StudentsDocumentData
-        documentsrc="../src/assets/images/default-applicants-image.jpeg"
+        documentsrc="/assets/images/default-applicants-image.jpeg"
         documentname="Matriculation (10th Class Certificate )"
         date="28 April 2023"
         verified={<SelectField
@@ -90,7 +90,7 @@ const ApplicationDocument = () => {
 
       {/* Student Data -4 */}
       <StudentsDocumentData
-        documentsrc="../src/assets/images/default-applicants-image.jpeg"
+        documentsrc="/assets/images/default-applicants-image.jpeg"
         documentname="Baptism Certificate"
         date="11 Nov 2021"
         verified={<SelectField
@@ -106,7 +106,7 @@ const ApplicationDocument = () => {
 
       {/* Student Data -5 */}
       <StudentsDocumentData
-        documentsrc="../src/assets/images/default-applicants-image.jpeg"
+        documentsrc="/assets/images/default-applicants-image.jpeg"
         documentname="Church Membership Certificate"
         date="09 May 2024"
         verified={<SelectField

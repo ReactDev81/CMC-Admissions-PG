@@ -77,7 +77,7 @@ const ResetPassword = () => {
                                     {showConfirmPassword ? <AiOutlineEye color="#4D4D4D" size={20}  /> : <AiOutlineEyeInvisible color="#4D4D4D" size={20} />}
                                 </span>
                             </div>
-                            <Button classname="mt-8" text={loading ? 'Loading in...' : 'Reset Password'} disabled={loading} />
+                            <Button classname="mt-8 w-full" text={loading ? 'Loading in...' : 'Reset Password'} disabled={loading} />
                             {error && <p className="bg-red-100 py-2.5 px-5 text-red-800 mt-3 rounded-md font-normal">{error}</p>}
                         </div>
                     </form>

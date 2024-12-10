@@ -107,7 +107,7 @@ const VerifyOtp = () => {
                 </div>
                 <div className="bg-white-default rounded-md shadow-1x">
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="py-10 px-[30px] text-black-default text-center">
+                        <div className="py-10 px-[30px] text-black-default">
                             <h2 className="text-3xl text-center pb-[10px]">Verify OTP</h2>
                             <p className="text-center text-black-200 font-normal border-b border-black-400 pb-4">
                                 Fill the OTP that we sent on your email.
@@ -134,7 +134,7 @@ const VerifyOtp = () => {
                                     />
                                 ))}
                             </div>
-                            <Button classname="mt-8" text={loading ? "Loading in..." : "Verify"} disabled={loading} />
+                            <Button classname="mt-8 w-full" text={loading ? "Loading in..." : "Verify"} disabled={loading} />
                             {
                                 counter === 0 ? (
                                     <p className="font-normal leading-5 text-center mt-[15px] text-black-200 flex items-center justify-center gap-x-2">

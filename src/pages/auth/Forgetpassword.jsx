@@ -37,7 +37,7 @@ const Forgetpassword = () => {
                                 {...register("email", { required: true, pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/})}
                                 error={errors.email?.type === 'required' ? "Email is required" : errors.email?.type === 'pattern' ? "Email is not correct" : undefined}
                             />
-                            <Button classname="mt-8" text={loading ? "Loading in..." : "Send Password Reset Link"} disabled={loading} />
+                            <Button classname="mt-8 w-full" text={loading ? "Loading in..." : "Send Password Reset Link"} disabled={loading} />
                             <div className="w-full text-center mt-2.5">
                                 <InputLink href="/login" text="Back to login" />
                             </div>
