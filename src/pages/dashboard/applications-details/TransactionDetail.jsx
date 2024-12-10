@@ -1,6 +1,5 @@
-import Inputfield from "../../../components/forms/Inputfield";
+import InputField from "../../../components/forms/Inputfield";
 import SelectField from "../../../components/forms/SelectField";
-import Button from "../../../components/ui/Button";
 import { useForm } from "react-hook-form";
 
 const PersonalInformation = () => {
@@ -23,24 +22,24 @@ const PersonalInformation = () => {
     <form action="" className={`w-full bg-white-default rounded-md `}>
       <div className="flex gap-10">
         <div className="w-full mt-0">
-          <Inputfield label="Amount Paid" labelclass="font-medium" />
+          <InputField label="Amount Paid" labelclass="font-medium" />
         </div>
         <div className="w-full mt-0">
-          <Inputfield label="Date of Birth" labelclass="font-medium" />
+          <InputField label="Date of Birth" labelclass="font-medium" />
         </div>
         <div className="w-full mt-0">
-          <Inputfield label="UTR/Transaction ID" labelclass="font-medium" />
+          <InputField label="UTR/Transaction ID" labelclass="font-medium" />
         </div>
       </div>
       <div className="flex gap-10 items-end">
         <div className="w-full">
-          <Inputfield
+          <InputField
             label="Mode of Payment(NEFT, RTGS, IMPS, GPay etc)"
             labelclass="font-medium"
           />
         </div>
         <div className="w-full">
-          <Inputfield label="Sender’s Name" labelclass="font-medium" />
+          <InputField label="Sender’s Name" labelclass="font-medium" />
         </div>
         <div className="w-full">
           <SelectField

@@ -1,11 +1,10 @@
 import Title from "../../../components/ui/Title";
 import { IoCalendarOutline } from "react-icons/io5";
+import { FaChevronRight } from "react-icons/fa6";
+import { FaChevronLeft } from "react-icons/fa6";
 import OutlineButton from "../../../components/ui/OutlineButton";
 import { useState } from 'react';
 import Calendar from 'react-calendar';
-import { FaChevronRight } from "react-icons/fa6";
-import { FaChevronLeft } from "react-icons/fa6";
-
 
 
 const Calender = () => {

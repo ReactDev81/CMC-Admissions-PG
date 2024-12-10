@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { GoHome } from "react-icons/go";
 import { CiWallet } from "react-icons/ci"; // Wallet
 import { RxCross2 } from "react-icons/rx"; // Cross
 

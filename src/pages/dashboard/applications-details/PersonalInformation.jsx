@@ -1,4 +1,4 @@
-import Inputfield from '../../../components/forms/Inputfield'
+import InputField from '../../../components/forms/Inputfield'
 import SelectField from "../../../components/forms/SelectField";
 import { useForm } from 'react-hook-form';
 const PersonalInformation = () => {
@@ -25,18 +25,18 @@ const PersonalInformation = () => {
     <form action="" className={`w-full bg-white-default rounded-md `}>
       <div className="flex gap-10">
         <div className="w-full">
-          <Inputfield label="Name of Application" labelclass="font-medium" className="[&]:mt-0" />
+          <InputField label="Name of Application" labelclass="font-medium" className="[&]:mt-0" />
         </div>
         <div className="w-full">
-          <Inputfield label="BFUHS Registration Id" labelclass="font-medium" className="[&]:mt-0" />
+          <InputField label="BFUHS Registration Id" labelclass="font-medium" className="[&]:mt-0" />
         </div>
         <div className="w-full">
-          <Inputfield label="NEET pg 2024 Roll No." labelclass="font-medium" className="[&]:mt-0" />
+          <InputField label="NEET pg 2024 Roll No." labelclass="font-medium" className="[&]:mt-0" />
         </div>
       </div>
       <div className="flex gap-10">
         <div className="w-full">
-          <Inputfield label="Date of Birth" labelclass="font-medium" />
+          <InputField label="Date of Birth" labelclass="font-medium" />
         </div>
         <div className="w-full">
           <SelectField
@@ -65,46 +65,46 @@ const PersonalInformation = () => {
       </div>
       <div className="flex gap-10">
         <div className="w-full">
-          <Inputfield label="Religion" labelclass="font-medium" />
+          <InputField label="Religion" labelclass="font-medium" />
         </div>
         <div className="w-full">
-          <Inputfield label="Address" labelclass="font-medium" />
+          <InputField label="Address" labelclass="font-medium" />
         </div>
         <div className="w-full">
-          <Inputfield label="City" labelclass="font-medium" />
-        </div>
-      </div>
-      <div className="flex gap-10">
-        <div className="w-full">
-          <Inputfield label="State" labelclass="font-medium" />
-        </div>
-        <div className="w-full">
-          <Inputfield label="Pin" labelclass="font-medium" />
-        </div>
-        <div className="w-full">
-          <Inputfield label="Email" labelclass="font-medium" />
+          <InputField label="City" labelclass="font-medium" />
         </div>
       </div>
       <div className="flex gap-10">
         <div className="w-full">
-          <Inputfield label="Mobile No. 1" labelclass="font-medium" />
+          <InputField label="State" labelclass="font-medium" />
         </div>
         <div className="w-full">
-          <Inputfield label="Mobile No. 2" labelclass="font-medium" />
+          <InputField label="Pin" labelclass="font-medium" />
         </div>
         <div className="w-full">
-          <Inputfield label="State of domicile" labelclass="font-medium" />
+          <InputField label="Email" labelclass="font-medium" />
         </div>
       </div>
       <div className="flex gap-10">
         <div className="w-full">
-          <Inputfield label="Adhar Number" labelclass="font-medium" />
+          <InputField label="Mobile No. 1" labelclass="font-medium" />
         </div>
         <div className="w-full">
-          <Inputfield label="Father’s Name" labelclass="font-medium" />
+          <InputField label="Mobile No. 2" labelclass="font-medium" />
         </div>
         <div className="w-full">
-          <Inputfield label="Mother’s Name" labelclass="font-medium" />
+          <InputField label="State of domicile" labelclass="font-medium" />
+        </div>
+      </div>
+      <div className="flex gap-10">
+        <div className="w-full">
+          <InputField label="Adhar Number" labelclass="font-medium" />
+        </div>
+        <div className="w-full">
+          <InputField label="Father’s Name" labelclass="font-medium" />
+        </div>
+        <div className="w-full">
+          <InputField label="Mother’s Name" labelclass="font-medium" />
         </div>
       </div>
     </form>

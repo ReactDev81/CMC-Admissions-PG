@@ -1,5 +1,5 @@
 import Button from "../../../components/ui/Button";
-import FileFeild from "../../../components/forms/filefeild";
+import FileFeild from "../../../components/forms/FileFeild";
 const Document = () => {
   return (
     <form action="" className={`w-full bg-white-default`}>

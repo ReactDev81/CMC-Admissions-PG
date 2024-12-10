@@ -1,10 +1,11 @@
-import Inputfield from "../../../components/forms/Inputfield";
+import InputField from "../../../components/forms/Inputfield";
 import SelectField from "../../../components/forms/SelectField";
 import RadioBtn from "../../../components/ui/radiobtn";
 import Button from "../../../components/ui/Button";
 import { useForm } from "react-hook-form";
 
 const PersonalInfo = () => {
+
   const { control } = useForm({
     defaultValues: {
       category: "",
@@ -16,11 +17,6 @@ const PersonalInfo = () => {
       stateofdomicile: "",
     },
   });
-  const options = [
-    { value: "option1", label: "Option 1" },
-    { value: "option2", label: "Option 2" },
-    { value: "option3", label: "Option 3" },
-  ];
 
   const Gender = [
     { value: "option1", label: "Option 1" },
@@ -66,19 +62,19 @@ const PersonalInfo = () => {
         <h1 className="text-primary-default">Personal Info</h1>
         <div className="flex gap-10">
           <div className="w-full mt-0">
-            <Inputfield
+            <InputField
               label="BFUHS REGISTRATION ID "
               labelclass="font-medium"
             />
           </div>
           <div className="w-full mt-0">
-            <Inputfield
+            <InputField
               label="NEET PG 2024 ROLL NO."
               labelclass="font-medium"
             />
           </div>
           <div className="w-full mt-0">
-            <Inputfield
+            <InputField
               label="Name of the Applicant *"
               labelclass="font-medium"
             />
@@ -86,7 +82,7 @@ const PersonalInfo = () => {
         </div>
         <div className="flex gap-10">
           <div className="w-full">
-            <Inputfield label="Date of Birth *" labelclass="font-medium" />
+            <InputField label="Date of Birth *" labelclass="font-medium" />
           </div>
           <div className="w-full">
             <SelectField
@@ -127,7 +123,7 @@ const PersonalInfo = () => {
             />
           </div>
           <div className="w-full">
-            <Inputfield
+            <InputField
               label="Correspondence Address *"
               labelclass="font-medium"
             />
@@ -159,32 +155,32 @@ const PersonalInfo = () => {
             />
           </div>
           <div className="w-full">
-            <Inputfield label="Pin *" labelclass="font-medium" />
+            <InputField label="Pin *" labelclass="font-medium" />
           </div>
           <div className="w-full">
-            <Inputfield label="Email *" labelclass="font-medium" />
-          </div>
-        </div>
-        <div className="flex gap-10">
-          <div className="w-full">
-            <Inputfield label="State of Domicile *" labelclass="font-medium" />
-          </div>
-          <div className="w-full">
-            <Inputfield label="Mobile No. 1" labelclass="font-medium" />
-          </div>
-          <div className="w-full">
-            <Inputfield label="Mobile No. 2" labelclass="font-medium" />
+            <InputField label="Email *" labelclass="font-medium" />
           </div>
         </div>
         <div className="flex gap-10">
           <div className="w-full">
-            <Inputfield label="Aadhar Number *" labelclass="font-medium" />
+            <InputField label="State of Domicile *" labelclass="font-medium" />
           </div>
           <div className="w-full">
-            <Inputfield label="Father’s Name *" labelclass="font-medium" />
+            <InputField label="Mobile No. 1" labelclass="font-medium" />
           </div>
           <div className="w-full">
-            <Inputfield label="Mother’s Name *" labelclass="font-medium" />
+            <InputField label="Mobile No. 2" labelclass="font-medium" />
+          </div>
+        </div>
+        <div className="flex gap-10">
+          <div className="w-full">
+            <InputField label="Aadhar Number *" labelclass="font-medium" />
+          </div>
+          <div className="w-full">
+            <InputField label="Father’s Name *" labelclass="font-medium" />
+          </div>
+          <div className="w-full">
+            <InputField label="Mother’s Name *" labelclass="font-medium" />
           </div>
         </div>
         <div className="flex">
