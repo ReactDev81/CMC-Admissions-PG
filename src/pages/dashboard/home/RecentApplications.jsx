@@ -1,6 +1,6 @@
 import OutlineButton from "../../../components/ui/OutlineButton"; 
 import { BsThreeDots } from "react-icons/bs";
-import Applications from "../../../assets/api/RecentApplications"
+import Applications from "../../../fake-api/RecentApplications"
 
 import resolveConfig from 'tailwindcss/resolveConfig';
 import tailwindConfig from '../../../../tailwind.config';

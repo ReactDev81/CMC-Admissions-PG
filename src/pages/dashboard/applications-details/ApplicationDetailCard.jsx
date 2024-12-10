@@ -11,7 +11,7 @@ const ApplicationDetailCard = () => {
           <div className="flex flex-wrap items-center">
             <img
               className="h-[177px] w-[138px] object-cover rounded-md"
-              src="../src/assets/images/default-applicants-image.jpeg"
+              src="/assets/images/default-applicants-image.jpeg"
               alt=""
             />
             <div className="flex flex-col items-center ml-7">

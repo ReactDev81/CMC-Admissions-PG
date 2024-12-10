@@ -35,7 +35,7 @@ const Login = () => {
             <div className="mx-auto max-w-400 w-full">
                 <div className="flex flex-wrap items-center justify-center mb-6">
                     <img
-                        src="../src/assets/images/logo-black.png"
+                        src="/assets/images/logo-black.png"
                         className="object-contain object-center"
                         alt="Logo"
                     />

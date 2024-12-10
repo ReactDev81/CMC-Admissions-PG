@@ -11,7 +11,7 @@ import { CiCalendarDate, CiFilter} from "react-icons/ci";
 import { useForm } from "react-hook-form";
 import SelectField from "../../../components/forms/SelectField";
 import SearchBar from "../../../components/ui/Searchbar";
-import StudenList from "../../../assets/api/StudentList";
+import StudenList from "../../../fake-api/StudentList";
 
 
 const Applications = () => {

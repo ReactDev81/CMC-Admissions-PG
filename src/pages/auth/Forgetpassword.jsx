@@ -24,7 +24,7 @@ const Forgetpassword = () => {
         <section className="flex flex-wrap justify-center items-center h-screen py-10">
             <div className="mx-auto max-w-400 w-full">
                 <div className="flex flex-wrap items-center justify-center mb-6">
-                    <img src="../src/assets/images/logo-black.png" className="" alt="Logo" />
+                    <img src="/assets/images/logo-black.png" className="" alt="Logo" />
                 </div>
                 <div className="bg-white-default rounded-md shadow-1x">
                     <form onSubmit={handleSubmit(onSubmit)}>

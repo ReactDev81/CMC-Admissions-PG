@@ -28,7 +28,7 @@ const LinkLists = [
     <>
       <div className="group relative">
           <div className="flex flex-wrap gap-3">
-            <img className="object-contain" src="../src/assets/images/profile.png" alt="User"/>
+            <img className="object-contain" src="/assets/images/profile.png" alt="User"/>
             <div>
               <h5 className="text-black-default font-medium leading-5">Alen Miller</h5>
               <p className="text-sm font-normal text-black-200 flex items-center">

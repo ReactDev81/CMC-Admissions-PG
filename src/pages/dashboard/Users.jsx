@@ -12,7 +12,7 @@ import Button from '../../components/ui/Button'
 import SelectField from "../../components/forms/SelectField";
 import SearchBar from "../../components/ui/Searchbar";
 
-import UserList from "../../assets/api/UserList";
+import UserList from "../../fake-api/UserList";
 
 const Users = () => {
 

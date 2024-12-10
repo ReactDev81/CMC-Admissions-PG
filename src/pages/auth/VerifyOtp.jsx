@@ -103,11 +103,11 @@ const VerifyOtp = () => {
         <section className="flex flex-wrap justify-center items-center h-screen py-10">
             <div className="mx-auto max-w-400 w-full">
                 <div className="flex flex-wrap items-center justify-center mb-6">
-                    <img src="../src/assets/images/logo-black.png" className="" alt="Logo" />
+                    <img src="/assets/images/logo-black.png" className="" alt="Logo" />
                 </div>
                 <div className="bg-white-default rounded-md shadow-1x">
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="py-10 px-[30px] text-black-default">
+                        <div className="py-10 px-[30px] text-black-default text-center">
                             <h2 className="text-3xl text-center pb-[10px]">Verify OTP</h2>
                             <p className="text-center text-black-200 font-normal border-b border-black-400 pb-4">
                                 Fill the OTP that we sent on your email.

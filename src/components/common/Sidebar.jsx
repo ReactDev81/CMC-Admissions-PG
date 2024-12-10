@@ -36,7 +36,7 @@ const Sidebar = () => {
         <div className="p-5">
           <img
             className="object-contain object-center"
-            src="../src/assets/images/logo.png"
+            src="/assets/images/logo.png"
             alt="Logo"
           />
         </div>
