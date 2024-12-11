@@ -1,16 +1,17 @@
-import Badge from "../ui/Badge";
-import SideNavLink from "../ui/SideNavLink";
 import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../context/UserContext';
 import useAxios from '../../hooks/UseAxios';
-import { useNavigate } from 'react-router-dom';
-import { IoIosArrowForward } from "react-icons/io"; 
+import Badge from "../ui/Badge";
+import SideNavLink from "../ui/SideNavLink";
+import { FaHome, FaUsers, FaChartBar, FaFileAlt} from "react-icons/fa";
 import {LuLogOut, LuLayoutPanelLeft, LuFiles} from "react-icons/lu"; 
-import { LiaToolsSolid, LiaBibleSolid} from "react-icons/lia"; 
+import { LiaToolsSolid} from "react-icons/lia"; 
 import { RiLockPasswordLine } from "react-icons/ri"; 
 import { GrMapLocation } from "react-icons/gr"; 
 import { MdDynamicForm } from "react-icons/md";
-import { FaHome, FaUsers, FaChartBar, FaFileAlt} from "react-icons/fa";
+import { FaBible } from "react-icons/fa";
+
 
 const Sidebar = () => {
 
@@ -62,7 +63,6 @@ const Sidebar = () => {
               <SideNavLink
                 text="Applications"
                 icon={<FaFileAlt />}
-                arrowicon={<IoIosArrowForward />}
                 subLinks={applicationLinks}
               />
             </li>
@@ -106,7 +106,7 @@ const Sidebar = () => {
               <SideNavLink
                 href="/bible-test-center"
                 text="Bible Test Centers"
-                icon={<LiaBibleSolid />}
+                icon={<FaBible />}
               />
             </li>
             <li>
