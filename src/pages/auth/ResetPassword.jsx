@@ -52,7 +52,7 @@ const ResetPassword = () => {
                         <div className="py-10 px-[30px] text-black-default">
                             <h2 className="text-3xl text-center border-b border-black-400 pb-6">Reset password</h2>
                             
-                            <div className="relative">
+                            <div className="relative mt-6">
                                 <InputField
                                     label="New Password"
                                     placeholder={"Enter New Password"}
@@ -65,7 +65,7 @@ const ResetPassword = () => {
                                 </span>
                             </div>
                             
-                            <div className="relative">
+                            <div className="relative mt-4">
                                 <InputField
                                     label="Confirm Password"
                                     placeholder={"Enter New Password"}

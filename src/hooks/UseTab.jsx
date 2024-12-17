@@ -11,7 +11,7 @@ const UseTab = ({tabs, tabClass, tabContentClass, TabStyle = 1}) => {
     return(
         <>
             {/* Tab Headers */}
-            <div className={`tabs flex items-center gap-x-5 ${tabClass ? tabClass : ''}`}>
+            <div className={`tabs relative flex items-center gap-x-5 border-b border-solid border-black-100 ${tabClass ? tabClass : ''}`}>
                 {tabs && tabs.map((tab, index) => {
                     return (
                         TabStyle === 1 ? (
@@ -26,7 +26,7 @@ const UseTab = ({tabs, tabClass, tabContentClass, TabStyle = 1}) => {
                         ) : TabStyle === 2 ? (
                             <div
                                 key={index}
-                                className="flex flex-col justify-center items-center gap-y-2.5"
+                                className="flex flex-col justify-center items-center gap-y-2.5 relative z-10"
                                 onClick={() => handleTabClick(index)}
                             >
                                 <div className={`w-[42px] h-[42px] rounded-full flex items-center justify-center cursor-pointer ${activeTab === index ? 'bg-primary-default text-white-default' : 'bg-black-100 text-black-300'}`}>
@@ -46,7 +46,7 @@ const UseTab = ({tabs, tabClass, tabContentClass, TabStyle = 1}) => {
                 {tabs && tabs.map((tab, index) => {
                     return (
                         <div key={index} className={`${activeTab === index ? "block" : "hidden"}`}>
-                            {tab.content}
+                            {tab.content({activeTab, setActiveTab})}
                         </div>
                     )
                 })}

@@ -7,7 +7,7 @@ const Login = lazy(() => import('../pages/auth/Login'))
 const Forgetpassword = lazy(() => import('../pages/auth/Forgetpassword'))
 const VerifyOtp = lazy(() => import('../pages/auth/VerifyOtp'))
 const ResetPassword = lazy(() => import('../pages/auth/ResetPassword'))
-const RegistrationForm = lazy(() => import('../pages/admission/registration-form/index'))
+const RegistrationForm = lazy(() => import('../pages/pg-registration-form/index'))
 
 const AppRoutes = () => {
     return(
@@ -15,7 +15,7 @@ const AppRoutes = () => {
             <Routes>
 
                 {/* students pages */}
-                <Route path="/registration-form" element={<RegistrationForm />} />
+                <Route path="/pg-registration-form" element={<RegistrationForm />} />
 
                 {/* pages wihtout header, footer and sidebar */}
                 <Route path="/login" element={<Login />} />

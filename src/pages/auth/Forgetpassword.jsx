@@ -31,6 +31,7 @@ const Forgetpassword = () => {
                         <div className="py-10 px-[30px] text-black-default">
                             <h2 className="text-3xl text-center border-b border-black-400 pb-6">Forgot password</h2>
                             <InputField
+                                className="mt-6"
                                 label="Email Address"
                                 placeholder="Enter Your Email"
                                 type="email"

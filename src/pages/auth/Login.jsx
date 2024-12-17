@@ -46,6 +46,7 @@ const Login = () => {
                             <h2 className="text-3xl text-center border-b border-black-400 pb-6">Sign in</h2>
 
                             <InputField
+                                className="mt-6"
                                 label="Email Address"
                                 placeholder="Enter Your Email"
                                 type="email" 
@@ -53,7 +54,7 @@ const Login = () => {
                                 {...register("email", { required: true, pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/ })}
                             />
 
-                            <div className="relative">
+                            <div className="relative mt-4">
                                 <InputField
                                     label="Password"
                                     placeholder="Enter Password"

@@ -13,28 +13,36 @@ const ApplicationDetails = () => {
         icon: <FaRegUser />,
         text: "Personal Information",
       },
-      content: <PersonalInformation />,
+      content: ({activeTab, setActiveTab}) => (
+        <PersonalInformation activeTab={activeTab} setActiveTab={setActiveTab} />
+      ),
     },
     {
       label: {
         icon: <FaRegUser />,
         text: "Academic Details",
       },
-      content: <AcademicDetail />,
+      content: ({activeTab, setActiveTab}) => (
+        <AcademicDetail activeTab={activeTab} setActiveTab={setActiveTab} />
+      ),
     },
     {
       label: {
         icon: <FaRegUser />,
         text: "Documents",
       },
-      content: <ApplicationDocument />,
+      content: ({activeTab, setActiveTab}) => (
+        <ApplicationDocument activeTab={activeTab} setActiveTab={setActiveTab} />
+      ),
     },
     {
       label: {
         icon: <FaRegUser />,
         text: "Transaction Details",
       },
-      content: <TransactionDetail />,
+      content: ({activeTab, setActiveTab}) => {
+        <TransactionDetail activeTab={activeTab} setActiveTab={setActiveTab} />
+      },
     },
   ];
   return (

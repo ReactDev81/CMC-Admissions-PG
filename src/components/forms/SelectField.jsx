@@ -1,14 +1,14 @@
 import React from 'react';
 import { useController } from 'react-hook-form';
 
-const SelectField = ({name, control, label = '', labelclass, options = [], placeholder = 'Select an option',selectclass, className = '', rules = {} }) => {
-    const {field, fieldState: { error }} = useController({name, control, rules});
+const SelectField = ({name, control, label = '', options = [], placeholder = 'Select an option', className = '' }) => {
+    const {field, fieldState: { error }} = useController({name, control, rules: { required: `${label} is required` }});
     return (
-        <div className={` ${className}`}>
-            {label && <label className={`select-element mb-2 text-black-300 ${labelclass}`}>{label}</label>}
+        <div className={`flex flex-wrap flex-col ${className ? className : ''}`}>
+            {label && <label className='select-element mb-2'>{label}</label>}
             <select
                 {...field}
-                className={`block w-full border rounded-md px-4 py-3 text-base font-normal text-black-300 relative ${selectclass}`}
+                className='block w-full border rounded-md px-4 py-3 text-base font-normal text-black-300 relative'
             >
                 <option value="" disabled hidden>
                     {placeholder}
