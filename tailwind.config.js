@@ -39,9 +39,11 @@ export default {
           },
           info:{
             default: '#48A3D7',
+            100: '#48A3D71A'
           },
           purple:{
             default: '#C95E9E',
+            100: '#c95e9e1a'
           },
           parrotgreen:{
             'default': '#1ABE17',

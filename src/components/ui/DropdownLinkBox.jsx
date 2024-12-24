@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-const DropdownLinkBox = ({lists}) => {
+const DropdownLinkBox = ({lists, buttonItem}) => {
     return(
-        <div className="hidden group-hover:block bg-white-default w-max absolute shadow-md top-12 right-0 rounded-md">
+        <div className="invisible opacity-0 translate-y-[30px] group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 bg-white-default w-max absolute shadow-md top-12 right-0 rounded-md z-50 ease-linear duration-300">
             <ul className="transition-all text-black-default p-2.5">
                 {
                     lists.map((list, index) => {
@@ -15,6 +15,7 @@ const DropdownLinkBox = ({lists}) => {
                         )
                     })
                 }
+                {buttonItem}
             </ul>
         </div>
     )

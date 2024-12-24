@@ -6,4 +6,4 @@ const Title = ({ title, id, classname }) => {
     );
   };
   
-  export default Title;
+export default Title;

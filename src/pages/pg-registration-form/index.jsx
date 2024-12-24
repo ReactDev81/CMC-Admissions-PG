@@ -8,8 +8,14 @@ import { MdOutlinePayment } from "react-icons/md";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { HiOutlineAcademicCap } from "react-icons/hi2";
 import UseTab from "../../hooks/UseTab";
+import ApplicationProvider from "../../context/ApplicationContext";
+import { useContext } from "react";
+import { UserContext } from "../../context/UserContext";
 
 const RegistrationForm = () => {
+
+  const {userData} = useContext(UserContext);
+
   const tabsData = [
     {
       label: {
@@ -48,11 +54,12 @@ const RegistrationForm = () => {
       )
     },
   ];
+
   return (
-    <div>
-      <header>
-        <StudentHeader />
-      </header>
+    <ApplicationProvider>
+
+      {userData.token === '' && <StudentHeader />}
+      
       <div className="w-full">
         <div className="py-12">
           <h1 className="text-center text-black-default">PG Registration form</h1>
@@ -66,7 +73,7 @@ const RegistrationForm = () => {
           />
         </div>
       </div>
-    </div>
+    </ApplicationProvider>
   );
 };
 

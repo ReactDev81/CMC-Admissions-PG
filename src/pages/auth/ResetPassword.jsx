@@ -1,4 +1,4 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect, useRef} from "react";
 import InputField from "../../components/forms/Inputfield";
 import Button from "../../components/ui/Button";
 import { AiOutlineEyeInvisible, AiOutlineEye} from "react-icons/ai";
@@ -15,23 +15,18 @@ const ResetPassword = () => {
 
     const { userData } = useContext(UserContext);
     const BEARER_TOKEN = userData.token;
-
-    const { register, handleSubmit, formState: { errors } } = useForm();
-
-    const { data, loading, error, status, fetchData } = useAxios('/forgot-password/reset', 'post');
-
-    console.log(data)
-
+    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const password = useRef({});
+    password.current = watch("password", "");
+    const { loading, error, status, fetchData } = useAxios('/forgot-password/reset', 'post');
     const navigate = useNavigate();
 
     const onSubmit = async (formData) => {
-
         const body = {
             token: BEARER_TOKEN,
             password: formData.password,
             password_confirmation: formData.password_confirmation
         }
-
         await fetchData({ data: body });
     };
 
@@ -69,9 +64,9 @@ const ResetPassword = () => {
                                 <InputField
                                     label="Confirm Password"
                                     placeholder={"Enter New Password"}
-                                    type={showConfirmPassword ? "text" : "password"} 
-                                    {...register('password_confirmation', {required: true, minLength: 8})}
-                                    error={errors.password_confirmation?.type === "required" ? "Password is required" : errors.password_confirmation?.type === "minLength" ? "Password must be at least 8 characters" : undefined}
+                                    type={showConfirmPassword ? "text" : "password"}
+                                    {...register('password_confirmation', {required: true, validate: (value) => value === password.current || "Passwords do not match"})}
+                                    error={errors.password_confirmation?.type === "required" ? "Confirm Password is required" : errors.password_confirmation?.message} 
                                 />
                                 <span className="absolute top-[46px] right-5 cursor-pointer" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
                                     {showConfirmPassword ? <AiOutlineEye color="#4D4D4D" size={20}  /> : <AiOutlineEyeInvisible color="#4D4D4D" size={20} />}

@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import { CiWallet } from "react-icons/ci"; // Wallet
-import { RxCross2 } from "react-icons/rx"; // Cross
+import { CiWallet } from "react-icons/ci"; 
+import { RxCross2 } from "react-icons/rx"; 
 
 const Notification = () => {
   return (
-    <div className="bg-white-default absolute shadow-md w-[280px] top-12 -right-5 rounded-md">
-      <ul className=" hidden group-hover:block transition-all text-black-default">
-        <div className="border-dotted border-b-2 px-5 py-3.5 ">
+    <div className="invisible opacity-0 translate-y-[30px] group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 bg-white-default absolute shadow-md w-[280px] top-12 -right-5 rounded-md z-50 ease-linear duration-300">
+      <ul className="transition-all text-black-default">
+        <div className="border-dotted border-b-2 px-5 py-3.5">
           <h1 className="text-black-default text-center text-xl font-medium">
             Notifications
           </h1>
