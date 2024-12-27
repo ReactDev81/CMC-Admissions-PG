@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link} from 'react-router-dom';
 import { UserContext } from '../../../context/UserContext';
 import useAxios from '../../../hooks/UseAxios';
 import Badge from "../../ui/Badge";
@@ -34,11 +34,13 @@ const AdminSidebar = () => {
   return (
     <aside className="sidebar max-w-[252px] w-full bg-primary-default shadow-side-Shadow overflow-y-scroll">
         <div className="p-5">
-          <img
-            className="object-contain object-center"
-            src="/assets/images/logo.png"
-            alt="Logo"
-          />
+          <Link to="/">
+            <img
+              className="object-contain object-center"
+              src="/assets/images/logo.png"
+              alt="Logo"
+            />
+          </Link>
         </div>
         <div className="pb-10">
           <Badge text="Main" />

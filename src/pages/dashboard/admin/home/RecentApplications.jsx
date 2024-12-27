@@ -51,7 +51,7 @@ const RecentApplications = () => {
                                             <img
                                                 src={application.image}
                                                 className="h-10 w-10 object-cover rounded-full"
-                                                alt=""
+                                                alt={application.name}
                                             />
                                             <p className="text-black-default text-left text-base font-medium">{application.name}</p>
                                         </div>

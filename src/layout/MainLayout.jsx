@@ -13,7 +13,7 @@ const MainLayout = () => {
             {/* Content Area - Start */}
             <div className='relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden'>
                 <Header />
-                <main className='h-screen'>
+                <main className='h-full'>
                     <div className="w-full py-4 px-5">
                         <Outlet />
                     </div>

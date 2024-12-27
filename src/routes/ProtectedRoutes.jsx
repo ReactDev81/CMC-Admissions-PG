@@ -19,6 +19,9 @@ const StudentDashboard = lazy(() => import('../pages/dashboard/student/home/inde
 const ApplicationForm = lazy(() => import('../pages/pg-registration-form/index')) 
 const Profile = lazy(() => import('../pages/dashboard/student/profile/index'))
 
+
+const UserListTable = lazy(() => import('../pages/dashboard/admin/users/index'))
+
 const ProtectedRoutes = () => {
 
     var {userData} = useContext(UserContext);
@@ -60,6 +63,9 @@ const ProtectedRoutes = () => {
                 {/* Student Dashboard Routes*/}
                 <Route path="/application-form" element={<ApplicationForm />} />
                 <Route path="/profile" element={<Profile />} />
+
+
+                <Route path="/userlist-table" element={<UserListTable />} />
 
             </Routes>
         </Suspense>
