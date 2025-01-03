@@ -6,7 +6,7 @@ import { UserContext } from '../context/UserContext'
 const PageNotFound = lazy(() => import('../pages/PageNotFound'))
 
 // Admin Components
-const Users = lazy(() => import('../pages/dashboard/admin/Users'))
+const Users = lazy(() => import('../pages/dashboard/admin/users/index'))
 const Dashboard = lazy(() => import('../pages/dashboard/admin/home/index'))  
 const Applications = lazy(() => import('../pages/dashboard/admin/applications/Applications'))  
 const Reports = lazy(() => import('../pages/dashboard/admin/Reports'))  
@@ -18,9 +18,6 @@ const ApplicationDetails = lazy(() => import('../pages/dashboard/admin/applicati
 const StudentDashboard = lazy(() => import('../pages/dashboard/student/home/index'))
 const ApplicationForm = lazy(() => import('../pages/pg-registration-form/index')) 
 const Profile = lazy(() => import('../pages/dashboard/student/profile/index'))
-
-
-const UserListTable = lazy(() => import('../pages/dashboard/admin/users/index'))
 
 const ProtectedRoutes = () => {
 
@@ -63,9 +60,6 @@ const ProtectedRoutes = () => {
                 {/* Student Dashboard Routes*/}
                 <Route path="/application-form" element={<ApplicationForm />} />
                 <Route path="/profile" element={<Profile />} />
-
-
-                <Route path="/userlist-table" element={<UserListTable />} />
 
             </Routes>
         </Suspense>

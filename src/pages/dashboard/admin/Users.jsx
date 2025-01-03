@@ -37,15 +37,10 @@ const Users = () => {
                 <span className="h-10 w-10 rounded-full bg-white-default flex items-center justify-center">
                     <FiPrinter className="text-black-300" />
                 </span>
-                <button className="flex items-center bg-primary-200 rounded-full justify-center text-black-300 px-4 py-2.5">
-                    <LuFileInput className="text-black-300 mr-2" />
-                    Export
-                    <IoIosArrowDown className="ml-2" />
-                </button>
                 <Button
-                    classname="flex items-center [&]:rounded-full [&]:px-4 w-auto"
+                    classname="flex items-center [&]:rounded-full w-auto"
                     icon={<CgAddR className="text-xl mr-2" />}
-                    text="Add Students"
+                    text="Add User"
                     className="text-white-default"
                 />
             </div>
@@ -63,14 +58,14 @@ const Users = () => {
                         <div className="flex items-center justify-center px-5 py-2.5 rounded-full bg-white-300">
                             <CiFilter className="text-black-300 mr-2" />
                             <span className="text-black-300 capitalize text-base font-normal">
-                                Filter
+                                Export
                             </span>
                             <IoIosArrowDown className="text-black-default ml-2" />
                         </div>
                         <div className="flex items-center justify-center px-5 py-2.5 rounded-full bg-white-300">
                             <FaSortAmountDown className="text-black-300 mr-2" />
                             <span className="text-black-300 capitalize text-base font-normal">
-                                Sort by A-z
+                                Columns
                             </span>
                             <IoIosArrowDown className="text-black-default ml-2" />
                         </div>

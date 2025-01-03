@@ -1,7 +1,10 @@
 import { useState, useEffect, Suspense} from "react";
+import UserList from "../../../../fake-api/UserList"
 import AddNewUser from "./popup/AddNewUser";
 import EditUser from "./popup/EditUser";
 import DeleteUser from "./popup/DeleteUser";
+import { FaArrowsRotate } from "react-icons/fa6";
+import { FiPrinter } from "react-icons/fi";
 import { CgAddR } from "react-icons/cg";
 import Button from "../../../../components/ui/Button";
 import UseAxios from "../../../../hooks/UseAxios";
@@ -40,6 +43,12 @@ const Users = () => {
     return(
         <>
             <div className="flex gap-2.5 justify-end items-center mt-4 mb-9">
+                <span className="h-10 w-10 rounded-full bg-white-default flex items-center justify-center">
+                    <FaArrowsRotate className="text-black-300" />
+                </span>
+                <span className="h-10 w-10 rounded-full bg-white-default flex items-center justify-center">
+                    <FiPrinter className="text-black-300" />
+                </span>
                 <Button
                     onclick={() => setShowAddStudents(true)}
                     classname="flex items-center [&]:rounded-full w-auto"

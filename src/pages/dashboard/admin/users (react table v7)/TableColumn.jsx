@@ -24,38 +24,30 @@ const TableColumn = ({ onAction }) => [
         Header: 'Name',
         accessor: 'name',
         sortType: "alphanumeric",
-        Cell: ({ cell }) => {
-
-            const firstLetter = cell.row.original.name.charAt(0).toUpperCase();
-            const colors = ['#3a6052', '#1ABE17', '#48A3D7', '#C95E9E', '#1ABE17'];
-            const color = colors[cell.row.index % colors.length];
-
-            return(
-                <div className="flex items-center gap-2.5">
-                {/* <img
+        Cell: ({ cell }) => (
+            <div className="flex items-center gap-2.5">
+                <img
                     src={cell.row.original.image}
                     className="h-10 w-10 rounded-full object-cover"
                     alt={`${cell.row.original.name}`}
-                /> */}
-                <div className="h-10 w-10 rounded-full flex items-center justify-center text-white-default font-semibold"
-                        style={{ backgroundColor: color }}
-                    >
-                        {firstLetter}
-                    </div>
+                />
                 <span>{cell.row.original.name}</span>
             </div>
-            )
-        },
+        ),
     },
     {
-        Header: 'Role',
-        accessor: 'role',
+        Header: 'Roles',
+        accessor: 'roles',
         Cell: ({ cell }) => {
-            const role = cell.row.original.role;
+            // Check if roles is an array of objects or a single object
+            const roles = Array.isArray(cell.row.original.roles)
+                ? cell.row.original.roles.map(role => role.name).join(", ")
+                : cell.row.original.roles?.name || "N/A";
+    
             return (
-                <div className="rounded-full w-fit" style={{ backgroundColor: StatusLightColors[role] }}>
-                    <p className="capitalize text-sm font-medium px-3 py-1" style={{ color: StatusColors[role] }}>
-                        {role}
+                <div className="rounded-full w-fit" style={{ backgroundColor: StatusLightColors[roles] }}>
+                    <p className="capitalize text-sm font-medium px-3 py-1" style={{ color: StatusColors[roles] }}>
+                        {roles}
                     </p>
                 </div>
             );
