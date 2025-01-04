@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useState, useContext, useEffect } from "react";
 import { AiOutlineEyeInvisible, AiOutlineEye} from "react-icons/ai";
 import { UserContext } from "../../context/UserContext";
+import { ApplicationContext } from '../../context/ApplicationContext';
 import useAxios from '../../hooks/UseAxios';
 import InputField from '../../components/forms/Inputfield';
 import Button from "../../components/ui/Button";
@@ -12,10 +13,17 @@ const Login = () => {
 
     const [showPassword, setShowPassword] = useState(false);
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const {setUserData} = useContext(UserContext);
+    const { userData, setUserData } = useContext(UserContext);
+    const { setApplicationInfo } = useContext(ApplicationContext);
     
     const navigate = useNavigate();
     const { data, loading, error, fetchData } = useAxios('/login', 'post');
+
+    const { data: applicationData, error: applicationError, fetchData: fetchApplicationData } = useAxios(
+        null, 
+        'get', 
+        { headers: {} } // Default headers will be replaced dynamically
+    );
 
     const onSubmit = async (formData) => {
         await fetchData({ data: formData });
@@ -23,12 +31,42 @@ const Login = () => {
 
     useEffect(() => {
         if (data) {
-            const { token, user: { role, permissions_list: permissions, id, name, email} } = data;
-            const userDetails = { id, name, email };
+            const { token, user: { role, permissions_list: permissions, id, name, email, password_changed} } = data;
+            const userDetails = { id, name, email, password_changed};
             setUserData({ token, role, permissions, userDetails});
+
+            const applicationId = data.user.application_id;
+
+            setApplicationInfo(() => ({
+                application_id: applicationId,
+            }));
+
+            // if(data?.user.role === 'student'){
+            //     const Application_info = useAxios(`/applications/${applicationId}`, 'get', {headers: { Authorization: `Bearer ${data.token}` }})
+            //     Application_info.fetchData();
+            //     console.log(Application_info.data);
+            // }
+
+            // Fetch application info if the user is a student
+            if (role === 'student' && userData.userDetails.password_changed === 1) {
+                fetchApplicationData({
+                    url: `/applications/${applicationId}`,
+                    config: { headers: { Authorization: `Bearer ${token}` } },
+                });
+            }
+
             navigate('/');
         }
     }, [data, setUserData, navigate]);
+
+
+    useEffect(() => {
+        if (applicationData) {
+            console.log(applicationData);
+        } else if (applicationError) {
+            console.error(applicationError);
+        }
+    }, [applicationData, applicationError]);
 
     return(
         <section className="flex flex-wrap justify-center items-center h-screen py-10">

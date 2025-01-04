@@ -1,7 +1,9 @@
 import Title from "../../../../components/ui/Title";
 import { PiChurch } from "react-icons/pi";
 import ChangePassword from "./ChangePassword"
+
 const Profile = () => {
+    
     return (
         <>
             <div className="flex flex-col mb-5 bg-white-default rounded-md">

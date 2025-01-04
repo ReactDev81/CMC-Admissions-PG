@@ -13,12 +13,12 @@ import { useNavigate } from 'react-router-dom';
 const PersonalInfo = ({activeTab, setActiveTab}) => {
 
   const navigate = useNavigate();
-  const {setApplicationInfo} = useContext(ApplicationContext);
+  const {applicationInfo, setApplicationInfo} = useContext(ApplicationContext);
+  
   const {userData, setUserData} = useContext(UserContext);
   const Token = userData.token;
-  const { data, status, loading, error, fetchData } = useAxios('/applications', 'post', Token !== '' ? {headers: {'Authorization': `Bearer ${Token}`}} : {});
 
-  const { register, control, handleSubmit, watch, clearErrors, unregister, formState: { errors }} = useForm({
+  const { register, control, handleSubmit, watch, clearErrors, unregister, reset, formState: { errors }} = useForm({
     defaultValues: {
       gender: "",
     },
@@ -26,6 +26,54 @@ const PersonalInfo = ({activeTab, setActiveTab}) => {
 
   const areParentsGraduates = watch("are_parents_graduates");
 
+  // API hooks for geting application data
+  const fetchApplicationData = useAxios( `/applications/${applicationInfo?.application_id}`, "get", { headers: { Authorization: `Bearer ${Token}` } });
+  const applicationData = fetchApplicationData.data;
+  console.log('applicationData', applicationData);
+
+  // API hook for submitting application data
+  const submitApplicationData = useAxios("/applications", "post", {headers: { Authorization: `Bearer ${Token}` },});
+  const data = submitApplicationData.data;
+  const loading = submitApplicationData.loading;
+  const error = submitApplicationData.error;
+  const status = submitApplicationData.status;
+
+  // Fetch application data for logged-in user
+  useEffect(() => {
+    if (Token && applicationInfo?.application_id) {
+      fetchApplicationData.fetchData();
+    }
+  }, []);
+
+  // Prefill form with fetched data
+  useEffect(() => {
+    if (applicationData) {
+      reset({
+        name: applicationData.name || "",
+        bfuhs_regstration_id: applicationData.bfuhs_regstration_id || "",
+        roll_number: applicationData.roll_number || "",
+        date_of_birth: applicationData.date_of_birth || "",
+        gender: applicationData.gender || "",
+        nationality: applicationData.nationality || "",
+        religion: applicationData.religion || "",
+        correspondence_address: applicationData.correspondence_address || "",
+        city: applicationData.city || "",
+        state: applicationData.state || "",
+        pin: applicationData.pin || "",
+        email: applicationData.email || "",
+        mobile_1: applicationData.mobile_1 || "",
+        mobile_2: applicationData.mobile_2 || "",
+        state_of_domicile: applicationData.state_of_domicile || "",
+        aadhar_no: applicationData.aadhar_no || "",
+        father_name: applicationData.father_name || "",
+        mother_name: applicationData.mother_name || "",
+        are_parents_graduates: applicationData.are_parents_graduates || "",
+        are_parents_graduates_text: applicationData.are_parents_graduates_text || "",
+      });
+    }
+  }, [applicationData, reset]);
+
+  // Clear dependent fields when parent graduation status changes
   useEffect(() => {
     if (areParentsGraduates === "no") {
       clearErrors("are_parents_graduates_text");
@@ -38,6 +86,7 @@ const PersonalInfo = ({activeTab, setActiveTab}) => {
     { value: "female", label: "Female" },
   ];
 
+  // Format date to YYYY-MM-DD
   const formatDate = (date) => {
     const d = new Date(date);
     const year = d.getFullYear();
@@ -46,47 +95,39 @@ const PersonalInfo = ({activeTab, setActiveTab}) => {
     return `${year}-${month}-${day}`;
   };
 
+  // Handle form submission
   const onSubmit = async (formData) => {
 
     const formattedData = {
       ...formData,
-      date_of_birth: formatDate(formData.date_of_birth), 
+      date_of_birth: formatDate(formData.date_of_birth),
       step: "personal",
     };
-    
-    await fetchData({ data: formattedData });
-  
+
+    await submitApplicationData.fetchData({ data: formattedData });
+
   };
 
   useEffect(() => {
-    if(status === 201) {
-
-      navigate('/application-form');
-
-      setActiveTab(activeTab + 1);
-
+    if (status === 201) {
+      navigate("/");
       setApplicationInfo((prevInfo) => ({
         ...prevInfo,
         application_id: data.application_id,
+        steps: {
+          step_personal: "complete",
+          step_academic: "pending",
+          step_documents: "pending",
+          step_payment: "pending",
+        },
       }));
-
-      setApplicationInfo((prevInfo) => ({
-        ...prevInfo,
-        steps:{
-          step_personal: 'complete',
-          step_academic: 'pending',
-          step_documents: 'pending',
-          step_payment: 'pending',
-        }
-      }))
-
     }
   }, [status])
 
   useEffect(() => {
-    if(data){
-      const { token, user: { role, permissions_list: permissions, id, name, email} } = data;
-      const userDetails = { id, name, email };
+    if(data?.user){
+      const { token, user: { role, permissions_list: permissions, id, name, email, password_changed} } = data;
+      const userDetails = { id, name, email, password_changed };
       setUserData({token, role, permissions, userDetails})
     }
   }, [data, setUserData])

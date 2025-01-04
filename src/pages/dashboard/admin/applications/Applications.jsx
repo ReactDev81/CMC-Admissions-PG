@@ -39,7 +39,7 @@ const Applications = () => {
                 </span>
                 <button className="flex items-center bg-primary-200 rounded-full justify-center text-black-300 px-4 py-2.5">
                     <LuFileInput className="text-black-300 mr-2" />
-                    Export
+                        Export
                     <IoIosArrowDown className="ml-2" />
                 </button>
                 <Button

@@ -194,6 +194,9 @@ abbr:where([title]) {
 button.react-calendar__tile.react-calendar__month-view__days__day.react-calendar__month-view__days__day--weekend {
     color: red;
 }
+button.react-calendar__tile.react-calendar__month-view__days__day.react-calendar__month-view__days__day--weekend.react-calendar__tile--active{
+    color: #FFFFFF;
+}
 button.react-calendar__tile.react-calendar__month-view__days__day.react-calendar__month-view__days__day--neighboringMonth {
     opacity: 0.3;
 }
