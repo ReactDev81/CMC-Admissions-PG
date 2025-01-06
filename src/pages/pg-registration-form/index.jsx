@@ -10,10 +10,37 @@ import { HiOutlineAcademicCap } from "react-icons/hi2";
 import UseTab from "../../hooks/UseTab";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
+import { ApplicationContext } from "../../context/ApplicationContext";
+import useAxios from "../../hooks/UseAxios";
+import { useEffect } from "react";
 
 const RegistrationForm = () => {
 
-  const {userData} = useContext(UserContext);
+  const { userData } = useContext(UserContext);
+  const { applicationInfo, setApplicationInfo } = useContext(ApplicationContext);
+
+  const Token = userData.token;
+  const ApplicationId = applicationInfo.application_id;
+
+  const { data, fetchData, status } = useAxios(`/applications/${ApplicationId}`, 'get', { headers: {Authorization: `Bearer ${Token}`} });
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if([200, 201, 202].includes(status)) {
+      setApplicationInfo(() => ({
+        application_id: data.id,
+        steps:{
+          step_personal: data.steps?.step_personal ? data.steps.step_personal : 'pending',
+          step_academic: data.steps?.step_academic ? data.steps.step_academic : 'pending',
+          step_documents: data.steps?.step_documents ? data.steps.step_documents : 'pending',
+          step_payment: data.steps?.step_payment ? data.steps.step_payment : 'pending',
+        },
+      }))
+    }
+  }, [status]);
 
   const tabsData = [
     {

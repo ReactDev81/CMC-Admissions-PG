@@ -17,6 +17,7 @@ const PersonalInfo = ({activeTab, setActiveTab}) => {
   
   const {userData, setUserData} = useContext(UserContext);
   const Token = userData.token;
+  const rsesetPassword = userData.userDetails.password_changed;
 
   const { register, control, handleSubmit, watch, clearErrors, unregister, reset, formState: { errors }} = useForm({
     defaultValues: {
@@ -28,8 +29,7 @@ const PersonalInfo = ({activeTab, setActiveTab}) => {
 
   // API hooks for geting application data
   const fetchApplicationData = useAxios( `/applications/${applicationInfo?.application_id}`, "get", { headers: { Authorization: `Bearer ${Token}` } });
-  const applicationData = fetchApplicationData.data;
-  console.log('applicationData', applicationData);
+  const applicationData = fetchApplicationData?.data;
 
   // API hook for submitting application data
   const submitApplicationData = useAxios("/applications", "post", {headers: { Authorization: `Bearer ${Token}` },});
@@ -37,6 +37,9 @@ const PersonalInfo = ({activeTab, setActiveTab}) => {
   const loading = submitApplicationData.loading;
   const error = submitApplicationData.error;
   const status = submitApplicationData.status;
+
+  // API hook for updating application data
+  const updateApplicationData = useAxios(`/applications/${applicationInfo?.application_id}`, "put", {headers: { Authorization: `Bearer ${Token}` },});
 
   // Fetch application data for logged-in user
   useEffect(() => {
@@ -52,7 +55,7 @@ const PersonalInfo = ({activeTab, setActiveTab}) => {
         name: applicationData.name || "",
         bfuhs_regstration_id: applicationData.bfuhs_regstration_id || "",
         roll_number: applicationData.roll_number || "",
-        date_of_birth: applicationData.date_of_birth || "",
+        date_of_birth: applicationData.dob || "",
         gender: applicationData.gender || "",
         nationality: applicationData.nationality || "",
         religion: applicationData.religion || "",
@@ -104,7 +107,11 @@ const PersonalInfo = ({activeTab, setActiveTab}) => {
       step: "personal",
     };
 
-    await submitApplicationData.fetchData({ data: formattedData });
+    if(Token && rsesetPassword){
+      await updateApplicationData.fetchData({ data: formattedData });
+    }else{
+      await submitApplicationData.fetchData({ data: formattedData });
+    }
 
   };
 

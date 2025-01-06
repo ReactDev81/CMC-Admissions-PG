@@ -22,36 +22,23 @@ const ResetPassword = () => {
     const { data, loading, error, status, fetchData } = useAxios('/change-password', 'post', {headers: { Authorization: `Bearer ${BEARER_TOKEN}`}});
     const navigate = useNavigate();
 
-    // const onSubmit = async (formData) => {
-    //     const body = {
-    //         new_password: formData.new_password,
-    //         new_password_confirmation: formData.new_password_confirmation
-    //     }
-    //     await fetchData({ data: body });
-    // };
-
     const onSubmit = async (formData) => {
-        try {
-            const body = {
-                new_password: formData.new_password,
-                new_password_confirmation: formData.new_password_confirmation,
-            };
-            await fetchData({ data: body });
-        } catch (err) {
-            console.error("Error resetting password:", err);
+        const body = {
+            new_password: formData.new_password,
+            new_password_confirmation: formData.new_password_confirmation
         }
+        await fetchData({ data: body });
     };
 
     useEffect(() => {
         if(status === 200) {
-
             const { token, user: { role, permissions_list: permissions, id, name, email, password_changed} } = data;
             const userDetails = { id, name, email, password_changed};
             setUserData({ token, role, permissions, userDetails});
 
-            setTimeout(() => {
-                navigate('/application-form');
-            }, 2000);
+            // setTimeout(() => {
+            navigate('/application-form');
+            // }, 2000);
         }
     }, [data, status])
 

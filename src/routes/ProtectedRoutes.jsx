@@ -22,6 +22,7 @@ const Profile = lazy(() => import('../pages/dashboard/student/profile/index'))
 const ProtectedRoutes = () => {
 
     var {userData} = useContext(UserContext);
+    const resetPassword =  userData.userDetails.password_changed;
     const location = useLocation();
 
     if (!userData?.token) {
@@ -29,7 +30,12 @@ const ProtectedRoutes = () => {
     }
 
     const isSuperAdmin = userData?.role === 'super-admin';
+    const isAdmin  = userData?.role === 'admin';
+    const isManager = userData?.role === 'manager';
     const isStudent = userData?.role === 'student';
+
+    // Combine roles for admin access
+    const hasAdminAccess = isSuperAdmin || isAdmin || isManager;
 
     return (
         <Suspense fallback={<div>Loading....</div>}>
@@ -38,14 +44,33 @@ const ProtectedRoutes = () => {
                     path="/" 
                     element={isStudent ? <StudentDashboard /> : <Dashboard />} 
                 />
-                <Route path="/users" element={<Users />} />
-                <Route path="/applications" element={<Applications />} />
-                <Route path="/application-detail" element={<ApplicationDetails />} />
-                <Route path="/reports" element={<Reports />} />
-                <Route path="/pg-form-settings" element={<PgFormSettings />} />
-                
-                <Route path="*" element={<PageNotFound />}/>
-                
+
+                {/* Admin-Only Routes */}
+                {hasAdminAccess &&
+                    <>
+                        <Route path="/users" element={<Users />} />
+                        <Route path="/applications" element={<Applications />} />
+                        <Route path="/application-detail" element={<ApplicationDetails />} />
+                        <Route path="/reports" element={<Reports />} />
+                        <Route path="/pg-form-settings" element={<PgFormSettings />} />
+                    </>
+                }
+
+                {/* Student-Only Routes*/}
+                {isStudent && resetPassword && (
+                    <>
+                        <Route path="/application-form" element={<ApplicationForm />} />
+                        <Route path="/profile" element={<Profile />} />
+                    </>
+                )}
+                {isStudent && resetPassword && (
+                    <Route
+                        path="*"
+                        element={<Navigate to="/" replace state={{ from: location }} />}
+                    />
+                )}
+
+                {/* only superadmin can accesible this route */}
                 <Route
                     path="/admin-panel"
                     element={
@@ -57,9 +82,8 @@ const ProtectedRoutes = () => {
                     }
                 />
 
-                {/* Student Dashboard Routes*/}
-                <Route path="/application-form" element={<ApplicationForm />} />
-                <Route path="/profile" element={<Profile />} />
+                {/* error pages */}
+                <Route path="*" element={<PageNotFound />} />
 
             </Routes>
         </Suspense>

@@ -8,15 +8,11 @@ import ResetPassword from "./ResetPassword"
 
 import { UserContext } from "../../../../context/UserContext";
 import { useContext } from "react";
-import {ApplicationContext} from "../../../../context/ApplicationContext"
 
 const UserHome = () => {
 
     const {userData} = useContext(UserContext);
-    const {applicationInfo} = useContext(ApplicationContext);
     var passwordReset = userData.userDetails.password_changed;
-
-    console.log('applicationInfo', applicationInfo);
 
     return (
         <>

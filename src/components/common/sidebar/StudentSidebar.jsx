@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { useNavigate, Link} from 'react-router-dom';
 import { UserContext } from '../../../context/UserContext';
+import { ApplicationContext } from '../../../context/ApplicationContext';
 import useAxios from '../../../hooks/UseAxios';
 import SideNavLink from "./SideNavLink";
 import { FaHome, FaUsers, FaFileAlt} from "react-icons/fa";
@@ -8,7 +9,8 @@ import {LuLogOut} from "react-icons/lu";
 
 const StudentSidebar = () => {
 
-    const  {userData, setUserData } = useContext(UserContext);
+    const {userData, setUserData } = useContext(UserContext);
+    const { setApplicationInfo } = useContext(ApplicationContext);
     const isStudent = userData.role;
     const navigate = useNavigate();
     const BEARER_TOKEN = userData?.token;
@@ -16,7 +18,16 @@ const StudentSidebar = () => {
 
     async function Logout(){
         await fetchData()
-        setUserData({token: '', role: null, permissions: {}});
+        setUserData({token: '', role: null, permissions: {}, userDetails: {}});
+        setApplicationInfo({
+            application_id: null,
+            steps:{
+                step_personal: 'pending',
+                step_academic: 'pending',
+                step_documents: 'pending',
+                step_payment: 'pending',
+            }
+        });
         navigate('/login');
     }
 
