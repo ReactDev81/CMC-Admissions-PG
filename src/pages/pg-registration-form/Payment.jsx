@@ -14,9 +14,19 @@ const Payment = ({activeTab, setActiveTab}) => {
   const Token = userData.token;
   const ApplicationId = applicationInfo.application_id;
 
-  const {register, handleSubmit, formState: { errors },} = useForm();
+  const {register, handleSubmit, reset, formState: { errors },} = useForm();
 
-  const {loading, error, status, fetchData} = useAxios(`/applications/${ApplicationId}`, 'put', {headers: {Authorization: `Bearer ${Token}`}})
+  const {loading, error, status, fetchData} = useAxios(`/applications/${ApplicationId}`, 'put', {headers: {Authorization: `Bearer ${Token}`}});
+
+  // API hooks for geting application data
+  const fetchApplicationData = useAxios( `/applications/${ApplicationId}`, "get", { headers: { Authorization: `Bearer ${Token}` } });
+  const applicationData = fetchApplicationData?.data;
+
+  useEffect(() => {
+    if(Token !== ''){
+      fetchApplicationData.fetchData();
+    }
+  }, [Token])
 
   const onSubmit = async (formData) => {
 
@@ -34,6 +44,20 @@ const Payment = ({activeTab, setActiveTab}) => {
         updateStepStatus('step_payment', 'complete');
       }
     }, [status])
+
+    // Prefill form with fetched data
+  useEffect(() => {
+    if (applicationData) {
+      reset({
+        amount_paid: applicationData.amount_paid || "",
+        utr_transaction_id: applicationData.utr_transaction_id || "",
+        date_of_transaction: applicationData.date_of_transaction || "",
+        mode_of_payment: applicationData.mode_of_payment || "",
+        sender_name: applicationData.sender_name || "",
+        sender_branch: applicationData.sender_branch || "",
+      });
+    }
+  }, [applicationData, reset]);
 
   return (
     <>
