@@ -17,7 +17,7 @@ const PersonalInfo = ({activeTab, setActiveTab}) => {
   
   const {userData, setUserData} = useContext(UserContext);
   const Token = userData.token;
-  const rsesetPassword = userData.userDetails.password_changed;
+  const resetPassword = userData.userDetails.password_changed;
 
   const { register, control, handleSubmit, watch, clearErrors, unregister, reset, formState: { errors }} = useForm({
     defaultValues: {
@@ -107,13 +107,19 @@ const PersonalInfo = ({activeTab, setActiveTab}) => {
       step: "personal",
     };
 
-    if(Token && rsesetPassword){
+    if(Token && resetPassword){
       await updateApplicationData.fetchData({ data: formattedData });
     }else{
       await submitApplicationData.fetchData({ data: formattedData });
     }
 
   };
+
+  useEffect(() => {
+    if(updateApplicationData.status === 200){
+      setActiveTab(activeTab + 1);
+    }
+  }, [updateApplicationData.status, updateApplicationData.data])
 
   useEffect(() => {
     if (status === 201) {
@@ -133,7 +139,7 @@ const PersonalInfo = ({activeTab, setActiveTab}) => {
 
   useEffect(() => {
     if(data?.user){
-      const { token, user: { role, permissions_list: permissions, id, name, email, password_changed} } = data;
+      const { token, user: { role, permissions_list: permissions, id, name, email, password_changed } } = data;
       const userDetails = { id, name, email, password_changed };
       setUserData({token, role, permissions, userDetails})
     }

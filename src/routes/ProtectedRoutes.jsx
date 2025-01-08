@@ -19,6 +19,8 @@ const StudentDashboard = lazy(() => import('../pages/dashboard/student/home/inde
 const ApplicationForm = lazy(() => import('../pages/pg-registration-form/index')) 
 const Profile = lazy(() => import('../pages/dashboard/student/profile/index'))
 
+const AllApplication = lazy(() => import('../pages/AllApplications'))
+
 const ProtectedRoutes = () => {
 
     var {userData} = useContext(UserContext);
@@ -84,6 +86,9 @@ const ProtectedRoutes = () => {
 
                 {/* error pages */}
                 <Route path="*" element={<PageNotFound />} />
+
+
+                <Route path="/all-application" element={<AllApplication />} />
 
             </Routes>
         </Suspense>

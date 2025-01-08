@@ -2,16 +2,21 @@ import InputField from "../../components/forms/Inputfield";
 import Button from "../../components/ui/Button";
 import { useForm } from "react-hook-form";
 import useAxios from "../../hooks/UseAxios";
-import { ApplicationContext } from "../../context/ApplicationContext";
 import { useContext, useEffect} from "react";
+import { UserContext } from "../../context/UserContext"
+import { ApplicationContext } from "../../context/ApplicationContext";
+
 
 const Payment = ({activeTab, setActiveTab}) => {
 
+  const { userData } = useContext(UserContext);
   const {applicationInfo, updateStepStatus} = useContext(ApplicationContext);
+  const Token = userData.token;
+  const ApplicationId = applicationInfo.application_id;
 
   const {register, handleSubmit, formState: { errors },} = useForm();
 
-  const {loading, error, status, fetchData} = useAxios('/applications', 'post')
+  const {loading, error, status, fetchData} = useAxios(`/applications/${ApplicationId}`, 'put', {headers: {Authorization: `Bearer ${Token}`}})
 
   const onSubmit = async (formData) => {
 

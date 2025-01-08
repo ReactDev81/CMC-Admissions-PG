@@ -7,16 +7,21 @@ import { useForm, } from "react-hook-form";
 import { useEffect } from 'react';
 import Button from '../../components/ui/Button';
 import UseAxios from "../../hooks/UseAxios";
-import { ApplicationContext } from '../../context/ApplicationContext';
 import { useContext } from 'react';
+import { UserContext } from "../../context/UserContext"
+import { ApplicationContext } from '../../context/ApplicationContext';
+
 
 const AcademicInfo = ({activeTab, setActiveTab}) => {
 
+  const { userData } = useContext(UserContext);
   const {applicationInfo, updateStepStatus} = useContext(ApplicationContext);
+  const Token = userData.token;
+  const ApplicationId = applicationInfo.application_id;
 
   const {control, register, handleSubmit, formState: { errors }} = useForm();
 
-  const {data, loading, error, status, fetchData} = UseAxios('/applications', 'post')
+  const {data, loading, error, status, fetchData} = UseAxios(`/applications/${ApplicationId}`, 'put', {headers: {Authorization: `Bearer ${Token}`}})
 
   const onSubmit = async (formData) => {
 
