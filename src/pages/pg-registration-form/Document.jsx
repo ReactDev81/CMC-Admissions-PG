@@ -69,11 +69,11 @@ const Document = ({activeTab, setActiveTab}) => {
           <FileFeild 
             label="NEET PG-2024 Admit Card"
             id="neetAdmitCard"
-            {...register("neet_pg_2024_admit_card", {
+            {...register("neet_admit_card", {
                 required: "This field is required.",
                 validate: (fileList) => validateFile(fileList, 2048 * 1024),
             })}
-            error={errors.neet_pg_2024_admit_card?.message}
+            error={errors.neet_admit_card?.message}
           />
           <FileFeild 
             label="NEET UG-2024 Score Card" 

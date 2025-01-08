@@ -25,11 +25,9 @@ const TableColumn = ({ onAction }) => [
         accessor: 'name',
         sortType: "alphanumeric",
         Cell: ({ cell }) => {
-
             const firstLetter = cell.row.original.name.charAt(0).toUpperCase();
             const colors = ['#3a6052', '#1ABE17', '#48A3D7', '#C95E9E', '#1ABE17'];
             const color = colors[cell.row.index % colors.length];
-
             return(
                 <div className="flex items-center gap-2.5">
                     {/* <img
