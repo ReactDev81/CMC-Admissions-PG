@@ -78,10 +78,10 @@ const Document = ({activeTab, setActiveTab}) => {
           <FileFeild 
             label="NEET UG-2024 Score Card" 
             id="neetScoreCard"
-            {...register("neet_pg_2024_score_card", {
+            {...register("neet_score_card", {
               validate: (fileList) => validateFile(fileList, 2048 * 1024),
             })}
-            error={errors.neet_pg_2024_score_card?.message}
+            error={errors.neet_score_card?.message}
           />
           <FileFeild 
             label="Matriculation (10th Class Certificate)"

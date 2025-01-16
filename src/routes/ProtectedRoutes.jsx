@@ -8,23 +8,22 @@ const PageNotFound = lazy(() => import('../pages/PageNotFound'))
 // Admin Components
 const Users = lazy(() => import('../pages/dashboard/admin/users/index'))
 const Dashboard = lazy(() => import('../pages/dashboard/admin/home/index'))  
-const Applications = lazy(() => import('../pages/dashboard/admin/applications/Applications'))  
+const Applications = lazy(() => import('../pages/dashboard/admin/applications/index'))  
+const ApplicationDetails = lazy(() => import('../pages/dashboard/admin/applications-details/index'))
 const Reports = lazy(() => import('../pages/dashboard/admin/Reports'))  
 const AdminPanel = lazy(() => import('../pages/dashboard/admin/AdminPanel'))
 const PgFormSettings = lazy(() => import('../pages/dashboard/admin/pg-form-settings/index'))
-const ApplicationDetails = lazy(() => import('../pages/dashboard/admin/applications-details/index'))
+
 
 // Students Components
 const StudentDashboard = lazy(() => import('../pages/dashboard/student/home/index'))
 const ApplicationForm = lazy(() => import('../pages/pg-registration-form/index')) 
 const Profile = lazy(() => import('../pages/dashboard/student/profile/index'))
 
-const AllApplication = lazy(() => import('../pages/AllApplications'))
-
 const ProtectedRoutes = () => {
 
     var {userData} = useContext(UserContext);
-    const resetPassword =  userData.userDetails.password_changed;
+    const resetPassword =  userData.userDetails?.password_changed;
     const location = useLocation();
 
     if (!userData?.token) {
@@ -32,7 +31,7 @@ const ProtectedRoutes = () => {
     }
 
     const isSuperAdmin = userData?.role === 'super-admin';
-    const isAdmin  = userData?.role === 'admin';
+    const isAdmin = userData?.role === 'admin';
     const isManager = userData?.role === 'manager';
     const isStudent = userData?.role === 'student';
 
@@ -52,7 +51,8 @@ const ProtectedRoutes = () => {
                     <>
                         <Route path="/users" element={<Users />} />
                         <Route path="/applications" element={<Applications />} />
-                        <Route path="/application-detail" element={<ApplicationDetails />} />
+                        <Route path="/application/:id" element={<ApplicationDetails />} />
+                        {/* <Route path="/application-detail" element={<ApplicationDetails />} /> */}
                         <Route path="/reports" element={<Reports />} />
                         <Route path="/pg-form-settings" element={<PgFormSettings />} />
                     </>
@@ -86,9 +86,6 @@ const ProtectedRoutes = () => {
 
                 {/* error pages */}
                 <Route path="*" element={<PageNotFound />} />
-
-
-                <Route path="/all-application" element={<AllApplication />} />
 
             </Routes>
         </Suspense>

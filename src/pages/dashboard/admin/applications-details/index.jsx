@@ -7,6 +7,7 @@ import { FaRegUser } from "react-icons/fa";
 import UseTab from "../../../../hooks/UseTab";
 
 const ApplicationDetails = () => {
+
   const tabsData = [
     {
       label: {
@@ -40,14 +41,14 @@ const ApplicationDetails = () => {
         icon: <FaRegUser />,
         text: "Transaction Details",
       },
-      content: ({activeTab, setActiveTab}) => {
+      content: ({activeTab, setActiveTab}) => (
         <TransactionDetail activeTab={activeTab} setActiveTab={setActiveTab} />
-      },
+      )
     },
   ];
   return (
     <div className="flex flex-wrap gap-5">
-      <div className="flex flex-wrap max-w-80 w-full">
+      <div className="flex flex-wrap max-w-96 w-full">
         <ApplicationDetailCard />
       </div>
       <div className="flex flex-col flex-1 shadow-flex rounded-lg bg-white-default">
@@ -58,3 +59,4 @@ const ApplicationDetails = () => {
 };
 
 export default ApplicationDetails;
+

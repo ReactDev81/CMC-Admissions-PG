@@ -27,7 +27,6 @@ const AdminSidebar = () => {
 
   const applicationLinks = [
     { href: "/applications", text: "All Applications" },
-    { href: "/application-detail", text: "Application Detail" },
     { href: "/add-new", text: "Add New" },
   ];
 
@@ -69,13 +68,6 @@ const AdminSidebar = () => {
             </li>
             <li>
               <SideNavLink
-                href="/pg-form-settings"
-                text="PG Form Settings"
-                icon={<MdDynamicForm  />}
-              />
-            </li>
-            <li>
-              <SideNavLink
                 href="/reports"
                 text="Reports"
                 icon={<FaChartBar  />}
@@ -96,6 +88,13 @@ const AdminSidebar = () => {
           <Badge text="Setting" />
 
           <ul>
+            <li>
+              <SideNavLink
+                href="/pg-form-settings"
+                text="PG Form Settings"
+                icon={<MdDynamicForm  />}
+              />
+            </li>
             <li>
               <SideNavLink
                 href="/pages"

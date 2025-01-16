@@ -1,192 +1,154 @@
-import InputField from "../../../../../components/forms/Inputfield";
+import { useForm } from "react-hook-form";
+import { useEffect, useContext } from 'react';
+import MbbsDetails from "./MbbsDetails";
 import GraduateOfCmc from "./GraduateOfCmc";
 import PeriodOfService from "./PeriodOfService";
 import NeetPgDetails from "./NeetPgDetails";
 import GraduateOfOther from "./GraduateOfOther";
-import { useForm } from "react-hook-form";
+import Button from '../../../../../components/ui/Button';
+import UseAxios from "../../../../../hooks/UseAxios";
+import { UserContext } from "../../../../../context/UserContext"
+import { ApplicationContext } from '../../../../../context/ApplicationContext';
 
-const AcademicDetail = () => {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      category: "",
-    },
-  });
-  const options = [
-    { value: "option1", label: "Option 1" },
-    { value: "option2", label: "Option 2" },
-    { value: "option3", label: "Option 3" },
-  ];
+const AcademicDetail = ({activeTab, setActiveTab}) => {
+
+  const { userData } = useContext(UserContext);
+  const {applicationInfo} = useContext(ApplicationContext);
+  const Token = userData.token;
+  const ApplicationId = applicationInfo.application_id;
+
+  const {control, register, handleSubmit, reset, formState: { errors }} = useForm();
+
+  const { loading, error, status, fetchData } = UseAxios(`/applications/${ApplicationId}`, 'put', {headers: {Authorization: `Bearer ${Token}`}})
+
+  // API hooks for geting application data
+  const fetchApplicationData = UseAxios( `/applications/${ApplicationId}`, "get", { headers: { Authorization: `Bearer ${Token}` } });
+  const applicationData = fetchApplicationData?.data;
+
+  useEffect(() => {
+    if(Token !== ''){
+      fetchApplicationData.fetchData();
+    }
+  }, [Token])
+
+  const onSubmit = async (formData) => {
+
+    const data = {
+      ...formData,
+      step: 'academic',
+      application_id: applicationInfo.application_id,
+    }
+
+    await fetchData({data: data});
+
+  };
+
+  useEffect(() => {
+      if(status === 201){
+        setActiveTab(activeTab + 1);
+      }
+  }, [status])
+
+  // Prefill form with fetched data
+  useEffect(() => {
+    if (applicationData) {
+      reset({
+        // MbbsDetails
+        mbbs_college_name: applicationData.mbbs_college_name || "",
+        mbbs_name_university: applicationData.mbbs_name_university || "",
+        mbbs_data_passing_date: applicationData.mbbs_data_passing_date || "",
+        mbbs_internship_completion_date: applicationData.mbbs_internship_completion_date || "",
+
+        mbbs_max_marks_first: applicationData.mbbs_max_marks_first || "",
+        mbbs_marks_obtained_first: applicationData.mbbs_marks_obtained_first || "",
+        mbbs_percent_gained_first: applicationData.mbbs_percent_gained_first || "",
+        mbbs_no_of_attempts_first: applicationData.mbbs_no_of_attempts_first || "",
+
+        mbbs_max_marks_second: applicationData.mbbs_max_marks_second || "",
+        mbbs_marks_obtained_second: applicationData.mbbs_marks_obtained_second || "",
+        mbbs_percent_gained_second: applicationData.mbbs_percent_gained_second || "",
+        mbbs_no_of_attempts_second: applicationData.mbbs_no_of_attempts_second || "",
+        
+        mbbs_max_marks_third: applicationData.mbbs_marks_obtained_third || "",
+        mbbs_marks_obtained_third: applicationData.mbbs_marks_obtained_third || "",
+        mbbs_percent_gained_third: applicationData.mbbs_percent_gained_third || "",
+        mbbs_no_of_attempts_third: applicationData.mbbs_no_of_attempts_third || "",
+
+        mbbs_max_marks_final: applicationData.mbbs_max_marks_final || "",
+        mbbs_marks_obtained_final: applicationData.mbbs_marks_obtained_final || "",
+        mbbs_percent_gained_final: applicationData.mbbs_percent_gained_final || "",
+        mbbs_no_of_attempts_final: applicationData.mbbs_no_of_attempts_final || "",
+
+        mbbs_max_marks_total: applicationData.mbbs_max_marks_total || "",
+        mbbs_marks_obtained_total: applicationData.mbbs_marks_obtained_total || "",
+        mbbs_percent_gained_total: applicationData.mbbs_percent_gained_total || "",
+        mbbs_no_of_attempts_total: applicationData.mbbs_no_of_attempts_total || "",
+
+        // GraduateOfCmc
+        mbbs_date_of_joining_cmc_ludhiana: applicationData.mbbs_date_of_joining_cmc_ludhiana || "",
+        mbbs_college_roll_no_cmc_ludhiana: applicationData.mbbs_college_roll_no_cmc_ludhiana || "",
+        mbbs_date_of_passing_cmc_ludhiana: applicationData.mbbs_date_of_passing_cmc_ludhiana || "",
+        mbbs_mission_sponsored_cmc_ludhiana: applicationData.mbbs_mission_sponsored_cmc_ludhiana || "",
+        mbbs_college_sponsored_cmc_ludhiana: applicationData.mbbs_college_sponsored_cmc_ludhiana || "",
+        mbbs_staff_dependent_cmc_ludhiana: applicationData.mbbs_staff_dependent_cmc_ludhiana || "",
+
+        // GraduateOfOther
+        mbbs_date_of_joining_other_college: applicationData.mbbs_date_of_joining_other_college || "",
+        mbbs_college_roll_no_other_college: applicationData.mbbs_college_roll_no_other_college || "",
+        mbbs_date_of_passing_other_college: applicationData.mbbs_date_of_passing_other_college || "",
+        mbbs_name_college_other_college: applicationData.mbbs_name_college_other_college || "",
+        mbbs_sponsorship_agreement_other_college: applicationData.mbbs_sponsorship_agreement_other_college || "",
+
+        // PeriodOfService
+        mbbs_hospital_sponsoring_agency_service_obligation: applicationData.mbbs_hospital_sponsoring_agency_service_obligation || "",
+        mbbs_remarks_service_obligation: applicationData.mbbs_remarks_service_obligation || "",
+        mbbs_period_from_service_obligation: applicationData.mbbs_period_from_service_obligation || "",
+        mbbs_period_to_service_obligation: applicationData.mbbs_period_to_service_obligation || "",
+        mbbs_period_total_service_obligation: applicationData.mbbs_period_total_service_obligation || "",
+        mbbs_diploma_holder_service_obligation: applicationData.mbbs_diploma_holder_service_obligation || "",
+
+        // NeetPgDetails
+        neet_marks: applicationData.neet_marks || "",
+        neet_percentile: applicationData.neet_percentile || "",
+        neet_pg_2024_rank: applicationData.neet_pg_2024_rank || "",
+        membership_denomination_church_cmc_ludhiana: applicationData.membership_denomination_church_cmc_ludhiana || "",
+        duration_membership_church_cmc_ludhiana: applicationData.duration_membership_church_cmc_ludhiana || "",
+        body_church_cmc_ludhiana: applicationData.body_church_cmc_ludhiana || "",
+
+      });
+    }
+  }, [applicationData, reset]);
 
   return (
-    <div className="w-full">
-      <form action="" className={`w-full bg-white-default rounded-md `}>
-        <div className="flex gap-10">
-          <div className="w-full mt-0">
-            <InputField label="Amount Paid" labelclass="font-medium" className="[&]:mt-0" />
-          </div>
-          <div className="w-full mt-0">
-            <InputField label="Date of Birth" labelclass="font-medium" className="[&]:mt-0" />
-          </div>
-          <div className="w-full mt-0">
-            <InputField label="UTR/Transaction ID" labelclass="font-medium" className="[&]:mt-0" />
-          </div>
+    <>
+    <form className='w-full mt-2.5' onSubmit={handleSubmit(onSubmit)}>
+        <MbbsDetails register={register} errors={errors} />
+        <GraduateOfCmc register={register} errors={errors} control={control} />
+        <GraduateOfOther register={register} errors={errors} control={control} />
+        <PeriodOfService register={register} errors={errors} />
+        <NeetPgDetails register={register} errors={errors} control={control} />
+        <div className="text-left mt-8">
+          <Button
+            type="submit"
+            text={loading ? 'Loading....' : "Save"}
+            classname="[&]:rounded-full self-end [&]:px-10 [&]:py-2.5"
+          />
         </div>
-        <div className="flex gap-10 items-end">
-          <div className="">
-            <InputField
-              label="Mode of Payment(NEFT, RTGS, IMPS, GPay etc)"
-              labelclass="font-medium"
-            />
-          </div>
-        </div>
-        <div className="table-form mt-6">
-          <div className="grid grid-cols-5 gap-4 font-medium text-black-default text-2xl leading-5">
-            <div>Examination/Year</div>
-            <div>Max. Marks</div>
-            <div>Marks Obtained</div>
-            <div>% Gained</div>
-            <div>No. Of Attempts</div>
-          </div>
-          <div className="grid grid-cols-5 gap-4 items-end">
-            <div className="font-medium text-base leading-5 text-black-default self-center">
-              First
-            </div>
-            <InputField
-              inputclass="w-full text-base font-normal text-purple-default"
-              text="text"
-              label="First Max. Marks"
-              labelclass="text-base font-medium leading-5"
-            />
-            <InputField
-              inputclass="w-full text-base font-normal text-purple-default"
-              text="text"
-              label="First Marks Obtained"
-              labelclass="text-base font-medium leading-5"
-            />
-            <InputField
-              inputclass="w-full text-base font-normal text-purple-default"
-              text="text"
-              label="First Gained"
-              labelclass="text-base font-medium leading-5"
-            />
-            <InputField
-              inputclass="w-full text-base font-normal text-purple-default"
-              text="text"
-              label="First No. Of Attempts"
-              labelclass="text-base font-medium leading-5"
-            />
-          </div>
-          <div className="grid grid-cols-5 gap-4 items-end">
-            <div className="font-medium text-base leading-5 text-black-default self-center">
-              Second
-            </div>
-            <InputField
-              inputclass="w-full text-base font-normal text-purple-default"
-              text="text"
-              label="Second Max. Marks"
-              labelclass="text-base font-medium leading-5"
-            />
-            <InputField
-              inputclass="w-full text-base font-normal text-purple-default"
-              text="text"
-              label="Second Marks Obtained"
-              labelclass="text-base font-medium leading-5"
-            />
-            <InputField
-              inputclass="w-full text-base font-normal text-purple-default"
-              text="text"
-              label="Second Gained"
-              labelclass="text-base font-medium leading-5"
-            />
-            <InputField
-              inputclass="w-full text-base font-normal text-purple-default"
-              text="text"
-              label="Second No. Of Attempts"
-              labelclass="text-base font-medium leading-5"
-            />
-          </div>
-          <div className="grid grid-cols-5 gap-4 items-end">
-            <div className="font-medium text-base leading-5 text-black-default self-center">
-              Third
-            </div>
-            <InputField
-              inputclass="w-full text-base font-normal text-purple-default"
-              text="text"
-              label="Third Max. Marks"
-              labelclass="text-base font-medium leading-5"
-            />
-            <InputField
-              inputclass="w-full text-base font-normal text-purple-default"
-              text="text"
-              label="Third Marks Obtained"
-              labelclass="text-base font-medium leading-5"
-            />
-            <InputField
-              inputclass="w-full text-base font-normal text-purple-default"
-              text="text"
-              label="Third Gained"
-              labelclass="text-base font-medium leading-5"
-            />
-            <InputField
-              inputclass="w-full text-base font-normal text-purple-default"
-              text="text"
-              label="Third No. Of Attempts"
-              labelclass="text-base font-medium leading-5"
-            />
-          </div>
-          <div className="grid grid-cols-5 gap-4 items-end">
-            <div className="font-medium text-base leading-5 text-black-default self-center">
-              Final
-            </div>
-            <InputField
-              inputclass="w-full text-base font-normal text-purple-default"
-              text="text"
-              label="Final Max. Marks"
-              labelclass="text-base font-medium leading-5"
-            />
-            <InputField
-              inputclass="w-full text-base font-normal text-purple-default"
-              text="text"
-              label="Final Marks Obtained"
-              labelclass="text-base font-medium leading-5"
-            />
-            <InputField
-              inputclass="w-full text-base font-normal text-purple-default"
-              text="text"
-              label="Final Gained"
-              labelclass="text-base font-medium leading-5"
-            />
-            <InputField
-              inputclass="w-full text-base font-normal text-purple-default"
-              text="text"
-              label="Final No. Of Attempts"
-              labelclass="text-base font-medium leading-5"
-            />
-          </div>
-          <div className="grid grid-cols-5 items-end">
-            <div className="font-medium text-base leading-5 text-black-default self-center ">
-              Total:
-            </div>
-            <div className="col-span-4">
-              <InputField
-                inputclass="w-full text-base font-normal text-purple-default"
-                type="text"
-                label="Grand Total %"
-                labelclass="text-base font-medium leading-5"
-              />
-            </div>
-          </div>
-        </div>
-        <GraduateOfCmc />
-        <GraduateOfOther />
-        <PeriodOfService />
-        <NeetPgDetails />
+        {error && <p className="bg-red-100 py-2.5 px-5 text-red-800 mt-2 rounded-md font-normal" dangerouslySetInnerHTML={{ __html: error }}></p>}
       </form>
-    </div>
+      <div className="flex flex-wrap items-center justify-between">
+        <Button
+          text="Previous"
+          onclick={() => setActiveTab(activeTab - 1)}
+          classname="[&]:py-2.5 [&]:px-7 [&]:rounded-full border-0 [&]:text-black-300 [&]:bg-primary-100"
+        />
+        <Button
+          text="Next"
+          onclick={() => setActiveTab(activeTab + 1)}
+          classname="[&]:rounded-full self-end [&]:px-10 [&]:py-2.5"
+        />
+      </div>
+    </>
   );
 };
 

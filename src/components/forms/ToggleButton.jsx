@@ -9,8 +9,9 @@ const ToggleButton = ({ id, disabled = false, value = false, onChange, register 
                     className="sr-only peer" 
                     type="checkbox"
                     id={id}
-                    defaultChecked={value}
-                    // onChange={onChange}
+                    // defaultChecked={value}
+                    checked={value}
+                    onChange={(e) => onChange(e.target.checked)}
                     disabled={disabled}
                     {...(register && register(id))}
                 />

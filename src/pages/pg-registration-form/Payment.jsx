@@ -10,7 +10,7 @@ import { ApplicationContext } from "../../context/ApplicationContext";
 const Payment = ({activeTab, setActiveTab}) => {
 
   const { userData } = useContext(UserContext);
-  const {applicationInfo, updateStepStatus} = useContext(ApplicationContext);
+  const { applicationInfo, updateStepStatus } = useContext(ApplicationContext);
   const Token = userData.token;
   const ApplicationId = applicationInfo.application_id;
 

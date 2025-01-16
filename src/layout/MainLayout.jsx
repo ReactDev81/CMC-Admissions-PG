@@ -11,9 +11,9 @@ const MainLayout = () => {
             <Sidebar />
 
             {/* Content Area - Start */}
-            <div className='relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden'>
+            <div className='relative flex justify-between flex-1 flex-col overflow-y-auto overflow-x-hidden'>
                 <Header />
-                <main className='h-full'>
+                <main className='h-auto'>
                     <div className="w-full py-4 px-5">
                         <Outlet />
                     </div>

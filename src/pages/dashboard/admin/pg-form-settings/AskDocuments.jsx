@@ -1,90 +1,140 @@
-import ToggleButton from '../../../../components/forms/ToggleButton'
-import { useForm } from "react-hook-form";
+import { useContext, useEffect, useState, useCallback } from "react";
+import ToggleButton from "../../../../components/forms/ToggleButton";
+import { UserContext } from "../../../../context/UserContext";
+import useAxios from "../../../../hooks/UseAxios";
 
 const AskDocument = () => {
+    const [documentFields, setDocumentFields] = useState([]);
+    // const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [formState, setFormState] = useState({});
 
-  const { register, handleSubmit, watch } = useForm();
+    const { userData } = useContext(UserContext);
+    const BEARER_TOKEN = userData?.token;
 
-  const isAccepted = watch("admit-card");
+    const { fetchData, status, data, loading } = useAxios(
+        "/form/1/file-fields",
+        "get",
+        null,
+        {
+            headers: { Authorization: `Bearer ${BEARER_TOKEN}` },
+        }
+    );
 
-  const onSubmit = (data) => {
-      console.log("Form Data:", data);
-  };
+    const { fetchData: updateFieldRequired } = useAxios(null, "post", {
+        headers: { Authorization: `Bearer ${BEARER_TOKEN}` },
+    });
 
-  return(
-    <form onSubmit={handleSubmit(onSubmit)}> 
-      <div className="px-8 py-6 max-w-[650px] w-full bg-white-default rounded-lg shadow-flex">
+    // Memoize fetchData to avoid recreating it on every render
+    const fetchDocumentFields = useCallback(async () => {
+        // setIsLoading(true);
+        try {
+            await fetchData();
+            if (status === 200) {
+                setDocumentFields(data);
+            }
+        } catch (error) {
+            setError(error.message || "Failed to fetch document fields");
+        } finally {
+            // setIsLoading(false);
+        }
+    }, [status]);
 
-        <h2 className="text-black-default mb-14 capitalize">Ask Documents</h2>
+    useEffect(() => {
+        fetchDocumentFields();
+    }, [fetchDocumentFields]);
 
-        <div className="flex items-center justify-between border-b">
-          <span className="text-lg font-normal text-black-300 px-1.5 py-3">NEET PG-2024 Admit Card</span>
-          <ToggleButton 
-            id="admit-card"
-            register={register}
-          />
-        </div>
+    // Initialize form state based on documentFields
+    useEffect(() => {
+        if (documentFields.length > 0) {
+            const initialState = documentFields.reduce((acc, field) => {
+                acc[field.name] = field.required;
+                return acc;
+            }, {});
+            setFormState(initialState);
+        }
+    }, [documentFields]);
 
-        <div className="flex items-center justify-between border-b">
-          <span className="text-lg font-normal text-black-300 px-1.5 py-3">NEET PG-2024 Score Card</span>
-          <ToggleButton 
-            id="toggel-2"
-            register={register}
-          />
-        </div>
+    const handleToggle = async (fieldId, fieldName, newValue) => {
+        try {
+            const url = `/form/1/fields/${fieldId}/required`;
 
-        <div className="flex items-center justify-between border-b">
-          <span className="text-lg font-normal text-black-300 px-1.5 py-3">Matriculation (10th Class Certificate)</span>
-          <ToggleButton id="toggel-3"/>
-        </div>
+            // Use the useAxios hook to make the POST request
+            const response = await updateFieldRequired({
+                url,
+                data: { required: newValue },
+            });
 
-        <div className="flex items-center justify-between border-b">
-          <span className="text-lg font-normal text-black-300 px-1.5 py-3">Baptism Certificate</span>
-          <ToggleButton id="toggel-4"/>
-        </div>
+            // Update local state
+            setFormState((prevState) => ({
+                ...prevState,
+                [fieldName]: newValue,
+            }));
 
-        <div className="flex items-center justify-between border-b">
-          <span className="text-lg font-normal text-black-300 px-1.5 py-3">Church Membership Certificate</span>
-          <ToggleButton id="toggel-5"/>
-        </div>
+            console.log("Field updated successfully:", response.data);
+        } catch (error) {
+            console.error(
+                "Error updating field required status:",
+                error.message || error
+            );
 
-        <div className="flex items-center justify-between border-b">
-          <span className="text-lg font-normal text-black-300 px-1.5 py-3">PG Letter of Service Commitment (Sponsorship Letter)</span>
-          <ToggleButton id="toggel-6"/>
-        </div>
+            if (error.response) {
+                console.error("Error response data:", error.response.data);
+            }
+        }
+    };
 
-        <div className="flex items-center justify-between border-b">
-          <span className="text-lg font-normal text-black-300 px-1.5 py-3">UG Service Obligation Completion/Service Cerficate</span>
-          <ToggleButton id="toggel-7"/>
-        </div>
-        
-        <div className="flex items-center justify-between border-b">
-          <span className="text-lg font-normal text-black-300 px-1.5 py-3">Domicile/Residence Certificate</span>
-          <ToggleButton id="toggel-8"/>
-        </div>
+    if (error) {
+        return (
+            <div className="px-8 py-6 max-w-[650px] w-full bg-white-default rounded-lg shadow-flex">
+                <p className="text-red-500">Error: {error}</p>
+                <button
+                    onClick={fetchDocumentFields}
+                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                >
+                    Retry
+                </button>
+            </div>
+        );
+    }
 
-        <div className="flex items-center justify-between border-b">
-          <span className="text-lg font-normal text-black-300 px-1.5 py-3">Aadhar Card</span>
-          <ToggleButton id="toggel-9"/>
-        </div>
+    return (
+        <form>
+            <div className="px-8 py-6 max-w-[650px] w-full bg-white-default rounded-lg shadow-flex">
+                <h2 className="text-black-default mb-14 capitalize">Ask Documents</h2>
 
-        <div className="flex items-center justify-between border-b">
-          <span className="text-lg font-normal text-black-300 px-1.5 py-3">Affidavit of Service (as per Format B)</span>
-          <ToggleButton id="toggel-10"/>
-        </div>
-
-        <div className="flex items-center justify-between border-b">
-          <span className="text-lg font-normal text-black-300 px-1.5 py-3">PG Diploma</span>
-          <ToggleButton id="toggel-11"/>
-        </div>
-
-        <div className="flex items-center justify-between border-b">
-          <span className="text-lg font-normal text-black-300 px-1.5 py-3">Profile Pic</span>
-          <ToggleButton id="toggel-12"/>
-        </div>
-      </div>
-    </form>
-  )
-}
+                {loading ? (
+                    <div className="flex justify-center items-center py-4">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+                    </div>
+                ) : (
+                    documentFields.map((field) => (
+                        // console.log(field);
+                        <div
+                            key={field.id}
+                            className="flex items-center justify-between border-b"
+                        >
+                            <span className="text-lg font-normal text-black-300 px-1.5 py-3">
+                                {field.label}
+                            </span>
+                            {/* <ToggleButton
+                                id={field.name}
+                                value={field.required}
+                                onChange={() => handleToggle(field.id)}
+                            /> */}
+                            <ToggleButton
+                                id={field.name}
+                                value={formState[field.name]}
+                                onChange={(newValue) =>
+                                    handleToggle(field.id, field.name, newValue)
+                                }
+                            />
+                        </div>
+                    ))
+                )}
+            </div>
+        </form>
+    );
+};
 
 export default AskDocument;

@@ -8,7 +8,7 @@ const SelectField = ({name, control, label = '', options = [], placeholder = 'Se
             {label && <label className='select-element mb-2'>{label}</label>}
             <select
                 {...field}
-                className='block w-full border rounded-md px-4 py-3 text-base font-normal text-black-300 relative'
+                className='block w-full border rounded-md pl-4 pr-10 py-3 text-base font-normal text-black-300 relative'
             >
                 <option value="" disabled hidden>
                     {placeholder}
