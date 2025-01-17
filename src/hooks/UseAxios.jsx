@@ -1,38 +1,40 @@
 import { useState, useCallback } from 'react';
-import AxiosInstance from '../api/AxiosInstance'
+import AxiosInstance from '../api/AxiosInstance';
 
-const useAxios = (url, method = 'get', options = {}) => {
-
-    const [data, setData] = useState(null);       
-    const [loading, setLoading] = useState(false); 
-    const [error, setError] = useState(null); 
-    const [status, setStatus] = useState(null);     
+const useAxios = (initialUrl = null, method = 'get', options = {}) => {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [status, setStatus] = useState(null);
 
     const fetchData = useCallback(
-        async (requestData = {}) => { 
-            setLoading(true); 
-            setError(null); 
+        async (requestData = {}) => {
+            setLoading(true);
+            setError(null);
+
             try {
                 const response = await AxiosInstance.request({
-                    url,
+                    url: requestData.url || initialUrl, // Prioritize requestData.url over initialUrl
                     method,
                     ...options,
-                    ...requestData,
+                    ...requestData, 
                 });
+
                 setData(response.data);
-                setStatus(response.status)
+                setStatus(response.status);
+                return response; // Ensure fetchData returns response
             } catch (err) {
                 const errorMessage = err.response?.data?.message || 'Something went wrong. Please try again.';
-                setStatus(err.status);
+                setStatus(err.response?.status || null);
                 setError(errorMessage);
             } finally {
-                setLoading(false); 
+                setLoading(false);
             }
         },
-        [url, method, options]
+        [initialUrl, method, options]
     );
 
-    return { data, loading, error, status, fetchData }; 
+    return { data, loading, error, status, fetchData };
 };
 
 export default useAxios;

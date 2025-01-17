@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import useAxios from "../../hooks/UseAxios";
 import { useContext } from "react";
-import { UserContext } from "../../context/UserContext"
+import { UserContext } from "../../context/UserContext";
 import { ApplicationContext } from "../../context/ApplicationContext";
 
 const Document = ({activeTab, setActiveTab}) => {
