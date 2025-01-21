@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useContext } from "react";
 import TableColumn from "./TableColumn";
 import { useTable, useSortBy, usePagination, useGlobalFilter} from "react-table";
 import { FaSortAmountDown } from "react-icons/fa";
@@ -10,13 +10,22 @@ import "jspdf-autotable";
 import {exportToCSV, exportToXML, exportToPDF} from "./UsersExportFileTypes";
 import Iconsbutton from "../../../../components/ui/Iconsbutton" 
 import { RiRefreshLine } from "react-icons/ri";
-
+import useAxios from "../../../../hooks/UseAxios";
+import { UserContext } from "../../../../context/UserContext";
 
 const UserTableContent = ({data, onAction}) => {
 
+    const { userData } = useContext(UserContext);
+    const { fetchData } = useAxios(null, "post", { headers: { Authorization: `Bearer ${userData.token}` }});
+
+    const handleStatusChange = (id, status) => {
+        fetchData({url: `/users/${id}/enable`})
+        // console.log("Status change triggered for ID:", id, "Status:", status);
+    };
+
     const [hiddenColumns, setHiddenColumns] = useState([]);
 
-    const columns = useMemo(() => TableColumn({ onAction }), [onAction]);
+    const columns = useMemo(() => TableColumn({ onAction, handleStatusChange }), [onAction]);
     const usersList = useMemo(() => data?.data || [], [data]);
 
     const {

@@ -1,4 +1,5 @@
-const ToggleButton = ({ id, disabled = false, value = false, onChange, register }) => {
+const ToggleButton = ({ id, disabled = false, value = false, onChange, register, ...rest }) => {
+    
     return (
         <div className={`flex items-center ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}>
         <label
@@ -9,11 +10,11 @@ const ToggleButton = ({ id, disabled = false, value = false, onChange, register 
                     className="sr-only peer" 
                     type="checkbox"
                     id={id}
-                    // defaultChecked={value}
                     checked={value}
                     onChange={(e) => onChange(e.target.checked)}
                     disabled={disabled}
                     {...(register && register(id))}
+                    {...rest}
                 />
                 <span 
                     className="transition-all duration-300 relative w-12 h-6 rounded-full peer bg-black-100 

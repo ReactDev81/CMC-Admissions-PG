@@ -10,6 +10,7 @@ import UseAxios from "../../../../../hooks/UseAxios";
 import { UserContext } from "../../../../../context/UserContext"
 import { ApplicationContext } from '../../../../../context/ApplicationContext';
 
+
 const AcademicDetail = ({activeTab, setActiveTab}) => {
 
   const { userData } = useContext(UserContext);

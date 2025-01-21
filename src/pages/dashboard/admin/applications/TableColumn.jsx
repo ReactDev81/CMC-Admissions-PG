@@ -13,16 +13,16 @@ const StatusColors = {
     draft: fullConfig.theme.colors.black.default,
     submitted: fullConfig.theme.colors.info.default,
     changes_requested: fullConfig.theme.colors.warning.default,
-    completed: fullConfig.theme.colors.success.default,
-    cancelled: fullConfig.theme.colors.danger.default,
+    approved: fullConfig.theme.colors.success.default,
+    rejected: fullConfig.theme.colors.danger.default,
 };
 
 const StatusLightColors = {
     draft: fullConfig.theme.colors.black['100'],
     submitted: fullConfig.theme.colors.info['100'],
     changes_requested: fullConfig.theme.colors.warning['300'],
-    completed: fullConfig.theme.colors.success['300'],
-    cancelled: fullConfig.theme.colors.danger['300'],
+    approved: fullConfig.theme.colors.success['300'],
+    rejected: fullConfig.theme.colors.danger['300'],
 };
 
 const TableColumn = ({onAction, toggleMenu, menuOpen}) => [

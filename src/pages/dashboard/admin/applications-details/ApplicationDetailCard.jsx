@@ -6,9 +6,8 @@ import { useParams } from "react-router-dom";
 import useAxios from "../../../../hooks/UseAxios";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../../../../context/UserContext";
-import tailwindConfig from "../../../../../tailwind.config";
-import resolveConfig from 'tailwindcss/resolveConfig';
 import { PiUserCircleDuotone } from "react-icons/pi";
+import SelectStatus from "../../../../components/SelectStatus";
 
 const ApplicationDetailCard = () => {
 
@@ -107,24 +106,6 @@ const ApplicationDetailCard = () => {
 
   const imageSrc = getProfileImageSrc(applicantProfile);
 
-  const fullConfig = resolveConfig(tailwindConfig);
-
-  const StatusTextColor = {
-      draft: fullConfig.theme.colors.black.default,
-      submitted: fullConfig.theme.colors.info.default,
-      changes_requested: fullConfig.theme.colors.warning.default,
-      completed: fullConfig.theme.colors.success.default,
-      cancelled: fullConfig.theme.colors.danger.default,
-  };
-
-  const StatusBgColor = {
-      draft: fullConfig.theme.colors.black['100'],
-      submitted: fullConfig.theme.colors.info['100'],
-      changes_requested: fullConfig.theme.colors.warning['300'],
-      completed: fullConfig.theme.colors.success['300'],
-      cancelled: fullConfig.theme.colors.danger['300'],
-  };
-
   return (
     <>
     {loading ? (
@@ -170,11 +151,7 @@ const ApplicationDetailCard = () => {
           <div className="p-5 w-full">
             <div className="flex flex-wrap mb-1">
               <h1 className="text-black-default flex-1">{data?.applicant.name}</h1>
-              <Button
-                text={data?.status}
-                classname="capitalize [&]:py-0 [&]:px-5 [&]:rounded-full border-0"
-                style={{color: StatusTextColor[data?.status], backgroundColor: StatusBgColor[data?.status]}}
-              />
+              <SelectStatus />
             </div>
             <div className="mb-8">
               <p className="text-black-default">Registeration ID:</p>

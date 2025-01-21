@@ -1,8 +1,27 @@
+import { useContext, useEffect } from "react";
+import { BsTrash3 } from "react-icons/bs";
+import useAxios from "../../../../../hooks/UseAxios";
+import { UserContext } from "../../../../../context/UserContext";
 import Button from "../../../../../components/ui/Button";
 import Iconsbutton from "../../../../../components/ui/Iconsbutton";
-import { BsTrash3 } from "react-icons/bs";
 
-const DeleteUser = ({ data, onClose, onConfirm }) => {
+const DeleteUser = ({onClose, data }) => {
+
+    const { userData } = useContext(UserContext);
+
+    const { fetchData: fetchDeleteUser, status: deletedUserSatus} = useAxios(null, "delete", { headers: { Authorization: `Bearer ${userData.token}` }});
+
+    const deleteUser = async () => {
+        await fetchDeleteUser({url: `/users/${data.id}`});
+        console.log('delete user');
+    }
+
+    useEffect(() => {
+        if(deletedUserSatus === 204){
+            onClose();
+        }
+    }, [fetchDeleteUser])
+
     return(
         <div className="max-w-96 w-full bg-white-default rounded-md shadow-flex p-8">
             <div className="flex flex-col items-center text-center">
@@ -17,7 +36,7 @@ const DeleteUser = ({ data, onClose, onConfirm }) => {
                     classname="py-2.5 px-9 [&]:rounded-full border-0 [&]:text-black-300 [&]:bg-primary-100"
                 />
                 <Button 
-                    onClick={onConfirm}
+                    onclick={deleteUser}
                     text="Yes, Delete" 
                     classname="py-2.5 px-9 [&]:rounded-full" 
                 />

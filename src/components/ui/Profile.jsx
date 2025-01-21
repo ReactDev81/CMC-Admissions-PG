@@ -6,8 +6,6 @@ import DropdownLinkBox from "./DropdownLinkBox";
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../../context/UserContext"
-import { useEffect } from "react";
-import { ApplicationContext } from "../../context/ApplicationContext"
 import useAxios from "../../hooks/UseAxios";
 
 const Profile = () => {
@@ -36,7 +34,6 @@ const Profile = () => {
   }
 
   const {userData, setUserData } = useContext(UserContext);
-  // const {setApplicationInfo} = useContext(ApplicationContext);
   const navigate = useNavigate();
   const BEARER_TOKEN = userData?.token;
   const {status, fetchData} = useAxios('/logout', 'post', {headers: {'Authorization': `Bearer ${BEARER_TOKEN}`}})
@@ -44,17 +41,8 @@ const Profile = () => {
   async function Logout(){
     await fetchData()
     setUserData({token: '', role: null, permissions: {}});
-    
-    // setApplicationInfo(() => ({
-    //   applicationInformation,
-    // }));
-
     navigate('/login');
   }
-
-  // useEffect(() => {
-    
-  // }, [status])
 
   return (
     <>

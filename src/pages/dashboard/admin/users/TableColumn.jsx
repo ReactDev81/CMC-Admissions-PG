@@ -4,22 +4,25 @@ import tailwindConfig from "../../../../../tailwind.config";
 import { IoEyeOutline } from "react-icons/io5";
 import { BsTrash3 } from "react-icons/bs";
 import moment from 'moment';
+import { useState } from "react";
 
 const fullConfig = resolveConfig(tailwindConfig);
 
 const StatusColors = {
-    admin: fullConfig.theme.colors.warning.default,
-    student: fullConfig.theme.colors.success.default,
-    manager: fullConfig.theme.colors.danger.default,
+    "admin": fullConfig.theme.colors.warning.default,
+    "super-admin": fullConfig.theme.colors.info.default,
+    "student": fullConfig.theme.colors.success.default,
+    "manager": fullConfig.theme.colors.danger.default,
 };
 
 const StatusLightColors = {
-    admin: fullConfig.theme.colors.warning['300'],
-    student: fullConfig.theme.colors.success['300'],
-    manager: fullConfig.theme.colors.danger['300'],
+    "admin": fullConfig.theme.colors.warning['300'],
+    "super-admin": fullConfig.theme.colors.info['100'],
+    "student": fullConfig.theme.colors.success['300'],
+    "manager": fullConfig.theme.colors.danger['300'],
 };
 
-const TableColumn = ({ onAction }) => [
+const TableColumn = ({ onAction, handleStatusChange }) => [
     {
         Header: 'Name',
         accessor: 'name',
@@ -74,9 +77,19 @@ const TableColumn = ({ onAction }) => [
     {
         Header: 'Status',
         accessor: 'status',
-        Cell: ({ cell }) => (
-            <ToggleButton id={cell.row.original.name} value={cell.row.original.status === 0 ? false : true} />
-        ),
+        Cell: ({ cell }) => {
+            const [isEnabled, setEnabled] = useState(cell.row.original.status);
+            return (
+                <ToggleButton 
+                    id={cell.row.original.name} 
+                    value={isEnabled}
+                    onChange={(newStatus) => {
+                        handleStatusChange(cell.row.original.id, newStatus);
+                        setEnabled(newStatus);
+                    }}
+                />
+            )
+        }
     },
     {
         Header: 'Actions',
