@@ -9,6 +9,7 @@ import SelectField from "../../../../../components/forms/SelectField";
 import ToggleButton from "../../../../../components/forms/ToggleButton";
 import { UserContext } from "../../../../../context/UserContext";
 import useAxios from "../../../../../hooks/UseAxios";
+import Checkbox from "../../../../../components/forms/Checkbox";
 
 const EditUser = ({ data, onClose }) => {
 
@@ -41,13 +42,13 @@ const EditUser = ({ data, onClose }) => {
         reset({
             name: data.name || "",
             email: data.email || "",
-            // roles: data.role || "",
+            roles: data.role || "",
             status: data.status && setEnabled(data.status) || "",
         });
     }, [reset]);
     
     const onSubmit = async (formData) => {
-        await fetchData({data: {...formData, status: isEnabled}});
+        await fetchData({data: {...formData, status: isEnabled, roles: [formData.roles] }});
     }
 
     useEffect(() => {
@@ -140,6 +141,15 @@ const EditUser = ({ data, onClose }) => {
                     onChange={(newValue) => setEnabled(newValue)}
                     disabled={false} 
                 />
+            </div>
+
+            <div>
+                <Checkbox
+                    label="Force user to reset password"
+                    id="password_reset"
+                    register={register}
+                />
+                <p className="ml-6 text-black-200">( if this field is checked, then user will be forced to reset password after login )</p>
             </div>
 
             <div className="flex items-center gap-2.5 justify-end border-t pt-4">

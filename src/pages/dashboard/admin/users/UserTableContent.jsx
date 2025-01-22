@@ -19,8 +19,10 @@ const UserTableContent = ({data, onAction}) => {
     const { fetchData } = useAxios(null, "post", { headers: { Authorization: `Bearer ${userData.token}` }});
 
     const handleStatusChange = (id, status) => {
-        fetchData({url: `/users/${id}/enable`})
-        // console.log("Status change triggered for ID:", id, "Status:", status);
+        fetchData({
+            url: `/users/${id}/status`,
+            data: {"status" : status}
+        })
     };
 
     const [hiddenColumns, setHiddenColumns] = useState([]);

@@ -8,6 +8,7 @@ import SelectField from "../../../../../components/forms/SelectField";
 import ToggleButton from "../../../../../components/forms/ToggleButton";
 import { UserContext } from "../../../../../context/UserContext";
 import useAxios from "../../../../../hooks/UseAxios";
+import Checkbox from "../../../../../components/forms/Checkbox";
 
 const AddNewUser = ({onClose}) => {
 
@@ -22,7 +23,7 @@ const AddNewUser = ({onClose}) => {
         },
     });
     const password = useRef({});
-    password.current = watch("password", "");       
+    password.current = watch("password", "");
 
     const roles = [
         { value: "", label: "Select a Role" },
@@ -171,6 +172,15 @@ const AddNewUser = ({onClose}) => {
                         onChange={(newValue) => setEnabled(newValue)}
                         disabled={false} 
                     />
+                </div>
+
+                <div>
+                    <Checkbox
+                        label="Force user to reset password"
+                        id="password_reset"
+                        register={register}
+                    />
+                    <p className="ml-6 text-black-200">( if this field is checked, then user will be forced to reset password after login )</p>
                 </div>
 
                 <div className="flex items-center gap-2.5 justify-end border-t pt-4">
