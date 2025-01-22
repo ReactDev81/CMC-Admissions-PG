@@ -99,10 +99,10 @@ const AskDocument = () => {
     }
 
     return (
-        <form>
-            <div className="px-8 py-6 max-w-[650px] w-full bg-white-default rounded-lg shadow-flex">
-                <h2 className="text-black-default mb-14 capitalize">Ask Documents</h2>
+        <div className="px-8 py-6 max-w-[650px] w-full bg-white-default rounded-lg shadow-flex">
+            <h2 className="text-black-default mb-14 capitalize">Ask Documents</h2>
 
+            <form>
                 {loading ? (
                     <div className="flex justify-center items-center py-4">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
@@ -132,8 +132,8 @@ const AskDocument = () => {
                         </div>
                     ))
                 )}
-            </div>
-        </form>
+            </form>
+        </div>
     );
 };
 

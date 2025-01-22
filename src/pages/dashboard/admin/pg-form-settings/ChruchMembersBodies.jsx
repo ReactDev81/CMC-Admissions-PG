@@ -89,6 +89,7 @@ const ChruchMembersBodies = () => {
 
     return(
         <div className="px-8 py-6 max-w-[650px] w-full bg-white-default rounded-lg shadow-flex">
+          
           <h2 className="text-black-default capitalize mb-9">Church Member Bodies</h2>
 
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -122,7 +123,7 @@ const ChruchMembersBodies = () => {
                   <div key={churchMember.id} className="px-1.5 py-2.5 flex items-center justify-between border-b">
                     <span className="text-black-300 text-base font-normal">{churchMember.name}</span>
                     <span className="flex items-center gap-2.5">
-                      <FaPenClip onClick={() => handleEdit(churchMember)} className="text-black-default"/>
+                      <FaPenClip onClick={() => handleEdit(churchMember)} className="text-black-default cursor-pointer"/>
                       <FaTrashCan onClick={() => deleteChurchMember(churchMember.id)} className="text-black-default cursor-pointer"/>
                     </span>
                   </div>
