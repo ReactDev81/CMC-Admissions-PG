@@ -73,7 +73,7 @@ const AdminSidebar = () => {
                 icon={<FaChartBar  />}
               />
             </li>
-            {
+            {/* {
               userData?.role === 'super-admin' &&
               (<li>
                   <SideNavLink
@@ -82,7 +82,7 @@ const AdminSidebar = () => {
                     icon={<LuLayoutPanelLeft />}
                 />
               </li>)
-            }
+            } */}
           </ul>
 
           <Badge text="Setting" />
