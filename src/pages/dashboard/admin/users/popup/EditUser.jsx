@@ -146,7 +146,7 @@ const EditUser = ({ data, onClose }) => {
             <div>
                 <Checkbox
                     label="Force user to reset password"
-                    id="password_reset"
+                    id="force_reset_password"
                     register={register}
                 />
                 <p className="ml-6 text-black-200">( if this field is checked, then user will be forced to reset password after login )</p>
