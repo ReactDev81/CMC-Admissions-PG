@@ -1,7 +1,7 @@
 
 const Reports = () => {
     return(
-        <h1>Reports</h1>
+        <h1 className="text-black-default">Reports</h1>
     )
 }
 

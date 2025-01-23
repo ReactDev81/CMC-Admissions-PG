@@ -11,6 +11,11 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { GrMapLocation } from "react-icons/gr"; 
 import { MdDynamicForm } from "react-icons/md";
 import { FaBible } from "react-icons/fa";
+import { GrSystem } from "react-icons/gr";
+import { RiListCheck3 } from "react-icons/ri";
+import { RiListSettingsLine } from "react-icons/ri";
+
+
 
 const AdminSidebar = () => {
 
@@ -90,13 +95,6 @@ const AdminSidebar = () => {
           <ul>
             <li>
               <SideNavLink
-                href="/pg-form-settings"
-                text="PG Form Settings"
-                icon={<MdDynamicForm  />}
-              />
-            </li>
-            <li>
-              <SideNavLink
                 href="/pages"
                 text="Pages"
                 icon={<LuFiles />}
@@ -104,16 +102,23 @@ const AdminSidebar = () => {
             </li>
             <li>
               <SideNavLink
-                href="/bible-test-center"
-                text="Bible Test Centers"
-                icon={<FaBible />}
+                href="/pg-form-settings"
+                text="PG Form Settings"
+                icon={<RiListSettingsLine  />}
               />
             </li>
             <li>
               <SideNavLink
-                href="/states"
-                text="States"
-                icon={<GrMapLocation />}
+                href="/system-settings"
+                text="System Settings"
+                icon={<GrSystem size={16}  />}
+              />
+            </li>
+            <li>
+              <SideNavLink
+                href="/roles-permissions"
+                text="Roles & Permissions"
+                icon={<RiListCheck3  />}
               />
             </li>
             <li>
@@ -121,13 +126,6 @@ const AdminSidebar = () => {
                 href="/maintenance"
                 text="Maintenance"
                 icon={<LiaToolsSolid />}
-              />
-            </li>
-            <li>
-              <SideNavLink
-                href="change-password"
-                text="Change Password"
-                icon={<RiLockPasswordLine />}
               />
             </li>
             <li>

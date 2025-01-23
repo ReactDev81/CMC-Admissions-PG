@@ -12,8 +12,10 @@ const Applications = lazy(() => import('../pages/dashboard/admin/applications/in
 const ApplicationDetails = lazy(() => import('../pages/dashboard/admin/applications-details/index'))
 const Reports = lazy(() => import('../pages/dashboard/admin/Reports'))  
 const AdminPanel = lazy(() => import('../pages/dashboard/admin/AdminPanel'))
+const Pages = lazy(() => import('../pages/dashboard/admin/pages/index'))
 const PgFormSettings = lazy(() => import('../pages/dashboard/admin/pg-form-settings/index'))
-
+const SystemSettings = lazy(() => import('../pages/dashboard/admin/system-settings/index'))
+const RolesPermissions = lazy(() => import('../pages/dashboard/admin/roles-permissions/index'))
 
 // Students Components
 const StudentDashboard = lazy(() => import('../pages/dashboard/student/home/index'))
@@ -52,9 +54,11 @@ const ProtectedRoutes = () => {
                         <Route path="/users" element={<Users />} />
                         <Route path="/applications" element={<Applications />} />
                         <Route path="/application/:id" element={<ApplicationDetails />} />
-                        {/* <Route path="/application-detail" element={<ApplicationDetails />} /> */}
                         <Route path="/reports" element={<Reports />} />
+                        <Route path="/pages" element={<Pages />} />
                         <Route path="/pg-form-settings" element={<PgFormSettings />} />
+                        <Route path="/system-settings" element={<SystemSettings />} />
+                        <Route path="/roles-permissions" element={<RolesPermissions />} />
                     </>
                 }
 
