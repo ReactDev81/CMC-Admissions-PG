@@ -12,6 +12,14 @@
     width: 0;
     height: 0;
 }
+.disable-applicants::-webkit-scrollbar {
+    background-color:theme('colors.primary.100');
+    width: 10px;
+}
+.disable-applicants::-webkit-scrollbar-thumb {
+    background-color:theme('colors.primary.default');
+    border-radius: 10px;
+}
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

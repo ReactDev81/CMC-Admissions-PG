@@ -123,7 +123,7 @@ const AdminSidebar = () => {
             </li>
             <li>
               <SideNavLink
-                href="/maintenance"
+                href="/maintenance-mode"
                 text="Maintenance"
                 icon={<LiaToolsSolid />}
               />

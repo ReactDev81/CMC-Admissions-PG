@@ -16,6 +16,8 @@ const Pages = lazy(() => import('../pages/dashboard/admin/pages/index'))
 const PgFormSettings = lazy(() => import('../pages/dashboard/admin/pg-form-settings/index'))
 const SystemSettings = lazy(() => import('../pages/dashboard/admin/system-settings/index'))
 const RolesPermissions = lazy(() => import('../pages/dashboard/admin/roles-permissions/index'))
+const MaintenanceMode = lazy(() => import('../pages/MaintenanceMode'))
+const MyAccount = lazy(() => import('../pages/dashboard/admin/my-acccount/index'))
 
 // Students Components
 const StudentDashboard = lazy(() => import('../pages/dashboard/student/home/index'))
@@ -59,6 +61,8 @@ const ProtectedRoutes = () => {
                         <Route path="/pg-form-settings" element={<PgFormSettings />} />
                         <Route path="/system-settings" element={<SystemSettings />} />
                         <Route path="/roles-permissions" element={<RolesPermissions />} />
+                        <Route path="/maintenance-mode" element={<MaintenanceMode />} />
+                        <Route path="/my-account" element={<MyAccount />} />
                     </>
                 }
 
