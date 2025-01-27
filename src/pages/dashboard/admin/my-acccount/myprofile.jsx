@@ -1,8 +1,7 @@
-import InputField from "../../../../components/forms/Inputfield";
-import Button from "../../../../components/ui/Button";
+import InputField from "../../components/forms/Inputfield";
+import Button from "../../components/ui/Button";
 import { useForm } from "react-hook-form";
 import React, { useState } from "react";
-
 const MyProfile = () => {
   const {
     register,
@@ -10,31 +9,20 @@ const MyProfile = () => {
     reset,
     formState: { errors },
   } = useForm();
-
-  const [image, setImage] = useState("/assets/avatars/user.png");
-
+  const [image, setImage] = useState("src/assets/avatars/myprofile.jpg");
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    console.log(e);
-    console.log(file);
     if (file) {
       setImage(URL.createObjectURL(file));
     }
   };
-
-
   const handleImageRemove = () => {
-    setImage("/assets/avatars/user.png");
+    setImage("src/assets/avatars/myprofile.jpg");
   };
-
   const onSubmit = (data) => {
-  //   const formData = new FormData();
-  // formData.append("myprofile", data.myprofile[0]); // Access the file object
-  // console.log("Form submitted", formData);
-    // reset();
-    console.log(data.myprofile[0]);
+    console.log("Form submitted", data);
+    reset();
   };
-
   return (
     <div>
       <form
@@ -43,7 +31,7 @@ const MyProfile = () => {
       >
         <h1 className="text-2xl text-black-default mb-6">My Profile</h1>
         <div className="flex items-center gap-5 mb-6">
-          <div className="size-[100px] rounded-full">
+          <div className="size-[100px] rounded-full bg-red-400">
             <img
               src={image}
               alt="My Profile Image"
@@ -53,10 +41,16 @@ const MyProfile = () => {
               type="file"
               className="hidden"
               id="myprofile"
-              // onChange={(e) => {handleImageChange(e)}}
-              onChange={(e) => (console.log(e.target.value))}
-              {...register("myprofile")}
+              {...register("image", {
+                required: { value: true, message: "Image is Required" },
+              })}
+              onChange={handleImageChange}
             />
+            {errors.image && (
+              <p className="text-red-700 text-sm font-semibold w-96 mt-1">
+                {errors.image.message}
+              </p>
+            )}
           </div>
           <div className="flex gap-2.5">
             <label
@@ -69,11 +63,10 @@ const MyProfile = () => {
               type="button"
               text="Remove"
               classname="[&]:px-5 [&]:py-1.5 [&]:text-black-300 [&]:rounded-full border-none [&]:bg-primary-100"
-              onclick={handleImageRemove}
+              onClick={handleImageRemove}
             />
           </div>
         </div>
-
         <div className="mb-2.5">
           <InputField
             label="Full Name"
@@ -92,7 +85,6 @@ const MyProfile = () => {
             </p>
           )}
         </div>
-
         <div className="mb-2.5">
           <InputField
             label="Email"
@@ -111,7 +103,6 @@ const MyProfile = () => {
             </p>
           )}
         </div>
-
         <div className="mb-5">
           <InputField
             label="Role"
@@ -126,7 +117,6 @@ const MyProfile = () => {
             </p>
           )}
         </div>
-
         <div className="text-right">
           <Button
             text="Update"
@@ -137,5 +127,4 @@ const MyProfile = () => {
     </div>
   );
 };
-
 export default MyProfile;

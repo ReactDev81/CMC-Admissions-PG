@@ -1,35 +1,42 @@
-import React, { useEffect, useRef } from "react";
+import { useState, useEffect } from 'react';
+import { EditorState, ContentState, convertFromHTML } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+import { stateToHTML } from 'draft-js-export-html';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import Button from "./Button";
 
-const RichTextEditor = ({ initialContent = "", onSave, editorClassName = "", buttonText }) => {
+const RichTextEditor = ({ onSave, buttonText="Save", defaultContent = ""}) => {
 
-    const editorRef = useRef(null); // Reference for the DOM element
-    const rteInstance = useRef(null); // Store the editor instance
+    const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
+    // Convert HTML to EditorState when defaultContent is provided
     useEffect(() => {
-        // Initialize RichTextEditor when the component mounts
-        rteInstance.current = new window.RichTextEditor(editorRef.current);
-        rteInstance.current.setHTMLCode(initialContent);
+        if (defaultContent) {
+            const blocksFromHTML = convertFromHTML(defaultContent);
+            const contentState = ContentState.createFromBlockArray(
+                blocksFromHTML.contentBlocks,
+                blocksFromHTML.entityMap
+            );
+            setEditorState(EditorState.createWithContent(contentState));
+        }
+    }, [defaultContent]);
 
-        return () => {
-            // Clean up by removing the editor element and nullifying the reference
-            if (rteInstance.current && editorRef.current) {
-                editorRef.current.innerHTML = ""; // Remove editor's DOM content
-                rteInstance.current = null; // Nullify the editor instance
-            }
-        };
-    }, [initialContent]);
+    const handleEditorChange = (newState) => {
+        setEditorState(newState);
+    };
 
     const handleSave = () => {
-        if (rteInstance.current) {
-            const content = rteInstance.current.getHTMLCode(); // Get editor content
-            onSave(content); // Pass the content to the parent component via callback
-        }
+        const htmlContent = stateToHTML(editorState.getCurrentContent());
+        onSave(htmlContent);
     };
 
     return (
-        <div>
-            <div ref={editorRef} className={editorClassName}></div>
+        <div className="w-full p-4 text-black-default">
+            <Editor
+                editorState={editorState}
+                onEditorStateChange={handleEditorChange}
+                editorClassName="border border-gray-300 min-h-[200px] px-4 py-2 bg-white"
+            />
             <Button 
                 onclick={handleSave}
                 text={buttonText} 
@@ -40,4 +47,3 @@ const RichTextEditor = ({ initialContent = "", onSave, editorClassName = "", but
 };
 
 export default RichTextEditor;
-

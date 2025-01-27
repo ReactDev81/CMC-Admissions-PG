@@ -8,6 +8,10 @@
     background-color:theme('colors.white.300');
 }
 
+.rte-floatpanel-paragraphop{
+    display: none !important;
+}
+
 .sidebar::-webkit-scrollbar {
     width: 0;
     height: 0;

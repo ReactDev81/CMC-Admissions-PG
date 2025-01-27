@@ -35,8 +35,6 @@ const DisableApplicants = () => {
     applicant.applicant_number.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  console.log('Disabled', data);
-
   return (
     <div className="bg-white-default rounded-lg shadow-flex">
 
