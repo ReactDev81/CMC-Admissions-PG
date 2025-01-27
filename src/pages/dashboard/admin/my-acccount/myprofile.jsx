@@ -1,5 +1,5 @@
 import InputField from "../../../../components/forms/Inputfield"
-import Button from "../../components/ui/Button";
+import Button from "../../../../components/ui/Button";
 import { useForm } from "react-hook-form";
 import React, { useState } from "react";
 const MyProfile = () => {
