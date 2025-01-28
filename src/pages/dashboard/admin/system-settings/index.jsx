@@ -7,8 +7,8 @@ import { MdOutlineCached } from "react-icons/md";
 import UseAxios from "../../../../hooks/UseAxios"
 import UseTab from "../../../../hooks/UseTab";
 import General from "./general";
-import Notification from "./Notification";
-import Mail from "./Mail";
+import Notification from "./notification";
+import Mail from "./mail";
 import Cache from "./Cache";
 
 
