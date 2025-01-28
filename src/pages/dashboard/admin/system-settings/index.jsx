@@ -9,7 +9,6 @@ import UseTab from "../../../../hooks/UseTab";
 import General from "./general";
 import Notification from "./notification";
 import Mail from "./mail";
-import Cache from "./Cache";
 
 
 const SystemSettings = () => {
