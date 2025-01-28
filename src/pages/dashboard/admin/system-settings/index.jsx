@@ -6,7 +6,7 @@ import { LuMail } from "react-icons/lu";
 import { MdOutlineCached } from "react-icons/md";
 import UseAxios from "../../../../hooks/UseAxios"
 import UseTab from "../../../../hooks/UseTab";
-import General from "./General";
+import General from "./general";
 import Notification from "./Notification";
 import Mail from "./Mail";
 import Cache from "./Cache";
