@@ -1,7 +1,8 @@
 import Button from "../../../../components/ui/Button";
 import OutlineButton from "../../../../components/ui/OutlineButton";
 
-const Cache = () => {
+const Cache = ({data}) => {
+
     return (
     <>
     <div className="border rounded-md text-black-default">

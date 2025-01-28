@@ -3,26 +3,44 @@ import Button from "../../../../components/ui/Button";
 import { useForm } from "react-hook-form";
 import React, { useState } from "react";
 const MyProfile = () => {
+  const defaultImage = "src/assets/avatars/user.png";
   const {
     register,
     handleSubmit,
+    setError,
+    clearErrors,
     reset,
     formState: { errors },
   } = useForm();
-  const [image, setImage] = useState("src/assets/avatars/myprofile.jpg");
+
+  const [image, setImage] = useState(defaultImage);
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImage(URL.createObjectURL(file));
+      setImage(URL.createObjectURL(file)); // Update the image state with the new image
+      clearErrors("image"); // Clear image error when new image is selected
     }
   };
+
   const handleImageRemove = () => {
-    setImage("src/assets/avatars/myprofile.jpg");
+    setImage(defaultImage); // Reset to no image
   };
+
   const onSubmit = (data) => {
+    if (image === defaultImage) {
+      setError("image", {
+        type: "manual",
+        message: "Image is required",
+      });
+      return; // Prevent form submission
+    }
+
     console.log("Form submitted", data);
     reset();
+    setImage(defaultImage); // Reset the form and image
   };
+  
   return (
     <div>
       <form
@@ -63,7 +81,7 @@ const MyProfile = () => {
               type="button"
               text="Remove"
               classname="[&]:px-5 [&]:py-1.5 [&]:text-black-300 [&]:rounded-full border-none [&]:bg-primary-100"
-              onClick={handleImageRemove}
+              onclick={handleImageRemove}
             />
           </div>
         </div>

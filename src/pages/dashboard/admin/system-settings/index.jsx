@@ -1,11 +1,36 @@
+import { useContext, useEffect } from "react";
+import { UserContext } from "../../../../context/UserContext";
 import { FaRegUser } from "react-icons/fa";
+import { MdOutlineNotificationsNone } from "react-icons/md";
+import { LuMail } from "react-icons/lu";
+import { MdOutlineCached } from "react-icons/md";
+import UseAxios from "../../../../hooks/UseAxios"
 import UseTab from "../../../../hooks/UseTab";
-import General from "./general";
-import Notification from "./notification";
-import Mail from "./mail";
-import Cache from "./cache";
+import General from "./General";
+import Notification from "./Notification";
+import Mail from "./Mail";
+import Cache from "./Cache";
+
 
 const SystemSettings = () => {
+
+  const { userData } = useContext(UserContext);
+
+  const systemSettings = UseAxios('/settings', 'get', { headers: { Authorization: `Bearer ${userData.token}` } })
+  const systemSettingsData = systemSettings.data;
+
+  useEffect(() => {
+    const fetchSystemSettings = async () => {
+      await systemSettings.fetchData()
+    };
+    fetchSystemSettings();
+  }, []);
+
+  // Extract children data based on the `key`
+  const getChildrenByKey = (key) => {
+    return systemSettingsData?.find(item => item.key === key)?.children || [];
+  };
+
   const tabsData = [
     {
       label: {
@@ -13,12 +38,12 @@ const SystemSettings = () => {
         text: "General",
       },
       content: ({activeTab, setActiveTab}) => (
-        <General activeTab={activeTab} setActiveTab={setActiveTab} />
+        <General activeTab={activeTab} setActiveTab={setActiveTab} data={getChildrenByKey("general_settings")} />
       ),
     },
     {
       label: {
-        icon: <FaRegUser />,
+        icon: <MdOutlineNotificationsNone size={20} />,
         text: "Notifications",
       },
       content: ({activeTab, setActiveTab}) => (
@@ -27,20 +52,20 @@ const SystemSettings = () => {
     },
     {
       label: {
-        icon: <FaRegUser />,
+        icon: <LuMail size={18} />,
         text: "Mail",
       },
       content: ({activeTab, setActiveTab}) => (
-        <Mail activeTab={activeTab} setActiveTab={setActiveTab} />
+        <Mail activeTab={activeTab} setActiveTab={setActiveTab} data={getChildrenByKey("mail_settings")} />
       ),
     },
     {
       label: {
-        icon: <FaRegUser />,
+        icon: <MdOutlineCached size={20} />,
         text: "Cache",
       },
       content: ({activeTab, setActiveTab}) => (
-        <Cache activeTab={activeTab} setActiveTab={setActiveTab} />
+        <Cache activeTab={activeTab} setActiveTab={setActiveTab} data={getChildrenByKey("cache_settings")} />
       ),
     },
   ];
