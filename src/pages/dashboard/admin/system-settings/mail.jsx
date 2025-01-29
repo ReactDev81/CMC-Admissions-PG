@@ -14,14 +14,14 @@ const Mail = ({data}) => {
     // Set default values when component mounts
     useEffect(() => {
         if (data) {
-        // Create default values object from data array
-        const defaultValues = data.reduce((acc, field) => {
-            acc[field.key] = field.value;
-            return acc;
-        }, {});
+            // Create default values object from data array
+            const defaultValues = data.reduce((acc, field) => {
+                acc[field.key] = field.value;
+                return acc;
+            }, {});
 
-        // Reset form with default values
-        reset(defaultValues);
+            // Reset form with default values
+            reset(defaultValues);
         }
     }, [data, reset]);
 

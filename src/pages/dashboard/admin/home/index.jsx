@@ -24,8 +24,6 @@ const Dashboard = () => {
     getApplicationInfo();
   }, [])
 
-  console.log('Dashboard', data);
-
   return (
     <div className="flex flex-wrap">
       <div className="flex-[0_0_75%] pr-5">

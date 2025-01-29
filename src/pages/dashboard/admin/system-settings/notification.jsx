@@ -68,22 +68,22 @@ const Notification = () => {
         
         // Transform form data to match the API structure
         const transformedData = {
-        user_notifications: {},
-        admin_notifications: {},
+            user_notifications: {},
+            admin_notifications: {},
         };
 
         // Populate user_notifications
         userNotificationData?.forEach((field) => {
-        transformedData.user_notifications[field.key] = formData['user_notifications'][field.key];
+            transformedData.user_notifications[field.key] = formData['user_notifications'][field.key];
         });
 
         // Populate admin_notifications
         adminNotificationData?.forEach((field) => {
-        transformedData.admin_notifications[field.key] = formData['admin_notifications'][field.key];
+            transformedData.admin_notifications[field.key] = formData['admin_notifications'][field.key];
         });
 
         sendNotification.fetchData({
-        data: transformedData
+            data: transformedData
         })
 
         console.log('Transformed Data:', transformedData);
@@ -124,10 +124,10 @@ const Notification = () => {
                                 <>
                                     <p className="text-black-default font-medium">{field.description}</p>
                                     <ToggleButton
-                                    id={`user_notifications.${field.key}`}
-                                    value={watch(`user_notifications.${field.key}`)}
-                                    onChange={(newValue) => setValue(`user_notifications.${field.key}`, newValue)}
-                                    register={register}
+                                        id={`user_notifications.${field.key}`}
+                                        value={watch(`user_notifications.${field.key}`)}
+                                        onChange={(newValue) => setValue(`user_notifications.${field.key}`, newValue)}
+                                        register={register}
                                     />
                                 </>
                             }
@@ -167,8 +167,8 @@ const Notification = () => {
             {/* Save Changes Button */}
             <div className="flex items-center justify-end mt-6 p-5 pb-0 border-t -mx-5">
                 <Button
-                text="Save Changes"
-                classname="px-8 py-2.5 [&]:rounded-full border-0"
+                    text="Save Changes"
+                    classname="px-8 py-2.5 [&]:rounded-full border-0"
                 />
             </div>
         </form>
