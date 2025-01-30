@@ -7,14 +7,11 @@ import SideNavLink from "./SideNavLink";
 import { FaHome, FaUsers, FaChartBar, FaFileAlt} from "react-icons/fa";
 import {LuLogOut, LuLayoutPanelLeft, LuFiles} from "react-icons/lu"; 
 import { LiaToolsSolid} from "react-icons/lia"; 
-import { RiLockPasswordLine } from "react-icons/ri"; 
-import { GrMapLocation } from "react-icons/gr"; 
-import { MdDynamicForm } from "react-icons/md";
-import { FaBible } from "react-icons/fa";
 import { GrSystem } from "react-icons/gr";
 import { RiListCheck3 } from "react-icons/ri";
 import { RiListSettingsLine } from "react-icons/ri";
 import { FaUserCog } from "react-icons/fa";
+import { MdNotificationsActive } from "react-icons/md";
 
 
 const AdminSidebar = () => {
@@ -138,6 +135,13 @@ const AdminSidebar = () => {
                 href="/my-account"
                 text="My Account"
                 icon={<FaUserCog  />}
+              />
+            </li>
+            <li>
+              <SideNavLink
+                href="/notifications"
+                text="Notification"
+                icon={<MdNotificationsActive  />}
               />
             </li>
             <li>

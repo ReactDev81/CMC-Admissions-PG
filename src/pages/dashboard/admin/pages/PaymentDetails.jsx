@@ -15,6 +15,7 @@ const PaymentDetails = () => {
   }, []);
 
   const handleSave = (content) => {
+    console.log(content);
     fetchData({
         data: {
           content: content,  
@@ -26,14 +27,14 @@ const PaymentDetails = () => {
 
   useEffect(() => {
       if (status === 200) {
-          toast.success("Content Updated Successfully");
+        toast.success("Content Updated Successfully");
       }
   }, [loading]);
 
   return (
     <RichTextEditor
       onSave={handleSave}
-      defaultContent={getCurrentContent.data?.content}
+      initialValue={getCurrentContent.data?.content}
     /> 
   );
 };

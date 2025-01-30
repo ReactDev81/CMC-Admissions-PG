@@ -1,44 +1,29 @@
-import { useState, useEffect } from 'react';
-import { EditorState, ContentState, convertFromHTML } from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
-import { stateToHTML } from 'draft-js-export-html';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { Editor } from "@tinymce/tinymce-react";
+import { useRef } from "react";
 import Button from "./Button";
 
-const RichTextEditor = ({ onSave, buttonText="Save", defaultContent = ""}) => {
+const RichTextEditor = ({ onSave, buttonText="Save", initialValue= ""}) => {
 
-    const [editorState, setEditorState] = useState(EditorState.createEmpty());
-
-    // Convert HTML to EditorState when defaultContent is provided
-    useEffect(() => {
-        if (defaultContent) {
-            const blocksFromHTML = convertFromHTML(defaultContent);
-            const contentState = ContentState.createFromBlockArray(
-                blocksFromHTML.contentBlocks,
-                blocksFromHTML.entityMap
-            );
-            setEditorState(EditorState.createWithContent(contentState));
+    const editorRef = useRef(null);
+    const handleGetContent = () => {
+        if (editorRef.current) { 
+            onSave(editorRef.current.getContent());
         }
-    }, [defaultContent]);
-
-    const handleEditorChange = (newState) => {
-        setEditorState(newState);
-    };
-
-    const handleSave = () => {
-        const htmlContent = stateToHTML(editorState.getCurrentContent());
-        onSave(htmlContent);
     };
 
     return (
         <div className="w-full p-4 text-black-default">
             <Editor
-                editorState={editorState}
-                onEditorStateChange={handleEditorChange}
-                editorClassName="border border-gray-300 min-h-[200px] px-4 py-2 bg-white"
+                onInit={(evt, editor) => (editorRef.current = editor)}
+                initialValue={initialValue}
+                init={{
+                    height: 400,
+                    plugins: 'preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons accordion',
+                    toolbar: "undo redo | accordion accordionremove | blocks fontfamily fontsize | bold italic underline strikethrough | align numlist bullist | link image | table media | lineheight outdent indent| forecolor backcolor removeformat | charmap emoticons | code fullscreen preview | save print | pagebreak anchor codesample | ltr rtl",
+                }}
             />
             <Button 
-                onclick={handleSave}
+                onclick={handleGetContent}
                 text={buttonText} 
                 classname="[&]:rounded-full [&]:py-2.5 [&]:px-9 mt-7" 
             />

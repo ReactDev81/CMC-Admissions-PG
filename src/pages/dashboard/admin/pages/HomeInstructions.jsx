@@ -30,7 +30,7 @@ const HomeInstructions = () => {
     }, [loading]);
 
     return(
-        <RichTextEditor onSave={handleSave} defaultContent={getCurrentContent.data?.content} /> 
+        <RichTextEditor onSave={handleSave} initialValue={getCurrentContent.data?.content} /> 
     )
 }
 

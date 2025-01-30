@@ -18,6 +18,7 @@ const SystemSettings = lazy(() => import('../pages/dashboard/admin/system-settin
 const RolesPermissions = lazy(() => import('../pages/dashboard/admin/roles-permissions/index'))
 const MaintenanceMode = lazy(() => import('../pages/MaintenanceMode'))
 const MyAccount = lazy(() => import('../pages/dashboard/admin/my-acccount/index'))
+const Notification = lazy(() => import('../pages/dashboard/admin/Notification/index'))
 
 // Students Components
 const StudentDashboard = lazy(() => import('../pages/dashboard/student/home/index'))
@@ -63,6 +64,7 @@ const ProtectedRoutes = () => {
                         <Route path="/roles-permissions" element={<RolesPermissions />} />
                         <Route path="/maintenance-mode" element={<MaintenanceMode />} />
                         <Route path="/my-account" element={<MyAccount />} />
+                        <Route path="/notifications" element={<Notification />} />
                     </>
                 }
 

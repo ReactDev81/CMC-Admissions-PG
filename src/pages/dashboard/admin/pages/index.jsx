@@ -1,9 +1,8 @@
+import { FaHome } from "react-icons/fa";
+import { MdOutlinePayment } from "react-icons/md";
 import UseTab from "../../../../hooks/UseTab";
 import HomeInstructions from "./HomeInstructions";
 import PaymentDetails from "./PaymentDetails";
-import { FaHome } from "react-icons/fa";
-import { MdOutlinePayment } from "react-icons/md";
-
 
 const tabsData = [
     {

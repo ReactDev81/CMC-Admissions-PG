@@ -1,27 +1,38 @@
 import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 import { RxCross2 } from "react-icons/rx"; 
 import { MdNotifications } from "react-icons/md";
 import { UserContext } from "../../context/UserContext";
 import UseAxios from "../../hooks/UseAxios";
+import Button from "../../components/ui/Button";
 
 const Notification = () => {
 
     const { userData } = useContext(UserContext);
+    const navigate  = useNavigate();
+    const isPasswordReset = userData.userDetails.password_changed;
     const {data, fetchData} = UseAxios('/notifications', 'get', { headers: { Authorization: `Bearer ${userData.token}` } });
     const readNotifications = UseAxios(null, 'post', { headers: { Authorization: `Bearer ${userData.token}` } });
-
-    useEffect(() => {
-        const getNotificationData = async () => {
-            await fetchData();
-        };
-        getNotificationData();
-    }, [])
 
     const handleReadNotification = async (notificationId) => {
         await readNotifications.fetchData({ 
             url: `/notifications/${notificationId}/read` 
         });
     }
+
+    useEffect(() => {
+        if (readNotifications.status === 200) {
+            toast.success(readNotifications.data.message);
+        }
+    }, [readNotifications.loading]);
+    
+    useEffect(() => {
+        const getNotificationData = async () => {
+            await fetchData();
+        };
+        getNotificationData();
+    }, [])
 
     // console.log('data', data);
 
@@ -33,30 +44,49 @@ const Notification = () => {
                         Notifications
                     </h1>
                 </div>
-                {data && data.map((notification) => {
-                    return(
-                        <li className="mx-4" key={notification.id}>
-                            <div className="flex items-center gap-4 py-3 px-4 mb-3 mt-4 bg-white-300 rounded-md justify-between">
-                                <div className="flex gap-2.5">
-                                    <span className="bg-purple-100 p-2 rounded-full self-center">
-                                        <MdNotifications size={20} className="text-purple-default" />
-                                    </span>
-                                    <div>
-                                        <p className="text-base font-medium text-black-default uppercase">
-                                            {notification.data.title}
-                                        </p>
-                                        <span className="text-sm break-all text-black-200 line-clamp-1">
-                                            {notification.data.body}
+
+                {isPasswordReset && data && (() => {
+                    const unreadNotifications = data.filter(notification => !notification.read_at);
+                    const visibleNotifications = unreadNotifications.slice(0, 3); 
+                    return (
+                        <>
+                            {visibleNotifications.map(notification => (
+                                <li className="mx-4" key={notification.id}>
+                                    <div className="flex items-center gap-4 py-3 px-4 my-3 bg-white-300 rounded-md justify-between">
+                                        <div className="flex gap-2.5">
+                                            <span className="bg-purple-100 p-2 rounded-full self-center">
+                                                <MdNotifications size={20} className="text-purple-default" />
+                                            </span>
+                                            <div>
+                                                <p className="text-base font-medium text-black-default uppercase">
+                                                    {notification.data.title}
+                                                </p>
+                                                <span className="text-sm break-all text-black-200 line-clamp-1">
+                                                    {notification.data.body}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <span className="text-black-default cursor-pointer" onClick={() => handleReadNotification(notification.id)}>
+                                            <RxCross2 />
                                         </span>
                                     </div>
+                                </li>
+                            ))}
+
+                            {unreadNotifications.length > 3 && (
+                                <div className="m-4">
+                                    <Button 
+                                        onclick={() => navigate('/notifications')}
+                                        text='View All' 
+                                        classname="w-full [&]:bg-primary-300 [&]:py-2" 
+                                    />
                                 </div>
-                                <span className="text-black-default cursor-pointer" onClick={() => handleReadNotification(notification.id)}>
-                                    <RxCross2 />
-                                </span>
-                            </div>
-                        </li>
-                    )
-                })}
+                                
+                            )}
+                        </>
+                    );
+                })()}
+
             </ul>
         </div>
     );
