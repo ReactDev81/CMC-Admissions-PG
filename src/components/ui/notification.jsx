@@ -1,103 +1,65 @@
-import { Link } from "react-router-dom";
-import { CiWallet } from "react-icons/ci"; 
+import { useContext, useEffect } from "react";
 import { RxCross2 } from "react-icons/rx"; 
+import { MdNotifications } from "react-icons/md";
+import { UserContext } from "../../context/UserContext";
+import UseAxios from "../../hooks/UseAxios";
 
 const Notification = () => {
-  return (
-    <div className="invisible opacity-0 translate-y-[30px] group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 bg-white-default absolute shadow-md w-[280px] top-12 -right-5 rounded-md z-50 ease-linear duration-300">
-      <ul className="transition-all text-black-default">
-        <div className="border-dotted border-b-2 px-5 py-3.5">
-          <h1 className="text-black-default text-center text-xl font-medium">
-            Notifications
-          </h1>
+
+    const { userData } = useContext(UserContext);
+    const {data, fetchData} = UseAxios('/notifications', 'get', { headers: { Authorization: `Bearer ${userData.token}` } });
+    const readNotifications = UseAxios(null, 'post', { headers: { Authorization: `Bearer ${userData.token}` } });
+
+    useEffect(() => {
+        const getNotificationData = async () => {
+            await fetchData();
+        };
+        getNotificationData();
+    }, [])
+
+    const handleReadNotification = async (notificationId) => {
+        await readNotifications.fetchData({ 
+            url: `/notifications/${notificationId}/read` 
+        });
+    }
+
+    // console.log('data', data);
+
+    return (
+        <div className="invisible opacity-0 translate-y-[30px] group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 bg-white-default absolute shadow-md w-80 top-12 -right-5 rounded-md z-50 ease-linear duration-300">
+            <ul className="transition-all text-black-default">
+                <div className="border-dotted border-b-2 px-5 py-3.5">
+                    <h1 className="text-black-default text-center text-xl font-medium">
+                        Notifications
+                    </h1>
+                </div>
+                {data && data.map((notification) => {
+                    return(
+                        <li className="mx-4" key={notification.id}>
+                            <div className="flex items-center gap-4 py-3 px-4 mb-3 mt-4 bg-white-300 rounded-md justify-between">
+                                <div className="flex gap-2.5">
+                                    <span className="bg-purple-100 p-2 rounded-full self-center">
+                                        <MdNotifications size={20} className="text-purple-default" />
+                                    </span>
+                                    <div>
+                                        <p className="text-base font-medium text-black-default uppercase">
+                                            {notification.data.title}
+                                        </p>
+                                        <span className="text-sm break-all text-black-200 line-clamp-1">
+                                            {notification.data.body}
+                                        </span>
+                                    </div>
+                                </div>
+                                <span className="text-black-default cursor-pointer" onClick={() => handleReadNotification(notification.id)}>
+                                    <RxCross2 />
+                                </span>
+                            </div>
+                        </li>
+                    )
+                })}
+            </ul>
         </div>
-        <li className="mx-4">
-          <Link
-            to=""
-            className="flex flex-wrap items-center gap-[10px] p-[10px] mb-3 mt-4 bg-black-100 rounded-md justify-between"
-          >
-            <div className="flex flex-wrap gap-[10px]">
-              <span className="text-black-default text-2xl bg-purple-default p-2 rounded-full self-center">
-                <CiWallet />
-              </span>
-              <p className="text-base font-medium text-black-default uppercase flex flex-wrap flex-col">
-                Daily Offer Added
-                <span className="text-sm normal-case text-black-200">
-                  User-only offer added
-                </span>
-              </p>
-            </div>
-            <span className="text-black-default">
-              <RxCross2 />
-            </span>
-          </Link>
-        </li>
-        <li className="mx-4">
-          <Link
-            to=""
-            className="flex flex-wrap items-center gap-[10px] p-[10px] mb-3 bg-black-100 rounded-md justify-between"
-          >
-            <div className="flex flex-wrap gap-[10px]">
-              <span className="text-black-default text-2xl bg-purple-default p-2 rounded-full self-center">
-                <CiWallet />
-              </span>
-              <p className="text-base font-medium text-black-default uppercase flex flex-wrap flex-col">
-              Product Review
-                <span className="text-sm normal-case text-black-200">
-                Changed to a workflow
-                </span>
-              </p>
-            </div>
-            <span className="text-black-default">
-              <RxCross2 />
-            </span>
-          </Link>
-        </li>
-        <li className="mx-4">
-          <Link
-            to=""
-            className="flex flex-wrap items-center gap-[10px] p-[10px] mb-3 bg-black-100 rounded-md justify-between"
-          >
-            <div className="flex flex-wrap gap-[10px]">
-              <span className="text-black-default text-2xl bg-purple-default p-2 rounded-full self-center">
-                <CiWallet />
-              </span>
-              <p className="text-base font-medium text-black-default uppercase flex flex-wrap flex-col">
-              Return Products
-                <span className="text-sm normal-case text-black-200">
-                52 items were returned
-                </span>
-              </p>
-            </div>
-            <span className="text-black-default">
-              <RxCross2 />
-            </span>
-          </Link>
-        </li>
-        <li className="mx-4">
-          <Link
-            to=""
-            className="flex flex-wrap items-center gap-[10px] p-[10px] mb-3 bg-black-100 rounded-md justify-between"
-          >
-            <div className="flex flex-wrap gap-[10px]">
-              <span className="text-black-default text-2xl bg-purple-default p-2 rounded-full self-center">
-                <CiWallet />
-              </span>
-              <p className="text-base font-medium text-black-default uppercase flex flex-wrap flex-col">
-              Recently Paid
-                <span className="text-sm normal-case text-black-200">
-                Card payment of $343
-                </span>
-              </p>
-            </div>
-            <span className="text-black-default">
-              <RxCross2 />
-            </span>
-          </Link>
-        </li>
-      </ul>
-    </div>
-  );
+    );
 };
 
 export default Notification;

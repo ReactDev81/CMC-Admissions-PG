@@ -1,12 +1,30 @@
+import { useContext, useEffect } from "react";
+import { toast } from 'react-toastify';
+import { UserContext } from "../../../../context/UserContext";
+import UseAxios from "../../../../hooks/UseAxios";
 import Button from "../../../../components/ui/Button";
 import OutlineButton from "../../../../components/ui/OutlineButton";
 
 const Cache = () => {
+
+    const { userData } = useContext(UserContext);
+    const { data, status, loading, fetchData } = UseAxios('/settings/cache', 'post', { headers: { Authorization: `Bearer ${userData.token}` } });
+
+    const handleClearCache = async (cacheType) => {
+        await fetchData({data: {type: cacheType}});
+    };
+
+    useEffect(() => {
+        if(status === 200){
+            toast.success(data.message);
+        }
+    }, [loading])
+
     return(
         <div className="border rounded-md text-black-default">
             <div className="p-5">
                 <h2 className="mb-2 font-bold">Cache Management Settings</h2>
-                <p className="font-normal">Welcome to the Cache Management Settings. Use the tools below to manage and optimize your application's performance by clearing various types of cache.</p>
+                <p className="font-normal">Welcome to the Cache Management Settings. Use the tools below to manage and optimize your application's performance by clearing various types of cache.</p>
             </div>
 
             <div className="p-5 border-t flex items-center justify-between">
@@ -15,7 +33,11 @@ const Cache = () => {
                     <p className="font-normal mb-3.5">Clear the cached application data to ensure your app uses the most recent updates and changes.</p>
                     <p className="text-black-300 font-normal"><span className="text-black-300 text-base font-medium capitalize">Last Cleared: </span> (12-10-2024 am) 1 day ago</p>
                 </div>
-                <OutlineButton text="Clear Application Cache" classname="px-5 py-2.5 border-primary-default text-primary-default" />
+                <OutlineButton 
+                    onclick={() => handleClearCache('application')}
+                    text="Clear Application Cache" 
+                    className="px-5 py-2.5 border-primary-default text-primary-default" 
+                />
             </div>
 
             <div className="p-5 border-t flex items-center justify-between">
@@ -24,7 +46,11 @@ const Cache = () => {
                     <p className="font-normal mb-3.5">Refresh configuration settings to apply any changes made to your configuration files. This is particularly useful for settings stored in the application.</p>
                     <p className="text-black-300 font-normal"><span className="text-black-300 text-base font-medium capitalize">Last Cleared: </span> (12-10-2024 am) 1 day ago</p> 
                 </div>
-                <OutlineButton text="Clear Configuration Cache" classname="px-5 py-2.5 border-primary-default text-primary-default" />
+                <OutlineButton 
+                    onclick={() => handleClearCache('config')}
+                    text="Clear Configuration Cache" 
+                    className="px-5 py-2.5 border-primary-default text-primary-default" 
+                />
             </div>
 
             <div className="p-5 border-t flex items-center justify-between">
@@ -33,7 +59,11 @@ const Cache = () => {
                     <p className="font-normal mb-3.5">Optimize and refresh the routing cache to ensure efficient handling of application routes. Use this to reflect updated route definitions.</p>
                     <p className="text-black-300 font-normal"><span className="text-black-300 text-base font-medium capitalize">Last Cleared: </span> (12-10-2024 am) 1 day ago</p> 
                 </div>
-                <OutlineButton text="Clear Route Cache" classname="px-5 py-2.5 border-primary-default text-primary-default" />
+                <OutlineButton 
+                    onclick={() => handleClearCache('route')}
+                    text="Clear Route Cache" 
+                    className="px-5 py-2.5 border-primary-default text-primary-default" 
+                />
             </div>
 
             <div className="p-5 border-t flex items-center justify-between">
@@ -41,7 +71,11 @@ const Cache = () => {
                     <h3 className="mb-3.5">Clear All Cache</h3>
                     <p className="font-normal mb-3.5">To reset all cache types at once, use the Clear All Cache button below. This will ensure that all cached data is removed and the latest updates are applied.</p>
                 </div>
-                <Button text="Clear All Cache" classname="px-5 py-2.5 border-primary-default text-primary-default [&]:rounded-full" />
+                <Button 
+                    onclick={() => handleClearCache('all')}
+                    text="Clear All Cache" 
+                    classname="px-5 py-2.5 border-primary-default text-primary-default [&]:rounded-full" 
+                />
             </div>
 
             <div className="text-danger-default flex gap-2.5 italic p-5 border-t">

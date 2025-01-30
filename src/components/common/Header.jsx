@@ -1,7 +1,7 @@
 import Searchbar from "../ui/Searchbar";
 import Breadcrumb from "../ui/Breadcrumb";
 import Iconsbutton from "../ui/Iconsbutton"; 
-import Profile from "../ui/Profile"; 
+import Profile from "../ui/Profile";
 import Notification from "../ui/notification";
 import { IoNotificationsOutline } from "react-icons/io5"; 
 import { PiMoon } from "react-icons/pi";

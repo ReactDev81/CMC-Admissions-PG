@@ -8,19 +8,21 @@ import InputField from "../../../../components/forms/Inputfield";
 import Button from "../../../../components/ui/Button";
 
 const General = ({ data }) => {
-    // console.log('general', data);
 
     const { userData } = useContext(UserContext);
     const sendGeneralData = UseAxios('/settings/general', 'post', { headers: { Authorization: `Bearer ${userData.token}` } })
 
     const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const [logoPreview, setLogoPreview] = useState(
-        data.find((field) => field.key === "logo")?.value || null
-    );
-    const [faviconPreview, setFaviconPreview] = useState(
-        data.find((field) => field.key === "favicon")?.value || null
-    );
+    const [logoPreview, setLogoPreview] = useState();
+    const [faviconPreview, setFaviconPreview] = useState();
+
+    useEffect(() => {
+        if (data) {
+            setLogoPreview(data.find((field) => field.key === "logo")?.value || null);
+            setFaviconPreview(data.find((field) => field.key === "favicon")?.value || null);
+        }
+    }, [data])
 
     const logoInputRef = useRef(null);
     const faviconInputRef = useRef(null);
@@ -108,25 +110,32 @@ const General = ({ data }) => {
                                     <div className="mb-5" key={field.id}>
                                         <label className="mb-2">{field.description}</label>
                                         <div className="relative">
+                                        {preview ? 
+                                            <div className="bg-black-200 flex items-center justify-center h-64 rounded-md">
+                                                <img
+                                                    src={preview}
+                                                    alt={field.description}
+                                                    className="object-contain z-10 max-w-56"
+                                                />
+                                                {preview && (
+                                                    <button
+                                                        onClick={removeFile}
+                                                        type="button"
+                                                        className="absolute top-4 right-4 p-1 bg-white-default rounded-full shadow-md z-10"
+                                                    >
+                                                        <RxCross2 className="w-4 h-4 text-gray-600" />
+                                                    </button>
+                                                )}
+                                            </div>
+                                        :
                                             <label
                                                 htmlFor={field.key}
-                                                className="flex flex-col items-center justify-center min-h-[140px] border-dashed border-2 border-primary-200 rounded-md p-5 cursor-pointer"
+                                                className="flex flex-col items-center justify-center h-64 border-dashed border-2 border-primary-200 rounded-md p-5 cursor-pointer"
                                             >
-                                                <div className="w-full h-52 flex items-center justify-center">
-                                                    {preview ? (
-                                                        <>
-                                                            <img
-                                                                src={preview}
-                                                                alt={field.description}
-                                                                className="h-full w-full object-contain z-10"
-                                                            />
-                                                            <div className="absolute inset-0 bg-black-200 flex items-center justify-center text-white text-sm font-semibold rounded-md"></div>
-                                                        </>
-                                                    ) : (
-                                                        <p className="text-xl text-black-300 underline cursor-pointer">
-                                                            Upload Image
-                                                        </p>
-                                                    )}
+                                                <div className="w-full flex items-center justify-center">
+                                                    <p className="text-xl text-black-300 underline cursor-pointer">
+                                                        Upload Image
+                                                    </p>
                                                 </div>
                                                 <input
                                                     type="file"
@@ -137,15 +146,7 @@ const General = ({ data }) => {
                                                     accept="image/*"
                                                 />
                                             </label>
-                                            {preview && (
-                                                <button
-                                                    onClick={removeFile}
-                                                    type="button"
-                                                    className="absolute top-4 right-4 p-1 bg-white rounded-full shadow-md z-10"
-                                                >
-                                                    <RxCross2 className="w-4 h-4 text-gray-600" />
-                                                </button>
-                                            )}
+                                        }
                                         </div>
                                     </div>
                                 );

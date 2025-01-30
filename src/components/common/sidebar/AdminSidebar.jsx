@@ -14,7 +14,7 @@ import { FaBible } from "react-icons/fa";
 import { GrSystem } from "react-icons/gr";
 import { RiListCheck3 } from "react-icons/ri";
 import { RiListSettingsLine } from "react-icons/ri";
-
+import { FaUserCog } from "react-icons/fa";
 
 
 const AdminSidebar = () => {
@@ -128,6 +128,18 @@ const AdminSidebar = () => {
                 icon={<LiaToolsSolid />}
               />
             </li>
+          </ul>
+
+          <Badge text="Account" />
+
+          <ul>
+            <li>
+              <SideNavLink
+                href="/my-account"
+                text="My Account"
+                icon={<FaUserCog  />}
+              />
+            </li>
             <li>
                 <button onClick={Logout} className="w-full text-base font-medium leading-5 capitalize flex flex-wrap items-center px-5 pt-3 pb-4 hover:bg-primary-300 group">
                     <span className="text-xl font-medium mr-3.5"><LuLogOut /></span>
@@ -135,6 +147,7 @@ const AdminSidebar = () => {
                 </button>
             </li>
           </ul>
+
         </div>
     </aside>
   );

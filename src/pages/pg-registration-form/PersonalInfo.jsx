@@ -19,7 +19,7 @@ const PersonalInfo = ({activeTab, setActiveTab}) => {
   const Token = userData.token;
   const resetPassword = userData.userDetails.password_changed;
 
-  const { register, control, handleSubmit, watch, clearErrors, unregister, reset, formState: { errors }} = useForm({
+  const { register, control, handleSubmit, watch, reset, resetField, formState: { errors }} = useForm({
     defaultValues: {
       gender: "",
     },
@@ -76,13 +76,11 @@ const PersonalInfo = ({activeTab, setActiveTab}) => {
     }
   }, [applicationData, reset]);
 
-  // Clear dependent fields when parent graduation status changes
   useEffect(() => {
     if (areParentsGraduates === "no") {
-      clearErrors("are_parents_graduates_text");
-      unregister("are_parents_graduates_text"); 
+      resetField("are_parents_graduates_text", { keepTouched: false });
     }
-  }, [areParentsGraduates, clearErrors, unregister]);
+  }, [areParentsGraduates, resetField]);
 
   const Gender = [
     { value: "male", label: "Male" },
@@ -101,15 +99,29 @@ const PersonalInfo = ({activeTab, setActiveTab}) => {
   // Handle form submission
   const onSubmit = async (formData) => {
 
-    const formattedData = {
-      ...formData,
-      date_of_birth: formatDate(formData.date_of_birth),
-      step: "personal",
-    };
-
     if(Token && resetPassword){
+
+      if (formData.are_parents_graduates === "no") {
+        delete formData.are_parents_graduates_text;
+      }
+
+      const formattedData = {
+        ...formData,
+        application_id: applicationInfo?.application_id,
+        date_of_birth: formatDate(formData.date_of_birth),
+        step: "personal",
+      };
+
       await updateApplicationData.fetchData({ data: formattedData });
+
     }else{
+
+      const formattedData = {
+        ...formData,
+        date_of_birth: formatDate(formData.date_of_birth),
+        step: "personal",
+      };
+
       await submitApplicationData.fetchData({ data: formattedData });
     }
 

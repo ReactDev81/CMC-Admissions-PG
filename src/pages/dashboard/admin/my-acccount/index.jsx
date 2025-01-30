@@ -1,6 +1,5 @@
 import ChangePassword from "./changepassword";
-import MyProfile from "./myprofile";
-
+import MyProfile from "./MyProfile"
 const MyAccount = () => {
   return (
     <div>

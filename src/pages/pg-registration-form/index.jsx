@@ -1,18 +1,19 @@
-import PersonalInfo from "./PersonalInfo";
-import AcademicInfo from "./AcademicInfo";
-import Document from "./Document";
-import Payment from "./Payment";
-import StudentHeader from "../../components/common/StudentHeader";
+import { useContext, useEffect } from "react";
 import { FaRegUser } from "react-icons/fa";
 import { MdOutlinePayment } from "react-icons/md";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { HiOutlineAcademicCap } from "react-icons/hi2";
-import UseTab from "../../hooks/UseTab";
-import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import useAxios from "../../hooks/UseAxios";
-import { useEffect } from "react";
+import UseTab from "../../hooks/UseTab";
+import StudentHeader from "../../components/common/StudentHeader";
+import Footer from "../../components/common/Footer";
+import PersonalInfo from "./PersonalInfo";
+import AcademicInfo from "./AcademicInfo";
+import Document from "./Document";
+import Payment from "./Payment";
+
 
 const RegistrationForm = () => {
 
@@ -98,6 +99,8 @@ const RegistrationForm = () => {
           />
         </div>
       </div>
+
+      {userData.token === '' && <Footer className="max-w-lg mx-auto px-0" />}
     </>
   );
 };

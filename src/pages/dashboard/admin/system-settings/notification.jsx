@@ -33,10 +33,10 @@ const Notification = () => {
     // Fetch notifications on component mount
     useEffect(() => {
         const fetchNotifications = async () => {
-        await Promise.all([
-            userNotification.fetchData(),
-            adminNotification.fetchData(),
-        ]);
+            await Promise.all([
+                userNotification.fetchData(),
+                adminNotification.fetchData(),
+            ]);
         };
         fetchNotifications();
     }, []);
@@ -44,22 +44,29 @@ const Notification = () => {
     // Set default values for user notifications
     useEffect(() => {
         if (userNotificationData) {
-        const defaultStates = userNotificationData.reduce((acc, field) => {
-            acc[`user_notifications.${field.key}`] = Boolean(field.value); 
-            return acc;
-        }, {});
-        Object.entries(defaultStates).forEach(([key, value]) => setValue(key, value));
+            const defaultStates = userNotificationData.reduce((acc, field) => {
+                acc[`user_notifications.${field.key}`] =
+                    field.type === "boolean" ? field.value === "1" : field.value; // Convert "1" to true, "0" to false
+                return acc;
+            }, {});
+            Object.entries(defaultStates).forEach(([key, value]) => {
+                setValue(key, value);
+            });
         }
     }, [userNotificationData, setValue]);
+
 
     // Set default values for admin notifications
     useEffect(() => {
         if (adminNotificationData) {
         const defaultStates = adminNotificationData.reduce((acc, field) => {
-            acc[`admin_notifications.${field.key}`] = Boolean(field.value); 
+            acc[`admin_notifications.${field.key}`] = 
+                field.type === "boolean" ? field.value === "1" : field.value; // Convert "1" to true, "0" to false
             return acc;
         }, {});
-        Object.entries(defaultStates).forEach(([key, value]) => setValue(key, value));
+        Object.entries(defaultStates).forEach(([key, value]) => {
+            setValue(key, value);
+        }); 
         }
     }, [adminNotificationData, setValue]);
 
@@ -86,7 +93,6 @@ const Notification = () => {
             data: transformedData
         })
 
-        console.log('Transformed Data:', transformedData);
     };
 
     const Frequency = [
@@ -105,8 +111,8 @@ const Notification = () => {
                     <div className="p-5">
                         <h2 className="text-black-default mb-2.5">User Notifications</h2>
                         <p className="text-black-300 font-normal">
-                        Lorem ipsum dolor sit amet consectetur adipiscing elit dui, mi
-                        facilisis malesuada leo sem dictum turpis cursus varius.
+                            Lorem ipsum dolor sit amet consectetur adipiscing elit dui, mi
+                            facilisis malesuada leo sem dictum turpis cursus varius.
                         </p>
                     </div>
                     <div className="grid">
