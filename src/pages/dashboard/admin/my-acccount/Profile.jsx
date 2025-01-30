@@ -3,7 +3,7 @@ import Button from "../../../../components/ui/Button";
 import { useForm } from "react-hook-form";
 import React, { useState } from "react";
 
-const MyProfile = () => {
+const Profile = () => {
 
     const defaultImage = "/assets/avatars/user.png";
     const {
@@ -148,4 +148,4 @@ const MyProfile = () => {
     )
 }
 
-export default MyProfile;
+export default Profile;

@@ -1,10 +1,10 @@
 import ChangePassword from "./changepassword";
-import MyProfile from "./MyProfile"
+import Profile from "./Profile";
 const MyAccount = () => {
   return (
     <div>
       <div className="flex flex-col gap-5">
-        <MyProfile />
+        <Profile />
         <ChangePassword />
       </div>
     </div>
