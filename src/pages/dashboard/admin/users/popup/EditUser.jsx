@@ -2,7 +2,6 @@ import { useContext, useEffect, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { RxCross2 } from "react-icons/rx";
 import { AiOutlineEyeInvisible, AiOutlineEye} from "react-icons/ai";
-import OutlineButton from "../../../../../components/ui/OutlineButton";
 import Button from "../../../../../components/ui/Button";
 import InputField from "../../../../../components/forms/Inputfield";
 import SelectField from "../../../../../components/forms/SelectField";
@@ -13,11 +12,13 @@ import Checkbox from "../../../../../components/forms/Checkbox";
 
 const EditUser = ({ data, onClose }) => {
 
+    const defaultImage = "/assets/avatars/user.png";
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [isEnabled, setEnabled] = useState(false);
+    const [image, setImage] = useState(defaultImage);
 
-    const { register, handleSubmit, watch, control, reset, formState: { errors } } = useForm({
+    const { register, handleSubmit, watch, control, reset, clearErrors, formState: { errors } } = useForm({
         defaultValues: {
             roles: "",
         },
@@ -37,6 +38,18 @@ const EditUser = ({ data, onClose }) => {
     const { userData } = useContext(UserContext);
     const { error, status, fetchData} = useAxios(`/users/${data.id}`, "put", { headers: { Authorization: `Bearer ${userData.token}` }});
 
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setImage(URL.createObjectURL(file)); 
+            clearErrors("avatar"); 
+        }
+    };
+    
+    const handleImageRemove = () => {
+        setImage(defaultImage);
+    };
+
     // Prefill form with fetched data
     useEffect(() => {
         reset({
@@ -45,11 +58,32 @@ const EditUser = ({ data, onClose }) => {
             roles: data.role || "",
             status: data.status && setEnabled(data.status) || "",
         });
-    }, [reset]);
-    
+
+        // Set existing user image if available
+        if (data.avatar) {
+            setSelectedImage(data.avatar);
+        }
+
+    }, [reset, data]);
+
+
     const onSubmit = async (formData) => {
-        await fetchData({data: {...formData, status: isEnabled, roles: [formData.roles] }});
-    }
+        const payload = {
+            ...formData,
+            status: isEnabled,
+            roles: [formData.roles],
+        };
+    
+        // Remove password and confirm password fields if they are empty
+        if (!formData.password) {
+            delete payload.password;
+            delete payload.password_confirmation;
+        }
+
+        console.log(payload);
+    
+        await fetchData({ data: payload });
+    };
 
     useEffect(() => {
         if(status === 200){
@@ -73,18 +107,30 @@ const EditUser = ({ data, onClose }) => {
             <div className="flex items-center gap-4">
                 <div className="size-[73px]">
                     <img
-                        src="/assets/avatars/edit-user.png"
-                        alt="Edit User Popup Avatar"
+                        src={image}
+                        alt="User Avatar"
                         className="h-full w-full rounded-full object-cover object-center"
+                    />
+                    <input
+                        id="avatar"
+                        type="file"
+                        className="hidden"
+                        accept="image/*"
+                        {...register("avatar")}
+                        onChange={handleImageChange}
                     />
                 </div>
                 <div className="flex items-center gap-2.5">
-                    <OutlineButton
-                        text="Change"
-                        className="pt-1 pb-1.5 px-5 [&]:border-primary-default [&]:text-primary-default"
-                    />
+                    <label
+                        htmlFor="avatar"
+                        className="capitalize text-base font-medium leading-5 border rounded-full px-5 py-1.5 border-primary-default text-primary-default cursor-pointer"
+                    >
+                        Change
+                    </label>
                     <Button
+                        onclick={handleImageRemove}
                         text="Remove"
+                        type="button"
                         classname="pt-1 pb-1.5 px-5 [&]:rounded-full border-0 [&]:text-black-300 [&]:bg-primary-100"
                     />
                 </div>
@@ -113,8 +159,8 @@ const EditUser = ({ data, onClose }) => {
                 <InputField
                     label="New Password"
                     type={showNewPassword ? "text" : "password"}
-                    {...register('password', {required: true, minLength: 8})} 
-                    error={errors.password?.type === "required" ? "Password is required" : errors.password?.type === 'minLength' ? "Password must be at least 8 characters" : undefined}
+                    {...register('password', {minLength: 8})} 
+                    error={errors.password?.type === 'minLength' ? "Password must be at least 8 characters" : undefined}
                 />
                 <span className="absolute top-[46px] right-5 cursor-pointer" onClick={() => setShowNewPassword(!showNewPassword)}>
                     {showNewPassword ? <AiOutlineEye color="#4D4D4D" size={20}  /> : <AiOutlineEyeInvisible color="#4D4D4D" size={20} />}
@@ -125,8 +171,8 @@ const EditUser = ({ data, onClose }) => {
                 <InputField
                     label="Confirm Password"
                     type={showConfirmPassword ? "text" : "password"}
-                    {...register('password_confirmation', {required: true, validate: (value) => value === password.current || "Passwords do not match"})}
-                    error={errors.password_confirmation?.type === "required" ? "Confirm Password is required" : errors.password_confirmation?.message} 
+                    {...register('password_confirmation', {validate: (value) => value === password.current || "Passwords do not match"})}
+                    error={errors.password_confirmation?.message} 
                 />
                 <span className="absolute top-[46px] right-5 cursor-pointer" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
                     {showConfirmPassword ? <AiOutlineEye color="#4D4D4D" size={20}  /> : <AiOutlineEyeInvisible color="#4D4D4D" size={20} />}
@@ -147,6 +193,7 @@ const EditUser = ({ data, onClose }) => {
                 <Checkbox
                     label="Force user to reset password"
                     id="force_reset_password"
+                    fieldName="force_reset_password"
                     register={register}
                 />
                 <p className="ml-6 text-black-200">( if this field is checked, then user will be forced to reset password after login )</p>

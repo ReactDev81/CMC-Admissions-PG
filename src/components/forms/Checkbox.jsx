@@ -1,11 +1,13 @@
-const Checkbox = ({label, id, wrapperClass = "", checkboxClass = "", labelClass = "", register}) => {
+const Checkbox = ({label, id, wrapperClass = "", checkboxClass = "", labelClass = "", register, fieldName, checked, onChange}) => {
     return (
         <label className={`flex items-center gap-x-2 cursor-pointer ${wrapperClass}`} htmlFor={id}>
             <input
                 id={id}
                 className="w-auto sr-only peer"
                 type="checkbox"
-                {...(register ? register(id) : {})}
+                checked={checked}
+                onChange={onChange}
+                {...(register && fieldName ? register(fieldName) : {})}
             />
             <div className={`w-[17px] h-[17px] border border-solid border-black-200 rounded relative
                 after:content-[''] after:absolute after:top-[2px] after:left-[5px] after:w-1 after:h-2 peer-checked:after:border-r
