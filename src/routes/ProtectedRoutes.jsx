@@ -27,7 +27,7 @@ const Profile = lazy(() => import('../pages/dashboard/student/profile/index'))
 
 const ProtectedRoutes = () => {
 
-    var {userData} = useContext(UserContext);
+    var { userData } = useContext(UserContext);
     const resetPassword =  userData.userDetails?.password_changed;
     const location = useLocation();
 

@@ -1,14 +1,13 @@
+import { useContext, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from "../../context/UserContext";
+import { ApplicationContext } from "../../context/ApplicationContext";
 import Inputfield from "../../components/forms/Inputfield";
 import SelectField from "../../components/forms/SelectField";
 import RadioField from "../../components/forms/RadioField";
 import Button from "../../components/ui/Button";
-import { useForm } from "react-hook-form";
-import useAxios from "../../hooks/UseAxios"
-import { useEffect } from "react";
-import { ApplicationContext } from "../../context/ApplicationContext";
-import { UserContext } from "../../context/UserContext";
-import { useContext } from "react";
-import { useNavigate } from 'react-router-dom';
+import useAxios from "../../hooks/UseAxios";
 
 const PersonalInfo = ({activeTab, setActiveTab}) => {
 
@@ -135,7 +134,6 @@ const PersonalInfo = ({activeTab, setActiveTab}) => {
 
   useEffect(() => {
     if (status === 201) {
-      navigate("/");
       setApplicationInfo((prevInfo) => ({
         ...prevInfo,
         application_id: data.application_id,

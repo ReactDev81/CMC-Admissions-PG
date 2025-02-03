@@ -16,10 +16,10 @@ import { MdNotificationsActive } from "react-icons/md";
 
 const AdminSidebar = () => {
 
-  const  {userData, setUserData } = useContext(UserContext);
+  const  { userData, setUserData } = useContext(UserContext);
   const navigate = useNavigate();
   const BEARER_TOKEN = userData?.token;
-  const {fetchData} = useAxios('/logout', 'post', {headers: {'Authorization': `Bearer ${BEARER_TOKEN}`}})
+  const { fetchData } = useAxios('/logout', 'post', {headers: {'Authorization': `Bearer ${BEARER_TOKEN}`}})
 
   async function Logout(){
     await fetchData()
@@ -28,14 +28,14 @@ const AdminSidebar = () => {
   }
 
   const applicationLinks = [
-    { href: "/applications", text: "All Applications" },
-    { href: "/add-new", text: "Add New" },
+    { href: "/admin/applications", text: "All Applications" },
+    { href: "/admin/add-new", text: "Add New" },
   ];
 
   return (
     <aside className="sidebar max-w-[252px] w-full bg-primary-default shadow-side-Shadow overflow-y-scroll">
         <div className="p-5">
-          <Link to="/">
+          <Link to="/admin">
             <img
               className="object-contain object-center"
               src="/assets/images/logo.png"
@@ -48,14 +48,14 @@ const AdminSidebar = () => {
           <ul>
             <li>
               <SideNavLink
-                href="/"
+                href="/admin"
                 text="Dashboards"
                 icon={<FaHome />}
               />
             </li>
             <li>
               <SideNavLink
-                href="/users"
+                href="/admin/users"
                 text="Users"
                 icon={<FaUsers />}
               />
@@ -70,7 +70,7 @@ const AdminSidebar = () => {
             </li>
             <li>
               <SideNavLink
-                href="/reports"
+                href="/admin/reports"
                 text="Reports"
                 icon={<FaChartBar  />}
               />
@@ -92,35 +92,35 @@ const AdminSidebar = () => {
           <ul>
             <li>
               <SideNavLink
-                href="/pages"
+                href="/admin/pages"
                 text="Pages"
                 icon={<LuFiles />}
               />
             </li>
             <li>
               <SideNavLink
-                href="/pg-form-settings"
+                href="/admin/pg-form-settings"
                 text="PG Form Settings"
                 icon={<RiListSettingsLine  />}
               />
             </li>
             <li>
               <SideNavLink
-                href="/system-settings"
+                href="/admin/system-settings"
                 text="System Settings"
                 icon={<GrSystem size={16}  />}
               />
             </li>
             <li>
               <SideNavLink
-                href="/roles-permissions"
+                href="/admin/roles-permissions"
                 text="Roles & Permissions"
                 icon={<RiListCheck3  />}
               />
             </li>
             <li>
               <SideNavLink
-                href="/maintenance-mode"
+                href="/admin/maintenance-mode"
                 text="Maintenance"
                 icon={<LiaToolsSolid />}
               />
@@ -132,14 +132,14 @@ const AdminSidebar = () => {
           <ul>
             <li>
               <SideNavLink
-                href="/my-account"
+                href="/admin/my-account"
                 text="My Account"
                 icon={<FaUserCog  />}
               />
             </li>
             <li>
               <SideNavLink
-                href="/notifications"
+                href="/admin/notifications"
                 text="Notification"
                 icon={<MdNotificationsActive  />}
               />

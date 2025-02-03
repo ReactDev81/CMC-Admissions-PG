@@ -10,7 +10,7 @@ const Breadcrumb = () => {
   const Dashboard = userData.role === "student" ? "Student" : "Admin";
 
   const location = useLocation();
-  const [name, setName] = useState(""); // State to hold the fetched name
+  const [name, setName] = useState(""); 
 
   let pathname = location.pathname;
   pathname = pathname === "/" ? Dashboard : pathname;
@@ -29,7 +29,7 @@ const Breadcrumb = () => {
 
   useEffect(() => {
     if (pathname.includes("application/")){
-      const id = pathname.split("/")[2];
+      const id = pathname.split("/")[3];
       if(id){
         fetchData({
           url: `/applications/${id}`
@@ -48,13 +48,15 @@ const Breadcrumb = () => {
     <>
       <Title
         title={
-          pathname.includes("application/")
+          pathname.includes("application/") // Check for application detail page
             ? "Applications Detail"
-            : breadcrumbParts[0] === "Student"
-            ? `${breadcrumbParts[0]} Dashboard`
-            : breadcrumbParts[0] === "Admin"
-            ? `${breadcrumbParts[0]} Dashboard`
-            : breadcrumbParts.join(" / ")
+            : pathname === "/admin" // Check if on admin home page
+            ? "Admin Dashboard"
+            : pathname === "/student" // Check if on student home page
+            ? "Student Dashboard"
+            : breadcrumbParts.length > 1 // Check if there are multiple breadcrumb parts
+            ? breadcrumbParts[breadcrumbParts.length - 1] // Show last path part
+            : breadcrumbParts[0] // Otherwise, show first part
         }
       />
       <div className="flex flex-wrap items-center mt-1">
@@ -62,8 +64,6 @@ const Breadcrumb = () => {
           <span className="text-xl font-medium">
             <GoHome />
           </span>
-          <span className="mx-2">/</span>
-          <span>Dashboard</span>
           {breadcrumbParts.map((part, index) => (
             <span key={index} className="flex items-center">
               <span className="mx-2">/</span>

@@ -34,7 +34,7 @@ const StudentSidebar = () => {
     return(
         <aside className="sidebar z-10 max-w-[252px] w-full bg-white-default shadow-side-Shadow overflow-y-scroll">
             <div className="p-5">
-                <Link to="/">
+                <Link to="/student">
                     <img
                         className="object-contain object-center"
                         src="/assets/images/logo-black.png"
@@ -46,21 +46,21 @@ const StudentSidebar = () => {
                 <ul>
                     <li>
                         <SideNavLink
-                            href="/"
+                            href="student"
                             text="Dashboards"
                             icon={<FaHome />}
                         />
                     </li>
                     <li>
                         <SideNavLink
-                            href="/profile"
+                            href="/student/profile"
                             text="Profile"
                             icon={<FaUsers />}
                         />
                     </li>
                     <li>
                         <SideNavLink
-                            href="/application-form"
+                            href="/student/application-form"
                             text="Application Form"
                             icon={<FaFileAlt />}
                         />

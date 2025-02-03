@@ -45,7 +45,7 @@ const Notification = () => {
                     </h1>
                 </div>
 
-                {isPasswordReset && data && (() => {
+                {isPasswordReset && Array.isArray(data) && (() => {
                     const unreadNotifications = data.filter(notification => !notification.read_at);
                     const visibleNotifications = unreadNotifications.slice(0, 3); 
                     return (

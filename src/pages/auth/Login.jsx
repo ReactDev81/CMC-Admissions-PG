@@ -1,6 +1,6 @@
+import { useState, useContext, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
-import { useState, useContext, useEffect } from "react";
 import { AiOutlineEyeInvisible, AiOutlineEye} from "react-icons/ai";
 import { UserContext } from "../../context/UserContext";
 import { ApplicationContext } from '../../context/ApplicationContext';
@@ -13,8 +13,10 @@ const Login = () => {
 
     const [showPassword, setShowPassword] = useState(false);
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const { setUserData } = useContext(UserContext);
+    const { userData, setUserData } = useContext(UserContext);
     const { setApplicationInfo } = useContext(ApplicationContext);
+
+    const isStudent = userData?.role === 'student';
     
     const navigate = useNavigate();
     const { data, loading, error, fetchData } = useAxios('/login', 'post');
@@ -36,7 +38,8 @@ const Login = () => {
                 application_id: applicationId,
             }));
 
-            navigate('/');
+            isStudent ? navigate('/student') : navigate('/admin');
+            
         }
     }, [data, setUserData, navigate]);
 

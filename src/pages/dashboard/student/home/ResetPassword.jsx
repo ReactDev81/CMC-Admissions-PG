@@ -36,9 +36,7 @@ const ResetPassword = () => {
             const userDetails = { id, name, email, password_changed};
             setUserData({ token, role, permissions, userDetails});
 
-            // setTimeout(() => {
-            navigate('/application-form');
-            // }, 2000);
+            navigate('/student/application-form');
         }
     }, [data, status])
 

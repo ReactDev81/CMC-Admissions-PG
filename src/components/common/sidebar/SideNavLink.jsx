@@ -13,6 +13,8 @@ const SideNavLink = ({ href, text, icon, subLinks = [] }) => {
   const location = useLocation();
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
+  console.log(isDropdownOpen);
+
   const handleDropdownToggle = () => {
     if (subLinks.length) {
       setDropdownOpen((prevState) => !prevState);
@@ -46,6 +48,7 @@ const SideNavLink = ({ href, text, icon, subLinks = [] }) => {
         :
           <NavLink
             to={href}
+            end
             className={({isActive}) => `${parentClass} ${isActive ? isStudent === 'student' ? "bg-primary-100 text-primary-default" : "bg-primary-300" : "bg-transparent"}`}
           >
             <div className="flex items-center">
