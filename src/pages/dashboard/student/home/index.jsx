@@ -1,18 +1,25 @@
-import Title from "../../../../components/ui/Title";
-import UserCard from "./UserCard";
+import { useContext, useEffect } from "react";
 import { LuUser } from "react-icons/lu";
+import { RxCross2 } from "react-icons/rx";
 import { GoChecklist } from "react-icons/go";
 import { HiOutlineDocumentDuplicate } from "react-icons/hi2";
-import { RxCross2 } from "react-icons/rx";
-import ResetPassword from "./ResetPassword"
-
 import { UserContext } from "../../../../context/UserContext";
-import { useContext } from "react";
+import useAxios from "../../../../hooks/UseAxios";
+import Title from "../../../../components/ui/Title";
+import UserCard from "./UserCard";
+import ResetPassword from "./ResetPassword";
+import Loader from "../../../../components/ui/Loader";
 
 const UserHome = () => {
 
     const {userData} = useContext(UserContext);
     var passwordReset = userData.userDetails.password_changed;
+
+    const PaymentDetails = useAxios('/pages/2', 'get', { headers: { Authorization: `Bearer ${userData.token}` } })
+
+    useEffect(() => {
+        PaymentDetails.fetchData();
+    }, [])
 
     return (
         <>
@@ -82,53 +89,8 @@ const UserHome = () => {
                             </div>
                         </div>
                         <div className="flex flex-1 bg-white-default rounded-xl shadow-flex">
-                            <div className="p-5">
-                                <Title
-                                    title="Instructions For Making Payment"
-                                    classname="mb-2.5"
-                                />
-                                <ul className="text-black-300 font-normal list-disc ml-5 mb-8 grid gap-3">
-                                    <li>
-                                        Payment is to be done in the following account using any
-                                        online method - NEFT, IMPS, UPI, etc.
-                                    </li>
-                                    <li>Payment is to be done ONLINE only</li>
-                                    <li>
-                                        Details of payment - UTR No, Debit account details, etc.
-                                        are to be filled in this online form.
-                                    </li>
-                                    <li>
-                                        Candidates are advised to check with their bank in case of
-                                        any issues with the payment and fill the correct payment
-                                        details after confirmation of a successful transfer. 
-                                    </li>
-                                    <li>
-                                        Details of payment - UTR No, Debit account details, etc.
-                                        are to be filled in this online form.
-                                    </li>
-                                </ul>
-                                <div className="text-black-300 grid uppercase gap-3">
-                                    <p>
-                                        BENEFICIARY NAME:
-                                        <strong>
-                                            CHRISTIAN MEDICAL COLLEGE LUDHIANA SOCIETY
-                                        </strong>
-                                    </p>
-                                    <p>
-                                        BENEFICIARY ADDRESS: CMC, FINANCE DEPT.,BROWN ROAD,
-                                        LUDHIANA PINCODE-141008, PUNJAB, INDIA
-                                    </p>
-                                    <p>
-                                        BENEFICIARY ACCOUNT NUMBER:{" "}
-                                        <strong>99915999999990</strong>
-                                    </p>
-                                    <p>
-                                        BENEFICIARY BANK NAME: <strong>HDFC BANK</strong>
-                                    </p>
-                                    <p>
-                                        IFSC CODE: <strong>HDFC0000034</strong>
-                                    </p>
-                                </div>
+                            <div className="text-black-default p-5">
+                                {PaymentDetails.loading ? Loader : <div dangerouslySetInnerHTML={{ __html: PaymentDetails.data?.content }}></div>}
                             </div>
                         </div>
                     </div>

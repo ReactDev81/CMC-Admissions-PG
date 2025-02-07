@@ -1,11 +1,13 @@
 import { useContext } from 'react';
 import { useNavigate, Link} from 'react-router-dom';
+import { FaHome, FaUsers, FaFileAlt} from "react-icons/fa";
+import {LuLogOut} from "react-icons/lu"; 
+import { ImExit } from "react-icons/im";
 import { UserContext } from '../../../context/UserContext';
 import { ApplicationContext } from '../../../context/ApplicationContext';
 import useAxios from '../../../hooks/UseAxios';
 import SideNavLink from "./SideNavLink";
-import { FaHome, FaUsers, FaFileAlt} from "react-icons/fa";
-import {LuLogOut} from "react-icons/lu"; 
+
 
 const StudentSidebar = () => {
 
@@ -70,7 +72,7 @@ const StudentSidebar = () => {
                             onClick={Logout} 
                             className={`w-full text-base font-medium leading-5 capitalize flex flex-wrap items-center px-5 pt-3 pb-4 group ${isStudent === 'student' ? 'hover:bg-primary-100 hover:text-primary-default text-black-300' : 'hover:bg-primary-300'}`}
                         >
-                            <span className="text-xl font-medium mr-3.5"><LuLogOut /></span>
+                            <span className="text-xl font-medium mr-3.5"><ImExit size={20} /></span>
                             Logout
                         </button>
                     </li>

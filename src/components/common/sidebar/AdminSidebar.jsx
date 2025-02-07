@@ -1,9 +1,5 @@
 import { useContext } from 'react';
 import { useNavigate, Link} from 'react-router-dom';
-import { UserContext } from '../../../context/UserContext';
-import useAxios from '../../../hooks/UseAxios';
-import Badge from "../../ui/Badge";
-import SideNavLink from "./SideNavLink";
 import { FaHome, FaUsers, FaChartBar, FaFileAlt} from "react-icons/fa";
 import {LuLogOut, LuLayoutPanelLeft, LuFiles} from "react-icons/lu"; 
 import { LiaToolsSolid} from "react-icons/lia"; 
@@ -12,18 +8,36 @@ import { RiListCheck3 } from "react-icons/ri";
 import { RiListSettingsLine } from "react-icons/ri";
 import { FaUserCog } from "react-icons/fa";
 import { MdNotificationsActive } from "react-icons/md";
+import { UserContext } from '../../../context/UserContext';
+import { ApplicationContext } from '../../../context/ApplicationContext';
+import useAxios from '../../../hooks/UseAxios';
+import Badge from "../../ui/Badge";
+import SideNavLink from "./SideNavLink";
+
 
 
 const AdminSidebar = () => {
 
-  const  { userData, setUserData } = useContext(UserContext);
+  const applicationInformation = {
+    application_id: null,
+    steps:{
+      step_personal: 'pending',
+      step_academic: 'pending',
+      step_documents: 'pending',
+      step_payment: 'pending',
+    }
+  }
+
+  const { userData, setUserData } = useContext(UserContext);
+  const { setApplicationInfo } = useContext(ApplicationContext);
   const navigate = useNavigate();
   const BEARER_TOKEN = userData?.token;
   const { fetchData } = useAxios('/logout', 'post', {headers: {'Authorization': `Bearer ${BEARER_TOKEN}`}})
 
   async function Logout(){
     await fetchData()
-    setUserData({token: '', role: null, permissions: {}});
+    setUserData({ token: '', role: null, userDetails: {}, permissions: {} });
+    setApplicationInfo(applicationInformation)
     navigate('/login');
   }
 

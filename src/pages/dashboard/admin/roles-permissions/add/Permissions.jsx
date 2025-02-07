@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from 'react-toastify';
 import { UserContext } from "../../../../../context/UserContext";
 import UseAxios from "../../../../../hooks/UseAxios";
 import InputField from "../../../../../components/forms/Inputfield";
@@ -10,6 +11,8 @@ const Permissions = () => {
     const { userData } = useContext(UserContext);
     const getRoles = UseAxios('/roles', 'get', { headers: { Authorization: `Bearer ${userData.token}` } });
     const allRoles = getRoles.data || [];
+
+    const createPermission = UseAxios('/permissions', 'post', { headers: { Authorization: `Bearer ${userData.token}` } });
 
     const { register, handleSubmit, setValue, watch, reset, formState: { errors }} = useForm();
     const [selectAll, setSelectAll] = useState(false);
@@ -24,7 +27,13 @@ const Permissions = () => {
 
         // Set all checkboxes to the same state as "Select All"
         allRoles.forEach(role => {
-            setValue(role.name, newSelectAll);
+            const fieldName = role.name
+            .toLowerCase()
+            .replace(/[^a-z0-9]/g, '_')
+            .replace(/_+/g, '_')         
+            .replace(/^_|_$/g, '');
+
+            setValue(fieldName, newSelectAll);
         });
     };
 
@@ -32,20 +41,33 @@ const Permissions = () => {
         getRoles.fetchData();
     }, [])
 
-    const onSubmit = (formData) => {
-
+    const onSubmit = async (formData) => {
         const selectedRoles = allRoles
-            .filter(role => formData[role.name])
+            .filter(role => {
+                const fieldName = role.name
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]/g, '_')
+                    .replace(/_+/g, '_')         
+                    .replace(/^_|_$/g, '');    
+                return formData[fieldName]; 
+            })
             .map(role => role.id);
-
+    
         const customizeData = {
             name: formData.name, 
             roles: selectedRoles
         };
-
+    
         console.log("Formatted Payload:", customizeData);
-        reset();
-    }
+        await createPermission.fetchData({data: customizeData});
+    };
+
+    useEffect(() => {
+        if(createPermission.status === 201){
+            toast.success(createPermission.data.message);
+            reset();
+        }
+    }, [createPermission.loading])
 
     return(
         <form onSubmit={handleSubmit(onSubmit)} className="w-full border p-5 rounded-md">
@@ -56,6 +78,7 @@ const Permissions = () => {
                 {...register("name", { required: true })}
                 error={errors.name?.type === 'required' ? "Permission Name is required" : undefined}
             />
+            {createPermission.error && <p className="bg-red-100 py-2.5 px-5 text-red-800 mt-2 mb-3 rounded-md font-normal" dangerouslySetInnerHTML={{ __html: createPermission.error }}></p>}
             <h2 className="text-lg font-medium text-black-default mb-5">
                 Assign Permissions
             </h2>
@@ -71,9 +94,9 @@ const Permissions = () => {
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
                     </div>
                 : allRoles && allRoles.map((role) => {
-                    const fieldName = role.name
+                        const fieldName = role.name
                         .toLowerCase()
-                        .replace(/[^a-z0-9]/g, '_')
+                        .replace(/[^a-z0-9]/g, '_') 
                         .replace(/_+/g, '_')        
                         .replace(/^_|_$/g, ''); 
                         return (
@@ -81,10 +104,10 @@ const Permissions = () => {
                                 key={role.id}
                                 label={role.name} 
                                 id={`role-${role.id}`}
-                                fieldName={fieldName}
+                                fieldName={fieldName}  
                                 register={register}
-                                checked={selectedRoles[role.name] || false} 
-                                onChange={() => setValue(role.name, !selectedRoles[role.name])}
+                                checked={selectedRoles[fieldName] || false}  
+                                onChange={(e) => setValue(fieldName, e.target.checked)}
                             />
                         )
                     }
@@ -92,7 +115,7 @@ const Permissions = () => {
             </div>
 
             <div className="text-right mb-2.5">
-            <Button text="Add" classname="px-9 py-2.5 [&]:rounded-full" />
+                <Button text="Add" classname="px-9 py-2.5 [&]:rounded-full" />
             </div>
         </form>
     )

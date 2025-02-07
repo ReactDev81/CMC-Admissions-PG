@@ -13,8 +13,6 @@ const SideNavLink = ({ href, text, icon, subLinks = [] }) => {
   const location = useLocation();
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
-  console.log(isDropdownOpen);
-
   const handleDropdownToggle = () => {
     if (subLinks.length) {
       setDropdownOpen((prevState) => !prevState);

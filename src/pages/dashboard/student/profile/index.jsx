@@ -1,8 +1,20 @@
-import Title from "../../../../components/ui/Title";
+import { useContext, useEffect } from "react";
+import { UserContext } from "../../../../context/UserContext";
+import useAxios from "../../../../hooks/UseAxios";
 import { PiChurch } from "react-icons/pi";
+import Title from "../../../../components/ui/Title";
 import ChangePassword from "./ChangePassword"
 
 const Profile = () => {
+
+    const { userData } = useContext(UserContext);
+    const {data, fetchData} = useAxios(`/users/${userData.userDetails.id}`, 'get', { headers: { Authorization: `Bearer ${userData.token}` } })
+
+    useEffect(() => {
+        fetchData();
+    }, [])
+
+    console.log('data', data);
     
     return (
         <>

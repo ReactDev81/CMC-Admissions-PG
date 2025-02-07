@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { useContext, useEffect } from "react";
-import useAxios from "../../../../hooks/UseAxios";
-import { UserContext } from "../../../../context/UserContext";
+import useAxios from "../../../../../hooks/UseAxios";
+import { UserContext } from "../../../../../context/UserContext";
 import { RxCross2 } from "react-icons/rx";
-import FileFeild from "../../../../components/forms/FileFeild";
-import Button from "../../../../components/ui/Button";
+import FileFeild from "../../../../../components/forms/FileFeild";
+import Button from "../../../../../components/ui/Button";
 import { toast } from 'react-toastify';
 
 

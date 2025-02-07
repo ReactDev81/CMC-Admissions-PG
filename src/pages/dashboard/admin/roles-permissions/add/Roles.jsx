@@ -66,6 +66,7 @@ const Roles = () => {
                 {...register("name", { required: true})}
                 error={errors.name?.type === 'required' ? "Role Name is required" : undefined}
             />
+            {createRole.error && <p className="bg-red-100 py-2.5 px-5 text-red-800 mt-2 mb-3 rounded-md font-normal" dangerouslySetInnerHTML={{ __html: createRole.error }}></p>}
             <h2 className="text-lg font-medium text-black-default mb-5">
                 Assign Permissions
             </h2>
@@ -103,7 +104,6 @@ const Roles = () => {
                     })
                 }
             </div>
-            {createRole.error && <p className="bg-red-100 py-2.5 px-5 text-red-800 mt-2 rounded-md font-normal" dangerouslySetInnerHTML={{ __html: createRole.error }}></p>}
             <div className="text-right mb-2.5">
                 <Button type="submit" text="Add" classname="px-9 py-2.5 [&]:rounded-full" />
             </div>

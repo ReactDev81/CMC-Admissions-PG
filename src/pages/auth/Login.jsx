@@ -13,24 +13,20 @@ const Login = () => {
 
     const [showPassword, setShowPassword] = useState(false);
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const { userData, setUserData } = useContext(UserContext);
+    const { setUserData } = useContext(UserContext);
     const { setApplicationInfo } = useContext(ApplicationContext);
-
-    const isStudent = userData?.role === 'student';
-    
     const navigate = useNavigate();
-    const { data, loading, error, fetchData } = useAxios('/login', 'post');
+    const { data, status, loading, error, fetchData } = useAxios('/login', 'post');
 
     const onSubmit = async (formData) => {
         await fetchData({ data: formData });
     };
 
     useEffect(() => {
-        if (data) {
-
-            const { token, user: { role, permissions_list: permissions, id, name, email, password_changed} } = data;
+        if (status === 200) {
+            const { token, user: { role, permissions_list: permissions, id, name, email, password_changed } } = data;
             const userDetails = { id, name, email, password_changed };
-            setUserData({ token, role, permissions, userDetails});
+            setUserData({ token, role, permissions, userDetails });
 
             const applicationId = data.user.application_id;
 
@@ -38,10 +34,9 @@ const Login = () => {
                 application_id: applicationId,
             }));
 
-            isStudent ? navigate('/student') : navigate('/admin');
-            
+            data.user.role == 'student' ? navigate('/student') : navigate('/admin');
         }
-    }, [data, setUserData, navigate]);
+    }, [status]);
 
     return(
         <section className="flex flex-wrap justify-center items-center h-screen py-10">

@@ -266,3 +266,45 @@ button.react-calendar__tile.react-calendar__tile--now.react-calendar__tile--acti
 }
 
 /* React Calander - End*/  
+
+
+/* Select Doc Fields - Start */
+.select-doc-fields .css-13cymwt-control{
+    border-color: theme("colors.black[100]") !important;
+    padding: 10px;
+    border-radius: 12px;
+}
+.select-doc-fields .css-1dyz3mf{
+    padding: 0;
+}
+.select-doc-fields .css-1p3m7a8-multiValue{
+    background-color: theme("colors.black[100]");
+    padding: 5px 15px;
+    border-radius: 50px;
+}
+.select-doc-fields .css-9jq23d{
+    padding: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: theme("colors.black[300]");
+}
+.select-doc-fields .css-v7duua{
+    color: theme("colors.black[300]") !important;
+}
+.select-doc-fields .css-v7duua svg{
+    width: 20px;
+    height: 20px;
+}
+.select-doc-fields .css-v7duua:hover{
+    background-color: transparent;
+}
+.select-doc-fields .css-t3ipsp-control{
+    border-color: theme("colors.black[100]") !important;
+    box-shadow: none !important;
+    padding: 10px !important;
+}
+.select-doc-fields .css-1nmdiq5-menu{
+    color: theme("colors.black[300]") !important;
+}
+
+/* Select Doc Fields - End */

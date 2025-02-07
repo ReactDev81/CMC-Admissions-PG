@@ -1,24 +1,25 @@
+import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { RiArrowDownSLine } from "react-icons/ri";
 import { AiOutlineUser } from "react-icons/ai";
 import { GoBell } from "react-icons/go";
 import { SlLogout } from "react-icons/sl";
-import DropdownLinkBox from "./DropdownLinkBox";
-import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { UserContext } from "../../context/UserContext"
+import { UserContext } from "../../context/UserContext";
+import { ApplicationContext } from '../../context/ApplicationContext';
 import useAxios from "../../hooks/UseAxios";
+import DropdownLinkBox from "./DropdownLinkBox";
 
 const Profile = () => {
 
   const LinkLists = [
     {
       title: "Account",
-      path: "/",
+      path: "/admin/my-account",
       icon: AiOutlineUser,
     },
     {
       title: "Notifications",
-      path: "/",
+      path: "/admin/notifications",
       icon: GoBell,
     }
   ]
@@ -33,14 +34,16 @@ const Profile = () => {
     }
   }
 
-  const {userData, setUserData } = useContext(UserContext);
+  const {userData, setUserData} = useContext(UserContext);
+  const {setApplicationInfo} = useContext(ApplicationContext);
   const navigate = useNavigate();
   const BEARER_TOKEN = userData?.token;
-  const {status, fetchData} = useAxios('/logout', 'post', {headers: {'Authorization': `Bearer ${BEARER_TOKEN}`}})
+  const { fetchData } = useAxios('/logout', 'post', {headers: {'Authorization': `Bearer ${BEARER_TOKEN}`}})
 
   async function Logout(){
     await fetchData()
-    setUserData({token: '', role: null, permissions: {}});
+    setUserData({ token: '', role: null, userDetails: {}, permissions: {} });
+    setApplicationInfo(applicationInformation)
     navigate('/login');
   }
 

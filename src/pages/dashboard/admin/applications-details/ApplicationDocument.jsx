@@ -7,7 +7,8 @@ import { MdMessage } from "react-icons/md";
 import Button from "../../../../components/ui/Button";
 import StudentsDocumentData from "./StudentsDocumentData";
 import useAxios from "../../../../hooks/UseAxios";
-import UploadDocumentPopup from "./UploadDocumentPopup";
+import UploadDocumentPopup from "./popup/UploadDocumentPopup";
+import AddRemark from "./popup/AddRemark";
 
 const formatDate = (dateString) => {
   if (!dateString) return "N/A";
@@ -50,6 +51,7 @@ const ApplicationDocument = () => {
   const [loadingThumbnails, setLoadingThumbnails] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupData, setPopupData] = useState({ fieldlabel: "", fieldName: "" });
+  const [isRemarkOpen, setIsRemarkOpen] = useState(false);
 
   const fetchThumbnails = async () => {
     if (!getUploadedDocumentData?.length) return;
@@ -122,9 +124,16 @@ const ApplicationDocument = () => {
         </div>
       )}
 
+      {isRemarkOpen && (
+        <div className="fixed inset-0 bg-black bg-[#1f1e1e80] flex items-start justify-end z-50">
+          <AddRemark onClose={() => setIsRemarkOpen(false)} />
+        </div>
+      )}
+
       <div className="flex justify-end pb-5 pr-5">
         <Button
           text="Add Remark"
+          onclick={() => setIsRemarkOpen(true)}
           icon={<MdMessage className="h-4 w-4 mr-1.5" />}
           classname="[&]:rounded-full [&]:px-5 [&]:py-2.5 flex items-center"
         />
