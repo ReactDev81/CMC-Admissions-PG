@@ -68,7 +68,7 @@ const Applications = () => {
         console.log(`Action: ${action}`, rowData);
 
         if(action === 'edit'){
-            navigate(`/application/${rowData}`);
+            navigate(`/admin/application/${rowData}`);
         }
 
         if(action === 'download'){

@@ -33,7 +33,7 @@ const RecentApplications = () => {
             <div className="flex justify-between items-center bg-white-default p-5 rounded-lg">
                 <h2 className="text-black-default">Recent Applications</h2>
                 <OutlineButton
-                    onclick={() => navigate('/applications')}
+                    onclick={() => navigate('/admin/applications')}
                     text="View All"
                     className="text-primary-default border-primary-default px-6 py-2"
                 />

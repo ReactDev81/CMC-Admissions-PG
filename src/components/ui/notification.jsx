@@ -2,6 +2,8 @@ import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { RxCross2 } from "react-icons/rx"; 
+import { IoNotifications } from "react-icons/io5";
+import { RiZzzFill } from "react-icons/ri";
 import { MdNotifications } from "react-icons/md";
 import { UserContext } from "../../context/UserContext";
 import UseAxios from "../../hooks/UseAxios";
@@ -47,7 +49,28 @@ const Notification = () => {
 
                 {isPasswordReset && Array.isArray(data) && (() => {
                     const unreadNotifications = data.filter(notification => !notification.read_at);
-                    const visibleNotifications = unreadNotifications.slice(0, 3); 
+                    if (unreadNotifications.length === 0) {
+                        return(
+                            <div className="flex flex-col justify-center items-center text-center p-5">
+                                <div className="relative bg-white-300 rounded-full p-4">
+                                    <IoNotifications
+                                        size={100}
+                                        color="#92929242"
+                                    />
+                                    <RiZzzFill className="absolute size-12 top-1 -left-2" color="#92929242" />
+                                    <div className="h-8 w-8 bg-black-default text-white-default justify-center items-center rounded-full flex absolute top-[30px] right-6">0</div>
+                                </div>
+                                <p className="text-black-default font-semibold text-xl pt-4 pb-2">
+                                    Currently, nothing to report!
+                                </p>
+                                <p className="text-gray-500">
+                                    This area will light up with new notifications once there's
+                                    activity in your workspaces.
+                                </p>
+                            </div>
+                        )
+                    }
+                    const visibleNotifications = unreadNotifications.slice(0, 3);
                     return (
                         <>
                             {visibleNotifications.map(notification => (
@@ -76,17 +99,15 @@ const Notification = () => {
                             {unreadNotifications.length > 3 && (
                                 <div className="m-4">
                                     <Button 
-                                        onclick={() => navigate('/notifications')}
+                                        onClick={() => navigate('/notifications')} 
                                         text='View All' 
                                         classname="w-full [&]:bg-primary-300 [&]:py-2" 
                                     />
                                 </div>
-                                
                             )}
                         </>
                     );
                 })()}
-
             </ul>
         </div>
     );

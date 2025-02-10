@@ -1,6 +1,5 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../context/UserContext';
 import UseAxios from "../hooks/UseAxios";
 import StudentHeader from "../components/common/StudentHeader";
 import Footer from "../components/common/Footer";
@@ -9,8 +8,7 @@ import OutlineButton from "../components/ui/OutlineButton";
 
 const Home  = () => {
 
-    const { userData } = useContext(UserContext);
-    const {data, fetchData} = UseAxios( '/pages/1', "get", { headers: { Authorization: `Bearer ${userData.token}` } });
+    const {data, fetchData} = UseAxios( '/pages/1', "get");
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -25,10 +23,10 @@ const Home  = () => {
                     <OutlineButton onclick={() => navigate('/login')} className="text-primary-default border-primary-default px-6 py-2 w-full" text="Login" />
                     <Button onclick={() => navigate('/pg-registration-form')} classname="[&]:rounded-full w-full" text="Submit Application" />
                 </div>
-                <div className="text-black-default py-10">
-                    {data && 
-                        <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
-                    }
+                <div className="home-content text-black-default py-10">
+                    {data && data.content && (
+                        <div dangerouslySetInnerHTML={{ __html: data.content }} />
+                    )}
                 </div>
             </div>
             <Footer className="max-w-lg mx-auto [&]:px-0" />

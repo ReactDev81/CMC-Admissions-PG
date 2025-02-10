@@ -21,19 +21,13 @@ const formatDocumentName = (name) => {
 const fullConfig = resolveConfig(tailwindConfig);
 
 const StatusColors = {
-    // draft: fullConfig.theme.colors.black.default,
-    // submitted: fullConfig.theme.colors.info.default,
     pending: fullConfig.theme.colors.warning.default,
     fulfilled: fullConfig.theme.colors.success.default,
-    // rejected: fullConfig.theme.colors.danger.default,
 };
 
 const StatusLightColors = {
-    // draft: fullConfig.theme.colors.black['100'],
-    // submitted: fullConfig.theme.colors.info['100'],
     pending: fullConfig.theme.colors.warning['300'],
     fulfilled: fullConfig.theme.colors.success['300'],
-    // rejected: fullConfig.theme.colors.danger['300'],
 };
 
 const AddRemark = ({ onClose }) => {
@@ -97,12 +91,20 @@ const AddRemark = ({ onClose }) => {
         </div>
       </header>
 
-      <main className="overflow-y-scroll h-full">
+      <main className="chat-box overflow-y-scroll h-full">
 
         {/* Message Box */}
-        <div className="p-5 border-b bg-white-300 overflow-y-scroll max-h-[600px]">
+        <div className="chat-message-box p-5 border-b bg-white-300 overflow-y-scroll max-h-[600px]">
+
+          {/* Load More Button */}
+          {getAllRemark.data && visibleMessages < getAllRemark.data.length && (
+            <div className="text-center py-4">
+              <Button onclick={loadMoreMessages} text="Load More...." classname="[&]:rounded-full [&]:px-6 [&]:py-2.5" />
+            </div>
+          )}
+
           {getAllRemark.loading ? <Loader /> : getAllRemark.data &&
-            getAllRemark.data.slice().reverse().slice(0, visibleMessages).map((remark, index) => {
+            getAllRemark.data.slice(0, visibleMessages).reverse().map((remark, index) => {
               const formattedTime = format(new Date(remark.created_at), "h:mm a");
               return(
                 <div key={index} className={`flex flex-row gap-2.5 w-full mb-4 ${remark.requested_documents ? 'justify-start' : 'flex-row-reverse'}`}>
@@ -134,12 +136,6 @@ const AddRemark = ({ onClose }) => {
             })
           }
 
-          {/* Load More Button */}
-        {getAllRemark.data && visibleMessages < getAllRemark.data.length && (
-          <div className="text-center py-4">
-            <Button onclick={loadMoreMessages} text="Load More...." classname="[&]:rounded-full [&]:px-6 [&]:py-2.5" />
-          </div>
-        )}
         </div>
 
         {/* Send Message */}
