@@ -4,6 +4,7 @@ import SelectField from '../../../components/forms/SelectField'
 const NeetPgDetails = ({register, control}) => {
 
   const ChurchBody = [
+    {value: "Church of South India", label: "Church of South India" },
     {value: "SYNODICAL BOARD OF HEALTH SERVICES CHURCH OF NORTH INDIA", label: "SYNODICAL BOARD OF HEALTH SERVICES CHURCH OF NORTH INDIA" },
     {value: "CHURCH OF SOUTH INDIA", label: "CHURCH OF SOUTH INDIA"},
     {value: "COUNCIL OF BAPTIST CHURCHES IN NORTH EAST INDIA", label: "COUNCIL OF BAPTIST CHURCHES IN NORTH EAST INDIA"},

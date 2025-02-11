@@ -99,7 +99,7 @@ const Notification = () => {
                             {unreadNotifications.length > 3 && (
                                 <div className="m-4">
                                     <Button 
-                                        onClick={() => navigate('/notifications')} 
+                                        onclick={() => navigate(userData.role === "student" ? '/student/notifications' : '/admin/notifications')} 
                                         text='View All' 
                                         classname="w-full [&]:bg-primary-300 [&]:py-2" 
                                     />

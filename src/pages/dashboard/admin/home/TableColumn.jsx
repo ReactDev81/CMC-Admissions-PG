@@ -37,7 +37,7 @@ const TableColumn = [
             const colors = ['#3a6052', '#1ABE17', '#48A3D7', '#C95E9E', '#1ABE17'];
             const color = colors[row.index % colors.length];
             return(
-                <Link to={`/application/${row.original.id}`} className="flex items-center gap-2.5">
+                <Link to={`/admin/application/${row.original.id}`} className="flex items-center gap-2.5">
                     <div className="h-10 w-10 rounded-full flex items-center justify-center text-white-default font-semibold"
                         style={{ backgroundColor: color }}
                     >

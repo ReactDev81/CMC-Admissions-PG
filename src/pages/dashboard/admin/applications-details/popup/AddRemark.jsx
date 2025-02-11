@@ -46,7 +46,7 @@ const AddRemark = ({ onClose }) => {
   useEffect(() => {
     fetchData();
     getAllRemark.fetchData();
-  }, []);
+  }, [askDocuments.status]);
 
   console.log(getAllRemark.data);
 
@@ -77,7 +77,6 @@ const AddRemark = ({ onClose }) => {
       reset();
       clearErrors();
       setValue("requested_documents", []);
-      fetchData();
     }
   }, [askDocuments.loading])
 

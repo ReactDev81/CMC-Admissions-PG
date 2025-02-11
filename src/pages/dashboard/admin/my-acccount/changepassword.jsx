@@ -14,7 +14,7 @@ const ChangePassword = () => {
   const [showConfirmPassword, setConfirmPassword] = useState(false);
 
   const { userData } = useContext(UserContext);
-  const {data, loading, status, error, fetchData} = UseAxios("/update-password", "post", {headers: { Authorization: `Bearer ${userData.token}` },});
+  const { data, loading, status, error, fetchData } = UseAxios("/update-password", "post", {headers: { Authorization: `Bearer ${userData.token}` },});
 
   const {register, handleSubmit, reset, watch, formState: { errors }} = useForm();
   const password = useRef({});

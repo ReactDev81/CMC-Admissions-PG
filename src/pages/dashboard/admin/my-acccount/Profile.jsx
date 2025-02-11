@@ -1,5 +1,6 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef  } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { UserContext } from "../../../../context/UserContext";
 import useAxios from "../../../../hooks/UseAxios";
 import InputField from "../../../../components/forms/Inputfield"
@@ -8,16 +9,13 @@ import Button from "../../../../components/ui/Button";
 
 const Profile = () => {
 
-    const defaultImage = "/assets/avatars/user.png";
     const { userData } = useContext(UserContext);
-
     const getUserDetails = useAxios(`/users/${userData.userDetails.id}`, 'get', { headers: { Authorization: `Bearer ${userData.token}` } })
+    const updateUserDetails = useAxios('/profile', 'post', { headers: { Authorization: `Bearer ${userData.token}` } })
 
     useEffect(() => {
         getUserDetails.fetchData();
-    }, [])
-
-    console.log('data', getUserDetails.data);
+    }, [updateUserDetails.status])
 
     const {register, handleSubmit, setError, clearErrors, reset, formState: { errors } } = useForm({
         defaultValues: {
@@ -27,22 +25,42 @@ const Profile = () => {
         }
     });
 
-    const [image, setImage] = useState(defaultImage);
+    const [image, setImage] = useState("/assets/avatars/user.png");
+    const [imageFile, setImageFile] = useState(null);
+    const fileInputRef = useRef(null);
+
+    useEffect(() => {
+        if (getUserDetails?.data?.profile_pic_url) {
+            setImage(getUserDetails.data.profile_pic_url);
+        }
+    }, [getUserDetails.data]); 
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            setImage(URL.createObjectURL(file)); 
-            clearErrors("image"); 
+            setImage(URL.createObjectURL(file));
+            setImageFile(file);
+            clearErrors("image");
+    
+            // Reset the input value to allow re-uploading the same image
+            e.target.value = "";
         }
     };
 
+    // Handle Image Remove
     const handleImageRemove = () => {
-        setImage(defaultImage);
+        setImage(getUserDetails?.data?.profile_pic_url || "/assets/avatars/user.png");
+        setImageFile(null);
+
+        // Reset the file input
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
     };
 
-    const onSubmit = (data) => {
-        if (image === defaultImage) {
+    // Form Submission
+    const onSubmit = (formData) => {
+        if (!imageFile && image === "/assets/avatars/user.png") {
             setError("image", {
                 type: "manual",
                 message: "Image is required",
@@ -50,10 +68,31 @@ const Profile = () => {
             return;
         }
 
-        console.log("Form submitted", data);
-        reset();
-        setImage(defaultImage);
+        const formDataToSend = new FormData();
+        formDataToSend.append("name", formData.name);
+        if (imageFile) {
+            formDataToSend.append("image", imageFile);
+        }
+
+        updateUserDetails.fetchData({
+            data: formDataToSend,
+            headers: {
+                Authorization: `Bearer ${userData.token}`,
+                "Content-Type": "multipart/form-data",
+            },
+        });
+
+        console.log("Form submitted", formDataToSend);
     };
+
+    useEffect(() => {
+        if(updateUserDetails.status === 200){
+            toast.success(updateUserDetails.data.message);
+            reset();
+            setImage(getUserDetails?.data?.profile_pic_url || "/assets/avatars/user.png");
+            setImageFile(null);
+        }
+    }, [updateUserDetails.loading])
 
     return(
         <form onSubmit={handleSubmit(onSubmit)} className="max-w-[520px] w-full rounded-md bg-white-default shadow-flex p-5">
@@ -67,11 +106,10 @@ const Profile = () => {
                     />
                     <input
                         type="file"
+                        ref={fileInputRef}
                         className="hidden"
                         id="myprofile"
-                        {...register("image", {
-                            required: { value: true, message: "Image is Required" },
-                        })}
+                        {...register("image")}
                         onChange={handleImageChange}
                     />
                     {errors.image && (<p className="text-red-700 text-sm font-semibold w-96 mt-1">{errors.image.message}</p>)}

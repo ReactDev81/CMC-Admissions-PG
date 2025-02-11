@@ -11,7 +11,6 @@ import { ApplicationContext } from "../../../../../context/ApplicationContext";
 import useAxios from "../../../../../hooks/UseAxios";
 import Button from "../../../../../components/ui/Button";
 import Loader from "../../../../../components/ui/Loader";
-import RemarkFileUpload from "./RemarkFileUpload";
 
 const formatDocumentName = (name) => {
     return name
@@ -33,30 +32,56 @@ const StatusLightColors = {
 
 const ApplicantRemark = ({ onClose }) => {
 
+    const {register, handleSubmit, reset, setValue, formState: { errors }} = useForm({
+        defaultValues: {
+            message: "",
+        },
+    });
     const { userData } = useContext(UserContext);
     const { applicationInfo } = useContext(ApplicationContext);
-    const [isRemarkFileUploadOpen, setIsRemarkFileUpload] = useState(false);
-    const getAllRemark = useAxios(`/applications/${applicationInfo.application_id}/remarks`, 'get', {headers: { Authorization: `Bearer ${userData.token}` },});
-    const askDocuments = useAxios(`/applications/${applicationInfo.application_id}/remarks`, 'post', {headers: { Authorization: `Bearer ${userData.token}` },});
+    const getAllRemark = useAxios(`/applications/${applicationInfo.application_id}/remarks`, "get", { headers: { Authorization: `Bearer ${userData.token}` } });
+    
+    const [visibleMessages, setVisibleMessages] = useState(5);
+    const [uploadedFiles, setUploadedFiles] = useState({});
+    const [selectedRemarkId, setSelectedRemarkId] = useState(null);
 
-    const [visibleMessages, setVisibleMessages] = useState(5); // Initially show 6 messages
+    const askDocuments = useAxios(`/applications/${applicationInfo.application_id}/remarks/${selectedRemarkId}/respond`, "post", 
+        {headers: { 
+            Authorization: `Bearer ${userData.token}` ,
+            "Content-Type": "multipart/form-data",
+        }}
+    );
+
+    // Function to handle Reply button click
+    const handleReplyClick = (remarkId, requestedDocuments) => {
+        setSelectedRemarkId(remarkId);
+        // Reset the form fields when a new remark is selected
+        const resetFields = requestedDocuments.reduce((acc, field) => {
+            acc[field] = null;
+            return acc;
+        }, {});
+        reset(resetFields);
+    };
 
     const loadMoreMessages = () => {
-        setVisibleMessages((prev) => prev + 6); // Show 6 more messages on each click
+        setVisibleMessages((prev) => prev + 6);
     };
 
     useEffect(() => {
         getAllRemark.fetchData();
-    }, []);
+    }, [askDocuments.status]);
 
-    console.log(getAllRemark.data);
-
-    const {register, handleSubmit, reset, formState: { errors }} = useForm();
+    const handleFileChange = (event, field) => {
+        const file = event.target.files[0];
+        if (file) {
+            setUploadedFiles((prev) => ({ ...prev, [field]: file.name }));
+            setValue(field, file);
+        }
+    };
 
     const onSubmit = async (formData) => {
-        await askDocuments.fetchData({
-            data: formData,
-        })
+        console.log("Form submitted successfully!", formData);
+        await askDocuments.fetchData({data: formData});
     };
 
     useEffect(() => {
@@ -67,26 +92,19 @@ const ApplicantRemark = ({ onClose }) => {
     }, [askDocuments.loading])
 
     return (
-        <>
-            {isRemarkFileUploadOpen && (
-                <div className="fixed inset-0 bg-black bg-[#1f1e1e80] flex items-center justify-center z-50">
-                    <RemarkFileUpload onClose={() => setIsRemarkFileUpload(false)} />
+        <div className="max-w-[500px] h-full w-full bg-white-default">
+
+            <header className="w-full border-b">
+                <div className="px-5 py-3 flex items-center gap-5">
+                    <IoCloseSharp onClick={onClose} className="text-black-default h-5 w-5 cursor-pointer" />
+                    <h4 className="text-black-default capitalize">Add Remarks</h4>
                 </div>
-            )}
+            </header>
 
-            <div className="max-w-[500px] h-full w-full bg-white-default">
+            <main className="chat-box overflow-y-scroll h-full">
 
-                <header className="w-full border-b">
-                    <div className="px-5 py-3 flex items-center gap-5">
-                        <IoCloseSharp onClick={onClose} className="text-black-default h-5 w-5 cursor-pointer" />
-                        <h4 className="text-black-default capitalize">Add Remarks</h4>
-                    </div>
-                </header>
-
-                <main className="chat-box overflow-y-scroll h-full">
-
-                    {/* Message Box */}
-                    <div className="chat-message-box p-5 border-b bg-white-300 overflow-y-scroll max-h-[600px]">
+                {/* Message Box */}
+                <div className="chat-message-box p-5 border-b bg-white-300 overflow-y-scroll max-h-[600px]">
 
                     {/* Load More Button */}
                     {getAllRemark.data && visibleMessages < getAllRemark.data.length && (
@@ -102,7 +120,7 @@ const ApplicantRemark = ({ onClose }) => {
                         return(
                             <div key={index} className={`flex flex-row gap-2.5 w-full mb-4 ${isReviewer ? 'justify-start' : 'flex-row-reverse'}`}>
                                 <img
-                                    src={remark.sender.profile_pic_url ? remark.sender.profile_pic_url : "/assets/avatars/avatar-1.png"}
+                                    src={remark.sender.profile_pic_url || "/assets/avatars/avatar-1.png"}
                                     alt="Sender Profile"
                                     className="h-10 w-10 rounded-full object-cover"
                                 />
@@ -122,7 +140,11 @@ const ApplicantRemark = ({ onClose }) => {
                                             </p>
                                         </div>
                                         {isReviewer && remark.status == "pending" &&
-                                            <Button text="Reply" classname="[&]:bg-info-default [&]:border-0 [&]:rounded-full [&]:px-3 [&]:py-1 [&]:text-sm" />
+                                            <Button 
+                                                onclick={() => handleReplyClick(remark.id, remark.requested_documents)}
+                                                text="Reply" 
+                                                classname="[&]:bg-info-default [&]:border-0 [&]:rounded-full [&]:px-3 [&]:py-1 [&]:text-sm" 
+                                            />
                                         }
                                         
                                         <p className={`text-black-300 text-[10px] font-normal ${isReviewer ? 'text-left' : 'text-right'}`}>{formattedTime}</p>
@@ -132,61 +154,66 @@ const ApplicantRemark = ({ onClose }) => {
                         )
                     })}
 
-                    </div>
+                </div>
 
-                    {/* Send Message */}
-                    <form onSubmit={handleSubmit(onSubmit)} className="p-5 h-96">
+                {/* Send Message */}
+                <form onSubmit={handleSubmit(onSubmit)} className="p-5 h-96">
 
-                        <label className="mb-2">Select Fields/Documents</label>
-
-                        {getAllRemark.data && getAllRemark.data.map((remark, index) => {
-                            return(
-                                remark.requested_documents && remark.status == "pending" &&
-                                <div 
-                                    className='flex flex-wrap items-center gap-2 mb-4 mt-4' 
-                                    key={index} 
-                                    remark_id={remark.id}
-                                >
-                                    {remark.requested_documents.map((field, i) => {
-                                        return(
-                                            <div 
-                                                className='flex items-center gap-x-2 py-1.5 px-4 rounded-full bg-black-100 text-black-300 text-base cursor-pointer' 
-                                                key={i}
-                                                onClick={() => setIsRemarkFileUpload(true)}
+                    <label className="mb-2">Select Fields/Documents</label>
+                    {selectedRemarkId && getAllRemark.data.map((remark) => {
+                        if (remark.id === selectedRemarkId && remark.requested_documents && remark.status === "pending") {
+                            return (
+                                <div key={remark.id} className="flex flex-wrap items-center gap-2 mb-4 mt-4" remark_id={remark.id}>
+                                    {remark.requested_documents.map((field, i) => (
+                                        <div key={i}>
+                                            <label 
+                                                className={`flex items-center w-max gap-x-2 py-1.5 px-4 rounded-full text-base cursor-pointer ${
+                                                    uploadedFiles[field] ? 'text-info-default bg-info-100' : 'text-black-300 bg-black-100'
+                                                }`}
+                                                htmlFor={field}
                                             >
                                                 <FiPaperclip size={16} />
-                                                {formatDocumentName(field)}
-                                            </div>
-                                        )
-                                    })}
+                                                {uploadedFiles[field] || formatDocumentName(field)}
+                                                <input 
+                                                    id={field} 
+                                                    type="file" 
+                                                    className="hidden"  
+                                                    onChange={(e) => handleFileChange(e, field)}
+                                                />
+                                            </label>
+                                        </div>
+                                    ))}
                                 </div>
-                            )
-                        })}
+                            );
+                        }
+                    })}
 
-                        {/* Textarea Field */}
-                        <div className="mb-4">
-                            <textarea
-                                rows="3"
-                                className="w-full rounded-xl p-4 border text-black-300 block mb-4 outline-none"
-                                placeholder="Add Remark..."
-                                {...register("message", { required: "Message is required" })}
-                            />
-                            {errors.message && (
-                                <p className="bg-red-100 py-2.5 px-5 text-red-800 mt-2 rounded-md font-normal">
-                                    {errors.message.message}
-                                </p>
-                            )}
-                        </div>
+                    <div className="mb-4">
+                        <textarea
+                            rows="3"
+                            className="w-full rounded-xl p-4 border text-black-300 block mb-4 outline-none"
+                            placeholder="Add Remark..."
+                            {...register("message", { required: "Message is required" })}
+                        />
+                        {errors.message && (
+                            <p className="bg-red-100 py-2.5 px-5 text-red-800 mt-2 rounded-md font-normal">
+                                {errors.message.message}
+                            </p>
+                        )}
+                    </div>
 
-                        {/* Submit Button */}
-                        <div className="text-right">
-                            <Button text={askDocuments.loading ? "Sending..." : 'Send'} classname="[&]:rounded-full [&]:px-8 [&]:py-2" />
-                        </div>
+                    {askDocuments.error && <p className="bg-red-100 py-2.5 px-5 text-red-800 mt-2 rounded-md font-normal" dangerouslySetInnerHTML={{ __html: askDocuments.error }}></p>}
 
-                    </form>
-                </main>
-            </div>
-        </>
+                    <div className="text-right">
+                        <Button 
+                            text={askDocuments.loading ? "Sending..." : 'Send'} 
+                            classname="[&]:rounded-full [&]:px-8 [&]:py-2" 
+                        />
+                    </div>
+
+                </form>
+            </main>
+        </div>
     );
 };
 
