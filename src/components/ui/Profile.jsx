@@ -9,6 +9,13 @@ import { ApplicationContext } from '../../context/ApplicationContext';
 import useAxios from "../../hooks/UseAxios";
 import DropdownLinkBox from "./DropdownLinkBox";
 
+const formatDocumentName = (name) => {
+  return name
+  .replace(/_/g, " ")
+  .replace(/-/g, " ")
+  .replace(/\b\w/g, (char) => char.toUpperCase()); 
+};
+
 const Profile = () => {
 
   const LinkLists = [
@@ -37,8 +44,7 @@ const Profile = () => {
   const {userData, setUserData} = useContext(UserContext);
   const {setApplicationInfo} = useContext(ApplicationContext);
   const navigate = useNavigate();
-  const BEARER_TOKEN = userData?.token;
-  const { fetchData } = useAxios('/logout', 'post', {headers: {'Authorization': `Bearer ${BEARER_TOKEN}`}})
+  const { fetchData } = useAxios('/logout', 'post', {headers: {'Authorization': `Bearer ${userData?.token}`}})
 
   async function Logout(){
     await fetchData()
@@ -48,33 +54,35 @@ const Profile = () => {
   }
 
   return (
-    <>
-      <div className="group relative cursor-pointer">
-          <div className="flex flex-wrap gap-3">
-            <img className="object-contain" src="/assets/images/profile.png" alt="User"/>
-            <div>
-              <h5 className="text-black-default font-medium leading-5">Alen Miller</h5>
-              <p className="text-sm font-normal text-black-200 flex items-center">
-                UI Designer
-                <span className="text-xl">
-                  <RiArrowDownSLine />
-                </span>
-              </p>
-            </div>
-          </div>
-          <DropdownLinkBox 
-            lists={LinkLists} 
-            buttonItem={
-              <li>
-                <button onClick={Logout} className="flex flex-wrap items-center gap-[10px] p-2.5 group/item">
-                  <SlLogout className="group-hover/item:text-primary-default rotate-180 ml-[3px]"  />
-                  <span className="text-base font-medium text-black-300 group-hover/item:text-primary-default">Logout</span>
-                </button>
-              </li>
-            }
+    <div className="group relative cursor-pointer">
+        <div className="flex items-center flex-wrap gap-2.5">
+          <img 
+            className="w-8 h-8 rounded-full object-contain" 
+            src={userData?.userDetails.profile_pic_url ? userData?.userDetails.profile_pic_url : '/assets/avatars/user.png'}
+            alt="User"
           />
-      </div>
-    </>
+          <div>
+            <h5 className="text-black-default font-medium leading-5">{userData?.userDetails.name}</h5>
+            <p className="text-sm font-normal text-black-200 flex items-center">
+              {userData ? formatDocumentName(userData?.role) : ''}
+              <span className="text-xl">
+                <RiArrowDownSLine />
+              </span>
+            </p>
+          </div>
+        </div>
+        <DropdownLinkBox 
+          lists={LinkLists} 
+          buttonItem={
+            <li>
+              <button onClick={Logout} className="flex flex-wrap items-center gap-[10px] p-2.5 group/item">
+                <SlLogout className="group-hover/item:text-primary-default rotate-180 ml-[3px]"  />
+                <span className="text-base font-medium text-black-300 group-hover/item:text-primary-default">Logout</span>
+              </button>
+            </li>
+          }
+        />
+    </div>
   );
 };
 

@@ -33,16 +33,19 @@ const TableColumn = ({ onAction, handleStatusChange }) => [
             const color = colors[cell.row.index % colors.length];
             return(
                 <div className="flex items-center gap-2.5">
-                    {/* <img
-                        src={cell.row.original.image}
-                        className="h-10 w-10 rounded-full object-cover"
-                        alt={`${cell.row.original.name}`}
-                    /> */}
-                    <div className="h-10 w-10 rounded-full flex items-center justify-center text-white-default font-semibold"
-                        style={{ backgroundColor: color }}
-                    >
-                        {firstLetter}
-                    </div>
+                    {cell.row.original.profile_picture_url ?
+                            <img
+                                src={cell.row.original.profile_picture_url}
+                                className="h-10 w-10 rounded-full object-cover"
+                                alt={`${cell.row.original.name}`}
+                            />
+                        :
+                        <div className="h-10 w-10 rounded-full flex items-center justify-center text-white-default font-semibold"
+                            style={{ backgroundColor: color }}
+                        >
+                            {firstLetter}
+                        </div>
+                    }
                     <span>{cell.row.original.name}</span>
                 </div>
             )

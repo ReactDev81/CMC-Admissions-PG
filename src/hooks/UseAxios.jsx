@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AxiosInstance from '../api/AxiosInstance';
 
 const useAxios = (initialUrl = null, method = 'get', options = {}) => {
@@ -6,6 +7,8 @@ const useAxios = (initialUrl = null, method = 'get', options = {}) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [status, setStatus] = useState(null);
+
+    const navigate = useNavigate();
 
     const fetchData = useCallback(
         async (requestData = {}) => {
@@ -25,8 +28,14 @@ const useAxios = (initialUrl = null, method = 'get', options = {}) => {
                 return response; // Ensure fetchData returns response
             } catch (err) {
                 const errorMessage = err.response?.data?.message || 'Something went wrong. Please try again.';
-                setStatus(err.response?.status || null);
+                const statusCode = err.response?.status || null;
+
+                setStatus(statusCode);
                 setError(errorMessage);
+
+                if (statusCode === 401) {
+                    navigate('/login'); 
+                }
             } finally {
                 setLoading(false);
             }

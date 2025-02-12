@@ -24,6 +24,9 @@
     text-decoration: underline;
     color:theme('colors.info.default');
 }
+.home-content h1, .home-content h2, .home-content h3, .home-content h4, .home-content h5, .home-content h6{
+    margin-bottom: 10px;
+}
 /* home-content - end */
 
 .rte-floatpanel-paragraphop{

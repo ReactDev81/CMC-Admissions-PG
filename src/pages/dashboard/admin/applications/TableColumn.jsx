@@ -36,11 +36,19 @@ const TableColumn = ({onAction, toggleMenu, menuOpen}) => [
             const color = colors[row.index % colors.length];
             return(
                 <Link to={`/admin/application/${row.original.id}`} className="flex items-center gap-2.5">
-                    <div className="h-10 w-10 rounded-full flex items-center justify-center text-white-default font-semibold"
-                        style={{ backgroundColor: color }}
-                    >
-                        {firstLetter}
-                    </div>
+                    {row.original.applicant.profile_picture_url ?
+                        <img
+                            src={row.original.applicant.profile_picture_url}
+                            className="h-10 w-10 rounded-full object-cover"
+                            alt={`${row.original.name}`}
+                        /> 
+                    :
+                        <div className="h-10 w-10 rounded-full flex items-center justify-center text-white-default font-semibold"
+                            style={{ backgroundColor: color }}
+                        >
+                            {firstLetter}
+                        </div>
+                    }
                     <span>{row.original.name}</span>
                 </Link>
             )

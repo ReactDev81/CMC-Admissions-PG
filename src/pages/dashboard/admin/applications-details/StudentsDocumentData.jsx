@@ -1,4 +1,5 @@
 import OutlineButton from '../../../../components/ui/OutlineButton' 
+
 const StudentsDocumentData = ({document, name, date, status, isUploaded, id, documentId, onVerifyStatus, onRemove, onUpload}) => {
 
   const handleStatusChange = (e) => {

@@ -1,13 +1,14 @@
 import { useContext, useState, useEffect, useRef } from "react";
+import { toast } from 'react-toastify';
 import { useForm } from "react-hook-form";
 import { RxCross2 } from "react-icons/rx";
 import { AiOutlineEyeInvisible, AiOutlineEye} from "react-icons/ai";
+import { UserContext } from "../../../../../context/UserContext";
+import useAxios from "../../../../../hooks/UseAxios";
 import Button from "../../../../../components/ui/Button";
 import InputField from "../../../../../components/forms/Inputfield";
 import SelectField from "../../../../../components/forms/SelectField";
 import ToggleButton from "../../../../../components/forms/ToggleButton";
-import { UserContext } from "../../../../../context/UserContext";
-import useAxios from "../../../../../hooks/UseAxios";
 import Checkbox from "../../../../../components/forms/Checkbox";
 
 const AddNewUser = ({onClose}) => {
@@ -64,19 +65,33 @@ const AddNewUser = ({onClose}) => {
 
     const { userData } = useContext(UserContext);
 
-    const {data, error, status, fetchData} = useAxios(`/users`, "post", { headers: { Authorization: `Bearer ${userData.token}` }});
+    const {data, loading, error, status, fetchData} = useAxios(`/users`, "post", 
+        { 
+            headers:{ 
+                Authorization: `Bearer ${userData.token}`,
+                "Content-Type": "multipart/form-data"
+            }
+        }
+    );
 
     const onSubmit = async (formData) => {
-        await fetchData({data: {...formData, status: isEnabled}});
+        const ResetPassword = formData.force_reset_password === true ? 0 : 1;
+        await fetchData({
+            data: {
+                ...formData, 
+                status: formData.isEnabled === true ? 0 : 1, 
+                profile_pic: formData.profile_pic[0],
+                force_reset_password: ResetPassword
+            }
+        });
     }
 
     useEffect(() => {
         if(status === 201){
-            onClose(false)
+            onClose(false);
+            toast.success(data.message);
         }
-    })
-
-    console.log('formdata', data);
+    }, [loading])
 
     return (
         <div className="max-w-[670px] w-full bg-white-default rounded-md shadow-flex h-[-webkit-fill-available] overflow-y-scroll">

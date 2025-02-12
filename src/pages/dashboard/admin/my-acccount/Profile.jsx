@@ -11,7 +11,14 @@ const Profile = () => {
 
     const { userData } = useContext(UserContext);
     const getUserDetails = useAxios(`/users/${userData.userDetails.id}`, 'get', { headers: { Authorization: `Bearer ${userData.token}` } })
-    const updateUserDetails = useAxios('/profile', 'post', { headers: { Authorization: `Bearer ${userData.token}` } })
+    const updateUserDetails = useAxios('/profile', 'post', 
+        { 
+            headers: { 
+                Authorization: `Bearer ${userData.token}`,
+                "Content-Type": "multipart/form-data", 
+            } 
+        }
+    )
 
     useEffect(() => {
         getUserDetails.fetchData();
@@ -71,19 +78,17 @@ const Profile = () => {
         const formDataToSend = new FormData();
         formDataToSend.append("name", formData.name);
         if (imageFile) {
-            formDataToSend.append("image", imageFile);
+            formDataToSend.append("profile_pic", imageFile);
         }
 
         updateUserDetails.fetchData({
             data: formDataToSend,
-            headers: {
-                Authorization: `Bearer ${userData.token}`,
-                "Content-Type": "multipart/form-data",
-            },
         });
 
-        console.log("Form submitted", formDataToSend);
+        console.log("Form submitted", formData);
     };
+
+    
 
     useEffect(() => {
         if(updateUserDetails.status === 200){

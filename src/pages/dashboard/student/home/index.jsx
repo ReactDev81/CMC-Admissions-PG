@@ -1,17 +1,21 @@
 import { useContext, useEffect, useState } from "react";
 import { LuUser } from "react-icons/lu";
-import { RxCross2 } from "react-icons/rx";
 import { GoChecklist } from "react-icons/go";
 import { HiOutlineDocumentDuplicate } from "react-icons/hi2";
 import { UserContext } from "../../../../context/UserContext";
 import { ApplicationContext } from "../../../../context/ApplicationContext";
 import useAxios from "../../../../hooks/UseAxios";
-import Title from "../../../../components/ui/Title";
 import Button from "../../../../components/ui/Button";
 import UserCard from "./UserCard";
 import ResetPassword from "./ResetPassword";
 import Loader from "../../../../components/ui/Loader";
 import ApplicantRemark from "./popup/ApplicantRemark";
+
+const formatDocumentName = (name) => {
+    return name
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase()); 
+};
 
 const UserHome = () => {
 
@@ -21,14 +25,18 @@ const UserHome = () => {
     var passwordReset = userData.userDetails.password_changed;
 
     const PaymentDetails = useAxios('/pages/2', 'get');
-    const getAllRemark = useAxios(`/applications/${applicationInfo.application_id}/remarks`, 'get', {headers: { Authorization: `Bearer ${userData.token}` },});
+    const GetAllRemark = useAxios(`/applications/${applicationInfo.application_id}/remarks`, 'get', {headers: { Authorization: `Bearer ${userData.token}` }});
+    const DashboardWidget = useAxios('/dashboard', 'get', {headers: { Authorization: `Bearer ${userData.token}` }});
 
     useEffect(() => {
-        PaymentDetails.fetchData();
-        getAllRemark.fetchData();
+        Promise.all([
+            PaymentDetails.fetchData(),
+            GetAllRemark.fetchData(),
+            DashboardWidget.fetchData()
+        ]);
     }, [])
 
-    const hasPending = getAllRemark.data?.some(remark => remark.status === "pending");
+    const hasPending = passwordReset ? GetAllRemark.data && GetAllRemark.data.some(remark => remark.status === "pending") : '';
 
     return (
         !passwordReset ? <ResetPassword /> :
@@ -55,56 +63,57 @@ const UserHome = () => {
             <div className="flex">
                 <div className="min-w-[406px] pr-5">
                     <div className="flex flex-col gap-5">
-                        <UserCard
-                            className="bg-info-100"
-                            icon={
-                                <LuUser className="size-[60px] text-info-default" />
-                            }
-                            titletext={
-                                <Title
-                                    title="Aisha Sharma"
-                                    classname="font-medium [&]:text-black-300 capitalize"
-                                />
-                            }
-                            textlink="View Profile"
-                            btntext="Active"
-                            textcolor="text-parrotgreen-default"
-                            bgcolor="bg-parrotgreen-200"
-                        />
+                        {DashboardWidget.loading ? Loader : DashboardWidget.data &&
+                            DashboardWidget.data.map((widget, index) => {
 
-                        <UserCard
-                            className="bg-purple-100"
-                            icon={
-                                <GoChecklist className="size-[60px] text-purple-default" />
-                            }
-                            titletext={
-                                <Title
-                                    title="Application"
-                                    classname="font-medium [&]:text-black-300 capitalize"
-                                />
-                            }
-                            textlink="2024-1234"
-                            btntext="Completed"
-                            textcolor="text-parrotgreen-default"
-                            bgcolor="bg-parrotgreen-200"
-                        />
+                                const iconMap = {
+                                    'profile': <LuUser size={60} className="text-info-default" />,
+                                    'application': <GoChecklist size={60} className="text-purple-default" />,
+                                    'documents': <HiOutlineDocumentDuplicate size={60} className="text-warning-default" />
+                                };
 
-                        <UserCard
-                            className="bg-warning-300"
-                            icon={
-                                <HiOutlineDocumentDuplicate className="size-[60px] text-warning-default" />
-                            }
-                            titletext={
-                                <Title
-                                    title="Documents"
-                                    classname="font-medium [&]:text-black-300 capitalize"
-                                />
-                            }
-                            textlink="8 Documents"
-                            btntext="Pending"
-                            textcolor="text-warning-default"
-                            bgcolor="bg-warning-300"
-                        />
+                                const iconBgColor = {
+                                    'profile': "bg-info-100",
+                                    'application': "bg-purple-100",
+                                    'documents': "bg-warning-300"
+                                };
+
+                                const statusStyles = {
+                                    profile: {
+                                        active: { text: "text-success-default", bg: "bg-success-300" },
+                                        inactive: { text: "text-danger-default", bg: "bg-danger-300" }
+                                    },
+                                    application: {
+                                        draft: { text: "text-black-default", bg: "bg-black-100" },
+                                        submitted: { text: "text-info-default", bg: "bg-info-100" },
+                                        changes_requested: { text: "text-warning-default", bg: "bg-warning-300" },
+                                        approved: { text: "text-success-default", bg: "bg-success-300" },
+                                        rejected: { text: "text-danger-default", bg: "bg-danger-300" }
+                                    },
+                                    documents: {
+                                        pending: { text: "text-warning-default", bg: "bg-warning-300" },
+                                        complete: { text: "text-success-default", bg: "bg-success-300" }
+                                    }
+                                };
+
+                                const statusBgColor = statusStyles[widget.id]?.[widget.status].bg || { bg: "bg-gray-200" };
+                                const statusTextColor = statusStyles[widget.id]?.[widget.status].text || { text: "text-gray-700" };
+
+                                return(
+                                    <UserCard
+                                        key={index}
+                                        className={iconBgColor[widget.id]}
+                                        icon={iconMap[widget.id] || null}
+                                        titletext={widget.title}
+                                        linktext={widget.button_text}
+                                        link={widget.button_link}
+                                        btntext={formatDocumentName(widget.status)}
+                                        textcolor={statusTextColor}
+                                        bgcolor={statusBgColor}
+                                    />
+                                )
+                            })
+                        }
                     </div>
                 </div>
                 <div className="flex flex-1 bg-white-default rounded-xl shadow-flex">

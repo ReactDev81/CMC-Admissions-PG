@@ -5,6 +5,7 @@ import { UserContext } from '../context/UserContext';
 const StudentDashboard = lazy(() => import('../pages/dashboard/student/home/index'));
 const ApplicationForm = lazy(() => import('../pages/pg-registration-form/index'));
 const Profile = lazy(() => import('../pages/dashboard/student/profile/index'));
+const Notifications = lazy(() => import('../pages/dashboard/student/Notifications'));
 const PageNotFound = lazy(() => import('../pages/PageNotFound'));
 
 const StudentRoutes = () => {
@@ -20,6 +21,7 @@ const StudentRoutes = () => {
                     <>
                         <Route path="application-form" element={<ApplicationForm />} />
                         <Route path="profile" element={<Profile />} />
+                        <Route path="notifications" element={<Notifications />} />
                     </>
                 ) : <Route path="*" element={<Navigate to="/student" replace />} />}
                 

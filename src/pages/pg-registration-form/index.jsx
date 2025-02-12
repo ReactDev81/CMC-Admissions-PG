@@ -19,14 +19,14 @@ const RegistrationForm = () => {
 
   const { userData } = useContext(UserContext);
   const { applicationInfo, setApplicationInfo } = useContext(ApplicationContext);
-
-  const Token = userData.token;
   const ApplicationId = applicationInfo.application_id;
 
-  const { data, fetchData, status } = useAxios(`/applications/${ApplicationId}`, 'get', { headers: {Authorization: `Bearer ${Token}`} });
+  const { data, fetchData, status } = useAxios(`/applications/${ApplicationId}`, 'get', { headers: {Authorization: `Bearer ${userData.token}`} });
 
   useEffect(() => {
-    fetchData();
+    if(userData.token !== ''){
+      fetchData();
+    }
   }, []);
 
   useEffect(() => {

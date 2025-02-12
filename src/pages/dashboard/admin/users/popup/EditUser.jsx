@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState, useRef } from "react";
+import { toast } from 'react-toastify';
 import { useForm } from "react-hook-form";
 import { RxCross2 } from "react-icons/rx";
 import { AiOutlineEyeInvisible, AiOutlineEye} from "react-icons/ai";
@@ -17,6 +18,7 @@ const EditUser = ({ data, onClose }) => {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [isEnabled, setEnabled] = useState(false);
     const [image, setImage] = useState(defaultImage);
+    const [selectedImage, setSelectedImage] = useState(null);
 
     const { register, handleSubmit, watch, control, reset, clearErrors, formState: { errors } } = useForm({
         defaultValues: {
@@ -36,15 +38,24 @@ const EditUser = ({ data, onClose }) => {
     ];
 
     const { userData } = useContext(UserContext);
-    const { error, status, fetchData} = useAxios(`/users/${data.id}`, "put", { headers: { Authorization: `Bearer ${userData.token}` }});
+    const { error, status, loading, fetchData } = useAxios(`/users/${data.id}`, "put", 
+        { 
+            headers: { 
+                Authorization: `Bearer ${userData.token}`,
+                "Content-Type": "multipart/form-data" 
+            }
+        }
+    );
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
+            setSelectedImage(file); 
             setImage(URL.createObjectURL(file)); 
             clearErrors("avatar"); 
         }
     };
+    
     
     const handleImageRemove = () => {
         setImage(defaultImage);
@@ -72,6 +83,8 @@ const EditUser = ({ data, onClose }) => {
             ...formData,
             status: isEnabled,
             roles: [formData.roles],
+            profile_pic: selectedImage,
+            force_reset_password: formData.force_reset_password === true ? 0 : 1
         };
     
         // Remove password and confirm password fields if they are empty
@@ -87,9 +100,10 @@ const EditUser = ({ data, onClose }) => {
 
     useEffect(() => {
         if(status === 200){
-            onClose(false)
+            onClose(false);
+            toast.success(data.message);
         }
-    })
+    }, [loading])
 
     return (
     <div className="max-w-[670px] w-full bg-white-default rounded-md shadow-flex h-[-webkit-fill-available] overflow-y-scroll">
@@ -112,17 +126,17 @@ const EditUser = ({ data, onClose }) => {
                         className="h-full w-full rounded-full object-cover object-center"
                     />
                     <input
-                        id="avatar"
+                        id="profile_pic"
                         type="file"
                         className="hidden"
                         accept="image/*"
-                        {...register("avatar")}
+                        {...register("profile_pic")}
                         onChange={handleImageChange}
                     />
                 </div>
                 <div className="flex items-center gap-2.5">
                     <label
-                        htmlFor="avatar"
+                        htmlFor="profile_pic"
                         className="capitalize text-base font-medium leading-5 border rounded-full px-5 py-1.5 border-primary-default text-primary-default cursor-pointer"
                     >
                         Change

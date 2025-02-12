@@ -25,6 +25,12 @@ const StatusBgColor = {
     rejected: fullConfig.theme.colors.danger['300'],
 };
 
+const formatDocumentName = (name) => {
+    return name
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase()); 
+};
+
 const SelectStatus = () => {
 
     const { applicationInfo } = useContext(ApplicationContext);
@@ -53,7 +59,7 @@ const SelectStatus = () => {
                         className="text-base font-medium leading-5 text-center py-2 px-5 rounded-full capitalize flex items-center"
                         style={{color: StatusTextColor[data?.status], backgroundColor: StatusBgColor[data?.status]}}
                     >
-                        {data?.status}
+                        {data ? formatDocumentName(data.status) : ''}
                         <IoIosArrowDown 
                             className={`ml-2 ease-linear duration-300 group-hover:rotate-180`} 
                             color={StatusTextColor[data?.status]}
@@ -64,7 +70,7 @@ const SelectStatus = () => {
                             {['draft', 'submitted', 'changes_requested', 'approved', 'rejected'].map((status) => {
                                 return(
                                     <li key={status} className="py-1" onClick={() => updateStatus(status)}>
-                                        <span className="capitalize text-base font-medium text-black-300 hover:text-primary-default">{status}</span>
+                                        <span className="capitalize text-base font-medium text-black-300 hover:text-primary-default">{formatDocumentName(status)}</span>
                                     </li>
                                 )
                             })}

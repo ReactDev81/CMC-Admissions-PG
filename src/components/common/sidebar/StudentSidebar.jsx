@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { useNavigate, Link} from 'react-router-dom';
 import { FaHome, FaUsers, FaFileAlt} from "react-icons/fa";
-import {LuLogOut} from "react-icons/lu"; 
+import { IoNotifications } from "react-icons/io5";
 import { ImExit } from "react-icons/im";
 import { UserContext } from '../../../context/UserContext';
 import { ApplicationContext } from '../../../context/ApplicationContext';
@@ -58,6 +58,13 @@ const StudentSidebar = () => {
                             href="/student/profile"
                             text="Profile"
                             icon={<FaUsers />}
+                        />
+                    </li>
+                    <li>
+                        <SideNavLink
+                            href="/student/notifications"
+                            text="Notifications"
+                            icon={<IoNotifications  />}
                         />
                     </li>
                     <li>

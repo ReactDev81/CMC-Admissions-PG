@@ -24,8 +24,8 @@ const Login = () => {
 
     useEffect(() => {
         if (status === 200) {
-            const { token, user: { role, permissions_list: permissions, id, name, email, password_changed } } = data;
-            const userDetails = { id, name, email, password_changed };
+            const { token, user: { role, permissions_list: permissions, id, name, email, password_changed, profile_pic_url } } = data;
+            const userDetails = { id, name, email, password_changed, profile_pic_url };
             setUserData({ token, role, permissions, userDetails });
 
             const applicationId = data.user.application_id;
