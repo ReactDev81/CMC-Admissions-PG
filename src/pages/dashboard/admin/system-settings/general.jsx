@@ -10,71 +10,86 @@ import Button from "../../../../components/ui/Button";
 const General = ({ data }) => {
 
     const { userData } = useContext(UserContext);
-    const sendGeneralData = UseAxios('/settings/general', 'post', { headers: { Authorization: `Bearer ${userData.token}` } })
+    const sendGeneralData = UseAxios('/settings/general', 'post', 
+        { 
+            headers: { 
+                Authorization: `Bearer ${userData.token}` 
+            }
+        }
+    )
 
     const { register, handleSubmit, formState: { errors } } = useForm();
-
-    const [logoPreview, setLogoPreview] = useState();
-    const [faviconPreview, setFaviconPreview] = useState();
+    const [logo, setLogo] = useState();
+    const [favicon, setFavicon] = useState();
+    const [logoFile, setLogoFile] = useState(null);
+    const [faviconFile, setFaviconFile] = useState(null);
+    const fileInputRef = useRef(null);
 
     useEffect(() => {
         if (data) {
-            setLogoPreview(data.find((field) => field.key === "logo")?.value || null);
-            setFaviconPreview(data.find((field) => field.key === "favicon")?.value || null);
+            setLogo(data.find((field) => field.key === "logo")?.value || null);
+            setFavicon(data.find((field) => field.key === "favicon")?.value || null);
         }
     }, [data])
 
-    const logoInputRef = useRef(null);
-    const faviconInputRef = useRef(null);
-
-    const handleFileChange = (event, setPreview) => {
-        const file = event.target.files[0];
+    const handleImageChange = (e, type) => {
+        const file = e.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                setPreview(reader.result);
-            };
-            reader.readAsDataURL(file);
+            const imageUrl = URL.createObjectURL(file);
+            
+            if (type === "logo") {
+                setLogo(imageUrl);
+                setLogoFile(file);
+            } else {
+                setFavicon(imageUrl);
+                setFaviconFile(file);
+            }
         }
     };
+    
+    
 
-    const handleLogoChange = (event) => handleFileChange(event, setLogoPreview);
-    const handleFaviconChange = (event) => handleFileChange(event, setFaviconPreview);
-
-    const removeLogo = () => {
-        setLogoPreview(null);
-        if (logoInputRef.current) logoInputRef.current.value = "";
-    };
-
-    const removeFavicon = () => {
-        setFaviconPreview(null);
-        if (faviconInputRef.current) faviconInputRef.current.value = "";
+    const handleImageRemove = (type) => {
+        if (type === "logo") {
+            setLogo(null);
+            setLogoFile(null);
+        } else {
+            setFavicon(null);
+            setFaviconFile(null);
+        }
+    
+        // Create a new file input reference to allow re-upload
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
     };
 
     const onSubmit = (formData) => {
-        const formDataObj = new FormData();
 
-        // Append text inputs
-        data.forEach((field) => {
-            if (field.type === "text") {
-                formDataObj.append(field.key, formData[field.key]);
-            }
+        if (!faviconFile && !favicon) {
+            toast.error("Favicon is required.");
+            return;
+        }
+        
+        if (!logoFile && !logo) {
+            toast.error("Logo is required.");
+            return;
+        }
+    
+        // Create FormData object
+        const formDataToSend = new FormData();
+        formDataToSend.append("site_title", formData.site_title);
+        formDataToSend.append("site_tagline", formData.site_tagline);
+    
+        // Append files only if they exist
+        if (logoFile) formDataToSend.append("logo", logoFile);
+        if (faviconFile) formDataToSend.append("favicon", faviconFile);
+    
+        sendGeneralData.fetchData({
+            data: formDataToSend,
         });
-
-        // Append file inputs
-        if (logoInputRef.current?.files[0]) {
-            formDataObj.append("logo", logoInputRef.current.files[0]);
-        }
-        if (faviconInputRef.current?.files[0]) {
-            formDataObj.append("favicon", faviconInputRef.current.files[0]);
-        }
-
-        console.log("Submitting form:", Object.fromEntries(formDataObj.entries()));
-
-        const sendData = async() =>{
-            await sendGeneralData.fetchData({ data: formDataObj });
-        }
-        sendData();
+    
+        console.log("Form submitted", formDataToSend);
     };
 
     useEffect(() => {
@@ -101,52 +116,49 @@ const General = ({ data }) => {
                         {data.map((field) => {
                             if (field.type === "file") {
                                 const isLogo = field.key === "logo";
-                                const preview = isLogo ? logoPreview : faviconPreview;
-                                const handleChange = isLogo ? handleLogoChange : handleFaviconChange;
-                                const removeFile = isLogo ? removeLogo : removeFavicon;
-                                const inputRef = isLogo ? logoInputRef : faviconInputRef;
-
+                                const fieldName = field.key === "logo" ? "logo" : "favicon";
+                                const preview = isLogo ? logo : favicon;
                                 return (
                                     <div className="mb-5" key={field.id}>
                                         <label className="mb-2">{field.description}</label>
                                         <div className="relative">
-                                        {preview ? 
-                                            <div className="bg-black-200 flex items-center justify-center h-64 rounded-md">
-                                                <img
-                                                    src={preview}
-                                                    alt={field.description}
-                                                    className="object-contain z-10 max-w-56"
-                                                />
-                                                {preview && (
-                                                    <button
-                                                        onClick={removeFile}
-                                                        type="button"
-                                                        className="absolute top-4 right-4 p-1 bg-white-default rounded-full shadow-md z-10"
-                                                    >
-                                                        <RxCross2 className="w-4 h-4 text-gray-600" />
-                                                    </button>
-                                                )}
-                                            </div>
-                                        :
-                                            <label
-                                                htmlFor={field.key}
-                                                className="flex flex-col items-center justify-center h-64 border-dashed border-2 border-primary-200 rounded-md p-5 cursor-pointer"
-                                            >
-                                                <div className="w-full flex items-center justify-center">
-                                                    <p className="text-xl text-black-300 underline cursor-pointer">
-                                                        Upload Image
-                                                    </p>
+                                            {preview ? 
+                                                <div className="bg-black-200 flex items-center justify-center h-64 rounded-md">
+                                                    <img
+                                                        src={preview}
+                                                        alt={field.description}
+                                                        className="object-contain z-[5] max-w-56"
+                                                    />
+                                                    {preview && (
+                                                        <button
+                                                            onClick={() => handleImageRemove(fieldName)}
+                                                            type="button"
+                                                            className="absolute top-4 right-4 p-1 bg-white-default rounded-full shadow-md z-[5]"
+                                                        >
+                                                            <RxCross2 className="w-4 h-4 text-gray-600" />
+                                                        </button>
+                                                    )}
                                                 </div>
-                                                <input
-                                                    type="file"
-                                                    id={field.key}
-                                                    ref={inputRef}
-                                                    className="hidden"
-                                                    onChange={handleChange}
-                                                    accept="image/*"
-                                                />
-                                            </label>
-                                        }
+                                            :
+                                                <label
+                                                    htmlFor={field.key}
+                                                    className="flex flex-col items-center justify-center h-64 border-dashed border-2 border-primary-200 rounded-md p-5 cursor-pointer"
+                                                >
+                                                    <div className="w-full flex items-center justify-center">
+                                                        <p className="text-xl text-black-300 underline cursor-pointer">
+                                                            Upload Image
+                                                        </p>
+                                                    </div>
+                                                    <input
+                                                        type="file"
+                                                        id={field.key}
+                                                        className="hidden"
+                                                        onChange={(e) => handleImageChange(e, fieldName)}
+                                                        accept="image/*"
+                                                    />
+                                                </label>
+                                            }
+                                            {errors.image && (<p className="text-red-700 text-sm font-semibold w-96 mt-1">{errors.image.message}</p>)}
                                         </div>
                                     </div>
                                 );

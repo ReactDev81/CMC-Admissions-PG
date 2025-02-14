@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { toast } from 'react-toastify';
 import { UserContext } from "../../../../../context/UserContext";
 import UseAxios from "../../../../../hooks/UseAxios";
+import Loader from "../../../../../components/ui/Loader"
 import InputField from "../../../../../components/forms/Inputfield";
 import Checkbox from "../../../../../components/forms/Checkbox";
 import Button from "../../../../../components/ui/Button";
@@ -79,11 +80,7 @@ const Roles = () => {
                 />
             </div>
             <div className="flex flex-wrap gap-4 mb-4">
-                {getAllPermissions.loading ? (
-                        <div className="flex justify-center items-center py-4">
-                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-                        </div>
-                    ) : allPermissions && 
+                {getAllPermissions.loading ? ( <Loader /> ) : allPermissions && 
                     allPermissions.map((permission) => {
                         const formattedName = permission.name
                         .split('-') 

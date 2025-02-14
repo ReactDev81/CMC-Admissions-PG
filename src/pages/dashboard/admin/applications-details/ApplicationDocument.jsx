@@ -4,11 +4,16 @@ import { useParams } from "react-router-dom";
 import { GrDocument } from "react-icons/gr";
 import { AiOutlineFilePdf } from "react-icons/ai";
 import { MdMessage } from "react-icons/md";
+import { HiFolderDownload } from "react-icons/hi";
+import DownloadImagesAsZip from "../../../../components/DownloadImagesAsZip";
 import Button from "../../../../components/ui/Button";
 import StudentsDocumentData from "./StudentsDocumentData";
 import useAxios from "../../../../hooks/UseAxios";
 import UploadDocumentPopup from "./popup/UploadDocumentPopup";
 import AddRemark from "./popup/AddRemark";
+
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 
 const formatDate = (dateString) => {
   if (!dateString) return "N/A";
@@ -39,13 +44,13 @@ const ApplicationDocument = () => {
   const getUploadedDocumentData = getUploadedDocumentField.data;
 
   // Get uploaded document
-  const getUploadedDocument = useAxios(null, "get", {headers: { Authorization: `Bearer ${Token}` },});
+  const getUploadedDocument = useAxios(null, "get", {headers: { Authorization: `Bearer ${Token}` }});
 
   // Document verification
-  const DocumentVerfication = useAxios(null, "post", {headers: { Authorization: `Bearer ${Token}` },});
+  const DocumentVerfication = useAxios(null, "post", {headers: { Authorization: `Bearer ${Token}` }});
 
   // Remove document
-  const removeDocument = useAxios(null, "delete", {headers: { Authorization: `Bearer ${Token}` },});
+  const removeDocument = useAxios(null, "delete", {headers: { Authorization: `Bearer ${Token}` }});
 
   const [thumbnails, setThumbnails] = useState({});
   const [loadingThumbnails, setLoadingThumbnails] = useState(false);
@@ -116,7 +121,6 @@ const ApplicationDocument = () => {
       {isPopupOpen && (
         <div className="fixed inset-0 bg-black bg-[#1f1e1e80] flex items-center justify-center z-50">
           <UploadDocumentPopup
-            onClose={() => setIsPopupOpen(false)}
             fieldlabel={popupData.fieldlabel}
             fieldName={popupData.fieldName}
             onSuccess={() => getUploadedDocumentField.fetchData()}
@@ -130,11 +134,20 @@ const ApplicationDocument = () => {
         </div>
       )}
 
-      <div className="flex justify-end pb-5 pr-5">
+      <div className="flex justify-end gap-x-2 pb-5 pr-5">
+        <button onClick={() => downloadBase64Image(base64Data)}>
+          Download Image
+        </button>
+        <Button
+          text="Download All Docs.."
+          onclick={() => DownloadImagesAsZip(id, getUploadedDocumentData, Token)}
+          icon={<HiFolderDownload size={18} className="mr-1.5" />}
+          classname="[&]:rounded-full [&]:px-5 [&]:py-2.5 flex items-center"
+        />
         <Button
           text="Add Remark"
           onclick={() => setIsRemarkOpen(true)}
-          icon={<MdMessage className="h-4 w-4 mr-1.5" />}
+          icon={<MdMessage size={16} className="mr-1.5" />}
           classname="[&]:rounded-full [&]:px-5 [&]:py-2.5 flex items-center"
         />
       </div>
@@ -158,22 +171,16 @@ const ApplicationDocument = () => {
           <StudentsDocumentData
             key={field.name}
             id={field.name}
-            document={
-              docinfo?.extension === "application/pdf" ? (
-                <AiOutlineFilePdf size={80} className="text-black-200" />
-              ) : docinfo?.extension !== "application/pdf" && thumbnails[docinfo?.id] ? (
-                loadingThumbnails ? (
-                  "loading..."
-                ) : (
+            document={docinfo?.extension === "application/pdf" ? ( <AiOutlineFilePdf size={80} className="text-black-200" /> ) : 
+            docinfo?.extension !== "application/pdf" && thumbnails[docinfo?.id] ? (
+                loadingThumbnails ? ( "loading..." ) : (
                   <img
                     src={thumbnails[docinfo.id]}
                     alt={`${field.label}`}
                     className="w-20 h-20 object-cover"
                   />
                 )
-              ) : (
-                <GrDocument size={70} className="text-black-200" />
-              )
+              ) : ( <GrDocument size={70} className="text-black-200" /> )
             }
             name={field.label}
             date={docinfo ? formatDate(docinfo.created_at) : "N/A"}

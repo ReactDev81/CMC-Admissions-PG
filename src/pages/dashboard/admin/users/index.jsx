@@ -1,18 +1,18 @@
 import { useState, useEffect, Suspense, useContext} from "react";
 import { CgAddR } from "react-icons/cg";
+import { UserContext } from "../../../../context/UserContext";
+import useAxios from "../../../../hooks/UseAxios";
 import AddNewUser from "./popup/AddNewUser";
 import EditUser from "./popup/EditUser";
 import DeleteUser from "./popup/DeleteUser";
 import Button from "../../../../components/ui/Button";
-import { UserContext } from "../../../../context/UserContext";
 import UserTableContent from "./UserTableContent";
-import useAxios from "../../../../hooks/UseAxios";
 
 const Users = () => {
 
     const{ userData } = useContext(UserContext);
     const Token = userData.token;
-    const {data, fetchData} = useAxios('/users', 'get', {
+    const {data, loading, fetchData} = useAxios('/users', 'get', {
         headers: {'Authorization': `Bearer ${Token}`}
     });
 
@@ -46,24 +46,24 @@ const Users = () => {
                 />
             </div>
 
-            <Suspense fallback={<div className="text-center py-5">Loading Users...</div>}>
+            <Suspense fallback={<div className="text-center py-5 text-black-default">Loading Users...</div>}>
                 <UserTableContent data={data} onAction={handleAction} />
             </Suspense>
 
             {showAddStudents && (
-                <div className="fixed top-0 left-0 w-full h-full bg-[#1f1e1e80] flex justify-center items-center py-5">
+                <div className="fixed z-20 top-0 left-0 w-full h-full bg-[#1f1e1e80] flex justify-center items-center py-5">
                     <AddNewUser onClose={setShowAddStudents} />
                 </div>
             )}
 
             {popupType === 'view' && popupData && (
-                <div className="fixed top-0 left-0 w-full h-full bg-[#1f1e1e80] flex justify-center items-center py-5">
+                <div className="fixed z-20 top-0 left-0 w-full h-full bg-[#1f1e1e80] flex justify-center items-center py-5">
                     <EditUser data={popupData} onClose={closePopup} />
                 </div>
             )}
 
             {popupType === 'delete' && popupData && (
-                <div className="fixed top-0 left-0 w-full h-full bg-[#1f1e1e80] flex justify-center items-center py-5">
+                <div className="fixed z-20 top-0 left-0 w-full h-full bg-[#1f1e1e80] flex justify-center items-center py-5">
                     <DeleteUser onClose={closePopup} data={popupData} />
                 </div>
             )}

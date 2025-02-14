@@ -44,7 +44,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white-defaultw-full h-fit bg-white-default">
+    <header className="bg-white-defaultw-full h-fit bg-white-default shadow-flex sticky top-0 z-10">
       <div className="flex flex-wrap justify-between items-center py-4 px-5">
         <div className="left-header">
           <Breadcrumb />

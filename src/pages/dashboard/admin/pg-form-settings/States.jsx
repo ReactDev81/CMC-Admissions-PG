@@ -3,8 +3,9 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { FaPenClip } from "react-icons/fa6";
 import { FaTrashCan } from "react-icons/fa6";
-import useAxios from "../../../../hooks/UseAxios";
 import { UserContext } from "../../../../context/UserContext";
+import useAxios from "../../../../hooks/UseAxios";
+import Loader from '../../../../components/ui/Loader';
 import Button from "../../../../components/ui/Button";
 
 const States = () => {
@@ -114,21 +115,17 @@ const States = () => {
                 )}
             </form>
 
-            {getStates.loading ? (
-                <div className="flex justify-center items-center py-4">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-                </div>
-            ) : (
+            {getStates.loading ? ( <Loader /> ) : (
                 allStates && allStates.map((churchMember) => {
-                return(
-                    <div key={churchMember.id} className="px-1.5 py-2.5 flex items-center justify-between border-b">
-                        <span className="text-black-300 text-base font-normal">{churchMember.name}</span>
-                        <span className="flex items-center gap-2.5">
-                            <FaPenClip onClick={() => handleEdit(churchMember)} className="text-black-default cursor-pointer"/>
-                            <FaTrashCan onClick={() => deleteChurchMember(churchMember.id)} className="text-black-default cursor-pointer"/>
-                        </span>
-                    </div>
-                )
+                    return(
+                        <div key={churchMember.id} className="px-1.5 py-2.5 flex items-center justify-between border-b">
+                            <span className="text-black-300 text-base font-normal">{churchMember.name}</span>
+                            <span className="flex items-center gap-2.5">
+                                <FaPenClip onClick={() => handleEdit(churchMember)} className="text-black-default cursor-pointer"/>
+                                <FaTrashCan onClick={() => deleteChurchMember(churchMember.id)} className="text-black-default cursor-pointer"/>
+                            </span>
+                        </div>
+                    )
                 })
             )}
             

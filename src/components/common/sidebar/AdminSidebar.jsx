@@ -43,7 +43,7 @@ const AdminSidebar = () => {
 
   const applicationLinks = [
     { href: "/admin/applications", text: "All Applications" },
-    { href: "/admin/add-new", text: "Add New" },
+    { href: "/admin/application/addnew", text: "Add New" },
   ];
 
   return (
@@ -154,7 +154,7 @@ const AdminSidebar = () => {
             <li>
               <SideNavLink
                 href="/admin/notifications"
-                text="Notification"
+                text="Notifications"
                 icon={<MdNotificationsActive  />}
               />
             </li>

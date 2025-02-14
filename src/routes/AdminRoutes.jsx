@@ -5,6 +5,7 @@ const Users = lazy(() => import('../pages/dashboard/admin/users/index'))
 const Dashboard = lazy(() => import('../pages/dashboard/admin/home/index'))  
 const Applications = lazy(() => import('../pages/dashboard/admin/applications/index'))  
 const ApplicationDetails = lazy(() => import('../pages/dashboard/admin/applications-details/index'))
+const AddNewApplication = lazy(() => import('../pages/dashboard/admin/application-addnew/index'))
 const Reports = lazy(() => import('../pages/dashboard/admin/Reports'))  
 const Pages = lazy(() => import('../pages/dashboard/admin/pages/index'))
 const PgFormSettings = lazy(() => import('../pages/dashboard/admin/pg-form-settings/index'))
@@ -23,6 +24,7 @@ const AdminRoutes = () => {
                 <Route path="users" element={<Users />} />
                 <Route path="applications" element={<Applications />} />
                 <Route path="application/:id" element={<ApplicationDetails />} />
+                <Route path="application/addnew" element={<AddNewApplication />} />
                 <Route path="reports" element={<Reports />} />
                 <Route path="pages" element={<Pages />} />
                 <Route path="pg-form-settings" element={<PgFormSettings />} />

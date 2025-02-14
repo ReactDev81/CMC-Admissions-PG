@@ -13,7 +13,9 @@ import Checkbox from "../../../../../components/forms/Checkbox";
 
 const EditUser = ({ data, onClose }) => {
 
-    const defaultImage = "/assets/avatars/user.png";
+    console.log(data);
+
+    const defaultImage = data.profile_picture_url ? data.profile_picture_url : "/assets/avatars/user.png";
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [isEnabled, setEnabled] = useState(false);
@@ -38,11 +40,11 @@ const EditUser = ({ data, onClose }) => {
     ];
 
     const { userData } = useContext(UserContext);
-    const { error, status, loading, fetchData } = useAxios(`/users/${data.id}`, "put", 
+    const { error, status, loading, fetchData } = useAxios(`/users/${data.id}`, "post", 
         { 
             headers: { 
                 Authorization: `Bearer ${userData.token}`,
-                "Content-Type": "multipart/form-data" 
+                "Content-Type": "multipart/form-data",
             }
         }
     );

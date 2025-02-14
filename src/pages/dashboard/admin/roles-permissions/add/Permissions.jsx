@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { toast } from 'react-toastify';
 import { UserContext } from "../../../../../context/UserContext";
 import UseAxios from "../../../../../hooks/UseAxios";
+import Loader from "../../../../../components/ui/Loader";
 import InputField from "../../../../../components/forms/Inputfield";
 import Checkbox from "../../../../../components/forms/Checkbox";
 import Button from "../../../../../components/ui/Button";
@@ -89,11 +90,7 @@ const Permissions = () => {
                     checked={selectAll}
                     onChange={handleSelectAll}
                 />
-                {getRoles.loading ? 
-                    <div className="flex justify-center items-center py-4">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-                    </div>
-                : allRoles && allRoles.map((role) => {
+                {getRoles.loading ? <Loader /> : allRoles && allRoles.map((role) => {
                         const fieldName = role.name
                         .toLowerCase()
                         .replace(/[^a-z0-9]/g, '_') 

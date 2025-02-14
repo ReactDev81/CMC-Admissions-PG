@@ -1,33 +1,22 @@
 import { useContext, useEffect, useState, useCallback } from "react";
-import ToggleButton from "../../../../components/forms/ToggleButton";
 import { UserContext } from "../../../../context/UserContext";
 import useAxios from "../../../../hooks/UseAxios";
+import Loader from "../../../../components/ui/Loader";
+import ToggleButton from "../../../../components/forms/ToggleButton";
 
 const AskDocument = () => {
     const [documentFields, setDocumentFields] = useState([]);
-    // const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [formState, setFormState] = useState({});
 
     const { userData } = useContext(UserContext);
     const BEARER_TOKEN = userData?.token;
 
-    const { fetchData, status, data, loading } = useAxios(
-        "/form/1/file-fields",
-        "get",
-        null,
-        {
-            headers: { Authorization: `Bearer ${BEARER_TOKEN}` },
-        }
-    );
-
-    const { fetchData: updateFieldRequired } = useAxios(null, "post", {
-        headers: { Authorization: `Bearer ${BEARER_TOKEN}` },
-    });
+    const { fetchData, status, data, loading } = useAxios("/form/1/file-fields", "get", null, {headers: { Authorization: `Bearer ${BEARER_TOKEN}` },});
+    const { fetchData: updateFieldRequired } = useAxios(null, "post", {headers: { Authorization: `Bearer ${BEARER_TOKEN}` },});
 
     // Memoize fetchData to avoid recreating it on every render
     const fetchDocumentFields = useCallback(async () => {
-        // setIsLoading(true);
         try {
             await fetchData();
             if (status === 200) {
@@ -35,8 +24,6 @@ const AskDocument = () => {
             }
         } catch (error) {
             setError(error.message || "Failed to fetch document fields");
-        } finally {
-            // setIsLoading(false);
         }
     }, [status]);
 
@@ -103,13 +90,8 @@ const AskDocument = () => {
             <h2 className="text-black-default mb-14 capitalize">Ask Documents</h2>
 
             <form>
-                {loading ? (
-                    <div className="flex justify-center items-center py-4">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-                    </div>
-                ) : (
+                {loading ? ( <Loader /> ) : (
                     documentFields.map((field) => (
-                        // console.log(field);
                         <div
                             key={field.id}
                             className="flex items-center justify-between border-b"
@@ -117,11 +99,6 @@ const AskDocument = () => {
                             <span className="text-lg font-normal text-black-300 px-1.5 py-3">
                                 {field.label}
                             </span>
-                            {/* <ToggleButton
-                                id={field.name}
-                                value={field.required}
-                                onChange={() => handleToggle(field.id)}
-                            /> */}
                             <ToggleButton
                                 id={field.name}
                                 value={formState[field.name]}

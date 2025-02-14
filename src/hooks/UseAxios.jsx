@@ -1,6 +1,8 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AxiosInstance from '../api/AxiosInstance';
+import { UserContext } from "../context/UserContext";
+import { ApplicationContext } from "../context/ApplicationContext";
 
 const useAxios = (initialUrl = null, method = 'get', options = {}) => {
     const [data, setData] = useState(null);
@@ -8,6 +10,8 @@ const useAxios = (initialUrl = null, method = 'get', options = {}) => {
     const [error, setError] = useState(null);
     const [status, setStatus] = useState(null);
 
+    const { setUserData } = useContext(UserContext);
+    const { setApplicationInfo } = useContext(ApplicationContext);
     const navigate = useNavigate();
 
     const fetchData = useCallback(
@@ -35,6 +39,16 @@ const useAxios = (initialUrl = null, method = 'get', options = {}) => {
 
                 if (statusCode === 401) {
                     navigate('/login'); 
+                    setUserData({ token: '', role: null, userDetails: {}, permissions: {} })
+                    setApplicationInfo({
+                        application_id: null,
+                        steps:{
+                            step_personal: 'pending',
+                            step_academic: 'pending',
+                            step_documents: 'pending',
+                            step_payment: 'pending',
+                        }
+                    })
                 }
             } finally {
                 setLoading(false);

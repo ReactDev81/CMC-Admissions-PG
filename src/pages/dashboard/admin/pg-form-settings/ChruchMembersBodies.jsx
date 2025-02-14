@@ -3,8 +3,9 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { FaPenClip } from "react-icons/fa6";
 import { FaTrashCan } from "react-icons/fa6";
-import useAxios from "../../../../hooks/UseAxios";
 import { UserContext } from "../../../../context/UserContext";
+import useAxios from "../../../../hooks/UseAxios";
+import Loader from '../../../../components/ui/Loader';
 import Button from "../../../../components/ui/Button";
 
 
@@ -113,11 +114,7 @@ const ChruchMembersBodies = () => {
             )}
           </form>
 
-          {getChurchMembers.loading ? (
-              <div className="flex justify-center items-center py-4">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-              </div>
-            ) : (
+          {getChurchMembers.loading ? ( <Loader /> ) : (
               allChurchMembers && allChurchMembers.map((churchMember) => {
                 return(
                   <div key={churchMember.id} className="px-1.5 py-2.5 flex items-center justify-between border-b">
