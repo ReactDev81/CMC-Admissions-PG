@@ -18,7 +18,7 @@ const Calender = () => {
                     <IoCalendarOutline color="#1F1E1E" size={26} />
                     <Title title="Calender" />
                 </div>
-                <OutlineButton text="See More" className="text-primary-default border-primary-default" />
+                {/* <OutlineButton text="See More" className="text-primary-default border-primary-default" /> */}
             </div>
             <Calendar 
                 onChange={setValue} 

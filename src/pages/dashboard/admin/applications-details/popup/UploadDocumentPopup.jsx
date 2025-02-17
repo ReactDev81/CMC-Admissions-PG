@@ -44,7 +44,7 @@ const UploadDocumentPopup = ({onClose, fieldlabel, fieldName, onSuccess}) => {
     useEffect(() => {
         if(status === 201){
             onSuccess?.();
-            onClose(true);
+            onClose(false);
             toast.success(`${fieldlabel} file uploaded successfully`);
         }
     }, [status])
