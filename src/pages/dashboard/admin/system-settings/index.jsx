@@ -4,12 +4,14 @@ import { FaRegUser } from "react-icons/fa";
 import { MdOutlineNotificationsNone } from "react-icons/md";
 import { LuMail } from "react-icons/lu";
 import { MdOutlineCached } from "react-icons/md";
+import { GrHostMaintenance } from "react-icons/gr";
 import UseAxios from "../../../../hooks/UseAxios"
 import UseTab from "../../../../hooks/UseTab";
 import General from "./general";
 import Notification from "./notification";
 import Mail from "./mail";
 import Cache from "./cache";
+import Maintenance from "./Maintenance";
 
 const SystemSettings = () => {
 
@@ -65,6 +67,15 @@ const SystemSettings = () => {
       },
       content: ({activeTab, setActiveTab}) => (
         <Cache activeTab={activeTab} setActiveTab={setActiveTab} data={getChildrenByKey("cache_settings")} />
+      ),
+    },
+    {
+      label: {
+        icon: <GrHostMaintenance size={18} />,
+        text: "Maintenance",
+      },
+      content: ({activeTab, setActiveTab}) => (
+        <Maintenance activeTab={activeTab} setActiveTab={setActiveTab} />
       ),
     },
   ];

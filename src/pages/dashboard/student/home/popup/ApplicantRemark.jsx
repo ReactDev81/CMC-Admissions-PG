@@ -55,11 +55,21 @@ const ApplicantRemark = ({ onClose }) => {
     // Function to handle Reply button click
     const handleReplyClick = (remarkId, requestedDocuments) => {
         setSelectedRemarkId(remarkId);
+    
+        // Ensure `requestedDocuments` is parsed into an array
+        let parsedDocuments = [];
+        try {
+            parsedDocuments = JSON.parse(requestedDocuments || "[]"); 
+        } catch (error) {
+            toast.error("Error parsing requestedDocuments:", error);
+        }
+    
         // Reset the form fields when a new remark is selected
-        const resetFields = requestedDocuments.reduce((acc, field) => {
+        const resetFields = parsedDocuments.reduce((acc, field) => {
             acc[field] = null;
             return acc;
         }, {});
+    
         reset(resetFields);
     };
 
@@ -117,6 +127,7 @@ const ApplicantRemark = ({ onClose }) => {
                         getAllRemark.data.slice(0, visibleMessages).reverse().map((remark, index) => {
                         const formattedTime = format(new Date(remark.created_at), "h:mm a");
                         const isReviewer = remark.type === "reviewer_remark";
+                        
                         return(
                             <div key={index} className={`flex flex-row gap-2.5 w-full mb-4 ${isReviewer ? 'justify-start' : 'flex-row-reverse'}`}>
                                 <img
@@ -128,9 +139,34 @@ const ApplicantRemark = ({ onClose }) => {
                                     <p className="text-black-300 text-base font-normal mb-1">{remark.message}</p>
                                     <div className="flex gap-x-2">
                                         <p className="text-info-default text-base font-normal mb-1">
-                                            {remark.submitted_documents 
-                                            ? Object.keys(remark.submitted_documents).map(formatDocumentName).join(", ") 
-                                            : remark.requested_documents.map(formatDocumentName).join(", ")}
+                                            {remark.type === "reviewer_remark"
+                                                ? (() => {
+                                                    const docs = (() => {
+                                                        try {
+                                                            if (Array.isArray(remark.requested_documents)) {
+                                                                return remark.requested_documents;
+                                                            }
+                                                            if (typeof remark.requested_documents === "string") {
+                                                                if (remark.requested_documents.trim().startsWith("[")) {
+                                                                    return JSON.parse(remark.requested_documents);
+                                                                } else if (remark.requested_documents) {
+                                                                    return [remark.requested_documents];
+                                                                }
+                                                            }
+                                                            return [];
+                                                        } catch (error) {
+                                                            console.error("Error parsing requested_documents:", error);
+                                                            return [];
+                                                        }
+                                                    })();
+                                                    return docs.length > 1 
+                                                        ? docs.map(formatDocumentName).join(", ") 
+                                                        : docs.length === 1 
+                                                        ? formatDocumentName(docs[0]) 
+                                                        : "";
+                                                })()
+                                                : Object.keys(remark.submitted_documents || {}).map(formatDocumentName).join(", ")
+                                            }
                                         </p>
                                     </div>
                                     <div className={`flex items-center gap-x-2 ${isReviewer ? 'justify-start' : 'justify-end'}`}>
@@ -146,7 +182,6 @@ const ApplicantRemark = ({ onClose }) => {
                                                 classname="[&]:bg-info-default [&]:border-0 [&]:rounded-full [&]:px-3 [&]:py-1 [&]:text-sm" 
                                             />
                                         }
-                                        
                                         <p className={`text-black-300 text-[10px] font-normal ${isReviewer ? 'text-left' : 'text-right'}`}>{formattedTime}</p>
                                     </div>
                                 </div>
@@ -162,9 +197,27 @@ const ApplicantRemark = ({ onClose }) => {
                     <label className="mb-2">Select Fields/Documents</label>
                     {selectedRemarkId && getAllRemark.data.map((remark) => {
                         if (remark.id === selectedRemarkId && remark.requested_documents && remark.status === "pending") {
+                            const parsedDocs = (() => {
+                                try {
+                                    if (Array.isArray(remark.requested_documents)) {
+                                        return remark.requested_documents;
+                                    }
+                                    if (typeof remark.requested_documents === "string") {
+                                        if (remark.requested_documents.trim().startsWith("[")) {
+                                            return JSON.parse(remark.requested_documents);
+                                        } else if (remark.requested_documents) {
+                                            return [remark.requested_documents];
+                                        }
+                                    }
+                                    return [];
+                                } catch (error) {
+                                    toast.error("Error parsing requested_documents:", error);
+                                    return [];
+                                }
+                            })();
                             return (
                                 <div key={remark.id} className="flex flex-wrap items-center gap-2 mb-4 mt-4" remark_id={remark.id}>
-                                    {remark.requested_documents.map((field, i) => (
+                                    {parsedDocs.map((field, i) => (
                                         <div key={i}>
                                             <label 
                                                 className={`flex items-center w-max gap-x-2 py-1.5 px-4 rounded-full text-base cursor-pointer ${

@@ -63,7 +63,7 @@ const UserHome = () => {
             <div className="flex">
                 <div className="min-w-[406px] pr-5">
                     <div className="flex flex-col gap-5">
-                        {DashboardWidget.loading ? Loader : DashboardWidget.data &&
+                        {DashboardWidget.loading ? <Loader /> : DashboardWidget.data &&
                             DashboardWidget.data.map((widget, index) => {
 
                                 const iconMap = {
@@ -118,7 +118,7 @@ const UserHome = () => {
                 </div>
                 <div className="flex flex-1 bg-white-default rounded-xl shadow-flex">
                     <div className="home-content text-black-default p-5">
-                        {PaymentDetails.loading ? Loader : <div dangerouslySetInnerHTML={{ __html: PaymentDetails.data?.content }}></div>}
+                        {PaymentDetails.loading ? <Loader /> : <div dangerouslySetInnerHTML={{ __html: PaymentDetails.data?.content }}></div>}
                     </div>
                 </div>
             </div>

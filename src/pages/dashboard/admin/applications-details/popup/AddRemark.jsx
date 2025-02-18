@@ -48,8 +48,6 @@ const AddRemark = ({ onClose }) => {
     getAllRemark.fetchData();
   }, [askDocuments.status]);
 
-  console.log(getAllRemark.data);
-
   const {register, handleSubmit, setValue, watch, setError, clearErrors, reset, formState: { errors }} = useForm();
 
   const selectedOptions = watch("requested_documents", []);
@@ -116,10 +114,36 @@ const AddRemark = ({ onClose }) => {
                     <p className="text-black-300 text-base font-normal mb-1">{remark.message}</p>
                     <div className="flex gap-x-2">
                       <p className="text-info-default text-base font-normal mb-1">
-                        {remark.submitted_documents 
-                          ? Object.keys(remark.submitted_documents).map(formatDocumentName).join(", ") 
-                          : remark.requested_documents.map(formatDocumentName).join(", ")}
+                        {remark.type === "reviewer_remark"
+                            ? (() => {
+                                const docs = (() => {
+                                    try {
+                                        if (Array.isArray(remark.requested_documents)) {
+                                            return remark.requested_documents;
+                                        }
+                                        if (typeof remark.requested_documents === "string") {
+                                            if (remark.requested_documents.trim().startsWith("[")) {
+                                                return JSON.parse(remark.requested_documents);
+                                            } else if (remark.requested_documents) {
+                                                return [remark.requested_documents];
+                                            }
+                                        }
+                                        return [];
+                                    } catch (error) {
+                                        console.error("Error parsing requested_documents:", error);
+                                        return [];
+                                    }
+                                })();
+                                return docs.length > 1 
+                                    ? docs.map(formatDocumentName).join(", ") 
+                                    : docs.length === 1 
+                                    ? formatDocumentName(docs[0]) 
+                                    : "";
+                            })()
+                            : Object.keys(remark.submitted_documents || {}).map(formatDocumentName).join(", ")
+                          }
                       </p>
+
                     </div>
                     <div className={`flex items-center gap-x-2 ${remark.requested_documents ? 'justify-start' : 'justify-end'}`}>
                       <div className="rounded-full w-fit" style={{ backgroundColor: StatusLightColors[remark.status] }}>
