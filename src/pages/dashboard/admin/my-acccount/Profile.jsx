@@ -9,7 +9,7 @@ import Button from "../../../../components/ui/Button";
 
 const Profile = () => {
 
-    const { userData } = useContext(UserContext);
+    const { userData, setUserData } = useContext(UserContext);
     const getUserDetails = useAxios(`/users/${userData.userDetails.id}`, 'get', { headers: { Authorization: `Bearer ${userData.token}` } })
     const updateUserDetails = useAxios('/profile', 'post', 
         { 
@@ -88,16 +88,24 @@ const Profile = () => {
         console.log("Form submitted", formData);
     };
 
-    
-
     useEffect(() => {
         if(updateUserDetails.status === 200){
             toast.success(updateUserDetails.data.message);
             reset();
-            setImage(getUserDetails?.data?.profile_pic_url || "/assets/avatars/user.png");
+            setImage(updateUserDetails?.data?.user?.profile_pic_url || "/assets/avatars/user.png");
             setImageFile(null);
+
+            setUserData((prev) => ({
+                ...prev,
+                userDetails: {
+                    ...prev.userDetails,
+                    profile_pic_url: updateUserDetails?.data?.user?.profile_pic_url
+                }
+            }));
         }
     }, [updateUserDetails.loading])
+
+
 
     return(
         <form onSubmit={handleSubmit(onSubmit)} className="max-w-[520px] w-full rounded-md bg-white-default shadow-flex p-5">

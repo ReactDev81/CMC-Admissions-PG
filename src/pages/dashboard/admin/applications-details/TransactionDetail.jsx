@@ -104,7 +104,7 @@ const { userData } = useContext(UserContext);
           />
         </div>
       </form>
-      <div className="flex flex-wrap items-center justify-between">
+      <div className="flex flex-wrap items-center justify-end -mt-[42px]">
         <Button
           text="Previous"
           onclick={() => setActiveTab(activeTab - 1)}

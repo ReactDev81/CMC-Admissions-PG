@@ -137,7 +137,7 @@ const AcademicDetail = ({activeTab, setActiveTab}) => {
         </div>
         {error && <p className="bg-red-100 py-2.5 px-5 text-red-800 mt-2 rounded-md font-normal" dangerouslySetInnerHTML={{ __html: error }}></p>}
       </form>
-      <div className="flex flex-wrap items-center justify-between">
+      <div className="flex flex-wrap items-center justify-end -mt-[42px] gap-x-2">
         <Button
           text="Previous"
           onclick={() => setActiveTab(activeTab - 1)}

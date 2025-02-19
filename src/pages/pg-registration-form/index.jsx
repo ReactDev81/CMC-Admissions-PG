@@ -92,7 +92,7 @@ const RegistrationForm = () => {
         </div>
         <div className="shadow-flex rounded-lg max-w-lg w-full bg-white-default mx-auto mb-10">
           <UseTab 
-            tabs={tabsData} 
+            tabs={tabsData}
             TabStyle={2} 
             className="py-5" 
             tabClass="[&&]:gap-x-20 justify-center py-6 before:content-[''] before:absolute before:top-12 before:w-[45%] before:h-px before:bg-black-100" 

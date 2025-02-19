@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { ApplicationContext } from "../context/ApplicationContext";
 
 const UseTab = ({tabs, tabClass, tabContentClass, TabStyle = 1}) => {
 
@@ -7,6 +8,18 @@ const UseTab = ({tabs, tabClass, tabContentClass, TabStyle = 1}) => {
     const handleTabClick = (index) => {
         setActiveTab(index);
     }
+
+    const { applicationInfo } = useContext(ApplicationContext);
+
+    const formSteps = {
+        0 : applicationInfo.steps?.step_personal,
+        1 : applicationInfo.steps?.step_academic,
+        2 : applicationInfo.steps?.step_documents,
+        3 : applicationInfo.steps?.step_payment,
+    }
+
+    const steps = Object.values(formSteps);
+    const firstPendingIndex = steps.findIndex(step => step === "pending");
 
     return(
         <>
@@ -26,7 +39,9 @@ const UseTab = ({tabs, tabClass, tabContentClass, TabStyle = 1}) => {
                         ) : TabStyle === 2 ? (
                             <div
                                 key={index}
-                                className="flex flex-col justify-center items-center gap-y-2.5 relative z-10"
+                                className={`flex flex-col justify-center items-center gap-y-2.5 relative z-[1] ${
+                                    index > firstPendingIndex ? "pointer-events-none opacity-50" : ""
+                                }`}
                                 onClick={() => handleTabClick(index)}
                             >
                                 <div className={`w-[42px] h-[42px] rounded-full flex items-center justify-center cursor-pointer ${activeTab === index ? 'bg-primary-default text-white-default' : 'bg-black-100 text-black-300'}`}>

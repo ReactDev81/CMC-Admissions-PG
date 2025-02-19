@@ -15,7 +15,7 @@ import UploadDocumentPopup from "./popup/UploadDocumentPopup";
 import AddRemark from "./popup/AddRemark";
 import DocumentManagement from "./DocumentManagement";
 
-const ApplicationDocument = () => {
+const ApplicationDocument = ({activeTab, setActiveTab}) => {
   const { userData } = useContext(UserContext);
   const Token = userData.token;
   const { id } = useParams();
@@ -116,6 +116,19 @@ const ApplicationDocument = () => {
           />
         );
       })}
+
+      <div className="flex flex-wrap items-center justify-end gap-x-2 p-5">
+        <Button
+          text="Previous"
+          onclick={() => setActiveTab(activeTab - 1)}
+          classname="[&]:py-2.5 [&]:px-7 [&]:rounded-full border-0 [&]:text-black-300 [&]:bg-primary-100"
+        />
+        <Button
+          text="Next"
+          onclick={() => setActiveTab(activeTab + 1)}
+          classname="[&]:rounded-full self-end [&]:px-10 [&]:py-2.5"
+        />
+      </div>
     </div>
   );
 };

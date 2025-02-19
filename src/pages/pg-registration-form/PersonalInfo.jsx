@@ -9,6 +9,16 @@ import RadioField from "../../components/forms/RadioField";
 import Button from "../../components/ui/Button";
 import useAxios from "../../hooks/UseAxios";
 
+const formatAadharNumber = (value) => {
+  const numbersOnly = value.replace(/\D/g, ""); // Remove non-numeric characters
+  const formattedValue = numbersOnly
+    .slice(0, 12) // Limit to 12 digits
+    .replace(/(\d{4})(\d{4})?(\d{4})?/, (match, p1, p2, p3) => {
+      return [p1, p2, p3].filter(Boolean).join("-");
+    });
+  return formattedValue;
+};
+
 const PersonalInfo = ({activeTab, setActiveTab}) => {
 
   const navigate = useNavigate();
@@ -66,7 +76,8 @@ const PersonalInfo = ({activeTab, setActiveTab}) => {
         mobile_1: applicationData.mobile_1 || "",
         mobile_2: applicationData.mobile_2 || "",
         state_of_domicile: applicationData.state_of_domicile || "",
-        aadhar_no: applicationData.aadhar_no || "",
+        // aadhar_no: applicationData.aadhar_no || "",
+        aadhar_no: formatAadharNumber(applicationData.aadhar_no) || "",
         father_name: applicationData.father_name || "",
         mother_name: applicationData.mother_name || "",
         are_parents_graduates: applicationData.are_parents_graduates || "",
@@ -107,6 +118,7 @@ const PersonalInfo = ({activeTab, setActiveTab}) => {
       const formattedData = {
         ...formData,
         application_id: applicationInfo?.application_id,
+        aadhar_no: formData.aadhar_no.replace(/-/g, ""),
         date_of_birth: formatDate(formData.date_of_birth),
         step: "personal",
       };
@@ -117,6 +129,7 @@ const PersonalInfo = ({activeTab, setActiveTab}) => {
 
       const formattedData = {
         ...formData,
+        aadhar_no: formData.aadhar_no.replace(/-/g, ""),
         date_of_birth: formatDate(formData.date_of_birth),
         step: "personal",
       };
@@ -179,6 +192,7 @@ const PersonalInfo = ({activeTab, setActiveTab}) => {
             <Inputfield 
               label="Date of Birth" 
               type="date" 
+              max="2008-12-31"
               {...register("date_of_birth", { required: true})}
               error={errors.date_of_birth?.type === 'required' ? "DOB No is required" : undefined}
             />
@@ -241,11 +255,28 @@ const PersonalInfo = ({activeTab, setActiveTab}) => {
               {...register("state_of_domicile", { required: true})}
               error={errors.state_of_domicile?.type === 'required' ? "State is required" : undefined}
             />
-            <Inputfield
+            {/* <Inputfield
               type="number" 
               label="Aadhar Number" 
               {...register("aadhar_no", { required: true, minLength: 12, maxLength: 12 })}
               error={errors.aadhar_no?.type === 'required' ? "Aadhar Number is required" : errors.aadhar_no?.type === 'minLength' || errors.aadhar_no?.type === 'maxLength' ? 'The aadhar no field must have at least 12 digits' : undefined}
+            /> */}
+            <Inputfield
+              type="text"
+              label="Aadhar Number"
+              {...register("aadhar_no", {
+                required: true,
+                validate: (value) => value.replace(/-/g, "").length === 12 || "Aadhar Number must have exactly 12 digits",
+                pattern: /^[0-9-]+$/,
+                onChange: (e) => {
+                  e.target.value = formatAadharNumber(e.target.value);
+                },
+              })}
+              error={
+                errors.aadhar_no?.type === "required"
+                  ? "Aadhar Number is required"
+                  : errors.aadhar_no?.message || undefined
+              }              
             />
             <Inputfield 
               label="Father's Name" 
@@ -283,9 +314,10 @@ const PersonalInfo = ({activeTab, setActiveTab}) => {
           />
         </div>
       </form>
-      <div className="text-right">
+      <div className="text-right -mt-[42px]">
         <Button
           text="Next"
+          disabled={applicationInfo.steps?.step_personal === "pending" ? true : false}
           onclick={() => setActiveTab(activeTab + 1)}
           classname="[&]:rounded-full self-end [&]:px-10 [&]:py-2.5"
         />

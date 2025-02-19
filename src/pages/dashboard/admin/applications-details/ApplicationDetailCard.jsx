@@ -120,7 +120,12 @@ const ApplicationDetailCard = () => {
                     src={imageSrc}
                     alt=""
                   />
-                  ) : ( <PiUserCircleDuotone className="text-black-default" size={140} />
+                  ) : ( 
+                    <img
+                      src="/assets/avatars/user-placeholder.png"
+                      className="h-[140px] w-[140px] [&]:max-w-[140px] rounded-full object-cover"
+                      alt="User Profile Avatar"
+                    />
                 )}
                 <div className="flex flex-col items-center ml-7">
                   <OutlineButton

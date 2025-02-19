@@ -236,7 +236,7 @@ const Document = ({activeTab, setActiveTab}) => {
           />
         </div>
       </form>
-      <div className="flex flex-wrap items-center justify-between">
+      <div className="flex flex-wrap items-center justify-end gap-x-2 -mt-[42px]">
         <Button
           text="Previous"
           onclick={() => setActiveTab(activeTab - 1)}
@@ -244,6 +244,7 @@ const Document = ({activeTab, setActiveTab}) => {
         />
         <Button
           text="Next"
+          disabled={applicationInfo.steps?.step_documents === "pending" ? true : false}
           onclick={() => setActiveTab(activeTab + 1)}
           classname="[&]:rounded-full self-end [&]:px-10 [&]:py-2.5"
         />

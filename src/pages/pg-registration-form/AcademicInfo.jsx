@@ -139,7 +139,7 @@ const AcademicInfo = ({activeTab, setActiveTab}) => {
         </div>
         {error && <p className="bg-red-100 py-2.5 px-5 text-red-800 mt-2 rounded-md font-normal" dangerouslySetInnerHTML={{ __html: error }}></p>}
       </form>
-      <div className="flex flex-wrap items-center justify-between">
+      <div className="flex flex-wrap items-center justify-end gap-x-2 -mt-[42px]">
         <Button
           text="Previous"
           onclick={() => setActiveTab(activeTab - 1)}
@@ -147,6 +147,7 @@ const AcademicInfo = ({activeTab, setActiveTab}) => {
         />
         <Button
           text="Next"
+          disabled={applicationInfo.steps?.step_academic === "pending" ? true : false}
           onclick={() => setActiveTab(activeTab + 1)}
           classname="[&]:rounded-full self-end [&]:px-10 [&]:py-2.5"
         />

@@ -4,7 +4,11 @@ const ApplicationInfoCard = () => {
     return(
         <div className="w-full h-max p-4 border border-gray-200 rounded shadow animate-pulse md:p-6 dark:border-gray-700">
             <div className="flex items-center mb-4">
-                <PiUserCircleDuotone className="text-black-default" size={140} />
+                <img
+                    src="/assets/avatars/user-placeholder.png"
+                    className="h-[140px] w-[140px] [&]:max-w-[140px] rounded-full object-cover"
+                    alt="User Profile Avatar"
+                />
                 <div>
                     <div className="h-7 w-20 rounded-full mb-3 border border-primary-default"></div>
                     <div className="h-7 w-20 rounded-full bg-primary-200"></div>

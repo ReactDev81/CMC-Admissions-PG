@@ -16,8 +16,6 @@ const Profile = () => {
     useEffect(() => {
         fetchData();
     }, [])
-
-    // console.log('data', data);
     
     return (
         <>
@@ -33,7 +31,7 @@ const Profile = () => {
                     <div className="max-w-[1192px] w-full flex items-center px-5 gap-3.5">
                         <div className="relative -top-9">
                             <img
-                                src={data.applicant.profile_pic_url ? data.applicant.profile_pic_url : "/assets/images/profile.jpg"}
+                                src={data.applicant.profile_pic_url ? data.applicant.profile_pic_url : "/assets/avatars/user-placeholder.png"}
                                 className="h-[150px] w-[150px] [&]:max-w-[150px] rounded-full object-cover"
                                 alt="User Profile Avatar"
                             />

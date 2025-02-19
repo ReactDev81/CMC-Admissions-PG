@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 
-const InputField = forwardRef(({ label, type, placeholder, id, error, className, inputclass, ...rest}, ref) => {
+const InputField = forwardRef(({ label, type, placeholder, id, error, className, max, inputclass, ...rest}, ref) => {
     return (
         <div className={`flex flex-wrap flex-col ${className ? className : ''}`}>
             <label className='mb-2' htmlFor={id}>
@@ -13,6 +13,7 @@ const InputField = forwardRef(({ label, type, placeholder, id, error, className,
                 type={type ? type : 'text'}
                 id={id}
                 placeholder={placeholder}
+                {...(max ? { max } : {})} 
             />
             {error && <p className="bg-red-100 py-2.5 px-5 text-red-800 mt-2 rounded-md font-normal">{error}</p>}
         </div>

@@ -18,19 +18,6 @@ const formatDocumentName = (name) => {
 
 const Profile = () => {
 
-  const LinkLists = [
-    {
-      title: "Account",
-      path: "/admin/my-account",
-      icon: AiOutlineUser,
-    },
-    {
-      title: "Notifications",
-      path: "/admin/notifications",
-      icon: GoBell,
-    }
-  ]
-
   const applicationInformation = {
     application_id: null,
     steps:{
@@ -52,6 +39,21 @@ const Profile = () => {
     setApplicationInfo(applicationInformation)
     navigate('/login');
   }
+
+  const roleBasedLink = userData.role === "student" ? 'student' : 'admin';
+
+  const LinkLists = [
+    {
+      title: "Account",
+      path: userData.role === "student" ? '/student/profile' : '/admin/my-account',
+      icon: AiOutlineUser,
+    },
+    {
+      title: "Notifications",
+      path: `/${roleBasedLink}/notifications`,
+      icon: GoBell,
+    }
+  ]
 
   return (
     <div className="group relative cursor-pointer">
