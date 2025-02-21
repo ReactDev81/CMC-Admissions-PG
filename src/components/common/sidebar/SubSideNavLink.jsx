@@ -1,7 +1,6 @@
 import { NavLink } from "react-router-dom";
 
 const SubSideNavLink = ({subLink = []}) => {
-  
   return (
     <ul className="relative before:content-[''] before:w-[1px] before:h-[calc(100%-12px)] before:bg-[#cbccceb3] before:absolute before:top-1.5 before:left-7">
       {subLink.map((link, index) => {

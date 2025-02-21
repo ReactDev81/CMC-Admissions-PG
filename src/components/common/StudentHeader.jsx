@@ -10,7 +10,6 @@ const StudentHeader = () => {
 
   const navigate = useNavigate();
   const { userData } = useContext(UserContext);
-  
 
   return (
     <header>
@@ -20,14 +19,11 @@ const StudentHeader = () => {
               <Link to="/">
                 <img className="h-[60px] w-[260px] object-contain object-left" src="/assets/images/StudentHeaderLogo.png" alt="CMC Logo" />
               </Link>
-              {
-                userData.token ? <Profile /> :
+              {userData.token ? <Profile /> :
                 <div className="flex items-center gap-x-5">
-                  <OutlineButton onclick={() => navigate('/login')} className="text-primary-default border-primary-default px-6 py-2 w-full" text="Login" />
+                  <OutlineButton onclick={() => navigate('/login')} className="text-primary-default border-primary-default px-8 py-[11px] w-full" text="Login" />
                   <Button onclick={() => navigate('/pg-registration-form')} classname="[&]:rounded-full [&]:px-8 w-full min-w-max" text="Submit Application" />
-                </div>
-              }
-              
+              </div>}
           </div>
         </div>
       </div>

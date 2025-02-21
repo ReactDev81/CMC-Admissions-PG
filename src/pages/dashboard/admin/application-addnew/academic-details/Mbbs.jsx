@@ -1,8 +1,10 @@
-import InputField from "../../../components/forms/Inputfield"
+import InputField from "../../../../../components/forms/Inputfield";
 
-const MbbsDetails = ({ register, errors }) => {
+const Mbbs = ({ register, errors }) => {
+
     const currentDate = new Date().toISOString().split("T")[0];
-    return (
+    
+    return(
         <>
             <h2 className="text-black-default leading-5 capitalize mb-8">
                 MBBS
@@ -27,8 +29,8 @@ const MbbsDetails = ({ register, errors }) => {
                 />
                 <InputField 
                     label="Intership Completion Date" 
-                    type="date" 
-                    max={currentDate}
+                    type="date"
+                    max={currentDate} 
                     {...register('mbbs_internship_completion_date', {required: true})} 
                     error={errors.mbbs_internship_completion_date?.type === 'required' ? 'Intership Completion Date is Required' : undefined}
                 />
@@ -186,4 +188,4 @@ const MbbsDetails = ({ register, errors }) => {
     )
 }
 
-export default MbbsDetails;
+export default Mbbs;

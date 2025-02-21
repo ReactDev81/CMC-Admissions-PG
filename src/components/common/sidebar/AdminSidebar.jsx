@@ -1,8 +1,7 @@
 import { useContext } from 'react';
 import { useNavigate, Link} from 'react-router-dom';
 import { FaHome, FaUsers, FaChartBar, FaFileAlt} from "react-icons/fa";
-import {LuLogOut, LuLayoutPanelLeft, LuFiles} from "react-icons/lu"; 
-import { LiaToolsSolid} from "react-icons/lia"; 
+import {LuLogOut, LuFiles} from "react-icons/lu"; 
 import { GrSystem } from "react-icons/gr";
 import { RiListCheck3 } from "react-icons/ri";
 import { RiListSettingsLine } from "react-icons/ri";
@@ -13,7 +12,6 @@ import { ApplicationContext } from '../../../context/ApplicationContext';
 import useAxios from '../../../hooks/UseAxios';
 import Badge from "../../ui/Badge";
 import SideNavLink from "./SideNavLink";
-
 
 
 const AdminSidebar = () => {
@@ -43,7 +41,7 @@ const AdminSidebar = () => {
 
   const applicationLinks = [
     { href: "/admin/applications", text: "All Applications" },
-    { href: "/admin/application/addnew", text: "Add New" },
+    { href: "/admin/addnew-application", text: "Add New" },
   ];
 
   return (
@@ -89,16 +87,6 @@ const AdminSidebar = () => {
                 icon={<FaChartBar  />}
               />
             </li>
-            {/* {
-              userData?.role === 'super-admin' &&
-              (<li>
-                  <SideNavLink
-                    href="/admin-panel"
-                    text="Admin Panel"
-                    icon={<LuLayoutPanelLeft />}
-                />
-              </li>)
-            } */}
           </ul>
 
           <Badge text="Setting" />
@@ -130,13 +118,6 @@ const AdminSidebar = () => {
                 href="/admin/roles-permissions"
                 text="Roles & Permissions"
                 icon={<RiListCheck3  />}
-              />
-            </li>
-            <li>
-              <SideNavLink
-                href="/admin/maintenance-mode"
-                text="Maintenance"
-                icon={<LiaToolsSolid />}
               />
             </li>
           </ul>

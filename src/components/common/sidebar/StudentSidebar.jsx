@@ -11,7 +11,7 @@ import SideNavLink from "./SideNavLink";
 
 const StudentSidebar = () => {
 
-    const {userData, setUserData } = useContext(UserContext);
+    const { userData, setUserData } = useContext(UserContext);
     const { setApplicationInfo } = useContext(ApplicationContext);
     const isStudent = userData.role;
     const navigate = useNavigate();
@@ -35,7 +35,7 @@ const StudentSidebar = () => {
 
     return(
         <aside className="sidebar z-10 max-w-[252px] w-full bg-white-default shadow-side-Shadow overflow-y-scroll">
-            <div className="p-5">
+            <div className="p-5 pb-4">
                 <Link to="/student">
                     <img
                         className="object-contain object-center"
@@ -67,13 +67,15 @@ const StudentSidebar = () => {
                             icon={<IoNotifications  />}
                         />
                     </li>
-                    <li>
-                        <SideNavLink
-                            href="/student/application-form"
-                            text="Application Form"
-                            icon={<FaFileAlt />}
-                        />
-                    </li>
+                    {userData.userDetails.application_status === "draft" ?
+                        <li>
+                            <SideNavLink
+                                href="/student/application-form"
+                                text="Application Form"
+                                icon={<FaFileAlt />}
+                            />
+                        </li>
+                    :""}
                     <li>
                         <button 
                             onClick={Logout} 

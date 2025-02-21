@@ -1,14 +1,15 @@
+import { useEffect } from "react";
+import useAxios  from "../../../../../hooks/UseAxios";
 import InputField from "../../../../../components/forms/Inputfield";
 import SelectField from '../../../../../components/forms/SelectField';
 
 const NeetPgDetails = ({register, control}) => {
 
-  const ChurchBody = [
-    {value: "SYNODICAL BOARD OF HEALTH SERVICES CHURCH OF NORTH INDIA", label: "SYNODICAL BOARD OF HEALTH SERVICES CHURCH OF NORTH INDIA" },
-    {value: "CHURCH OF SOUTH INDIA", label: "CHURCH OF SOUTH INDIA"},
-    {value: "COUNCIL OF BAPTIST CHURCHES IN NORTH EAST INDIA", label: "COUNCIL OF BAPTIST CHURCHES IN NORTH EAST INDIA"},
-    {value: "COUNCIL OF MEDICAL WORK, METHODIST CHURCH IN INDIA", label: "COUNCIL OF MEDICAL WORK, METHODIST CHURCH IN INDIA"}
-  ];
+  const { data, fetchData } = useAxios('/churches/list', 'get');
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <div className="mt-10">
@@ -45,7 +46,10 @@ const NeetPgDetails = ({register, control}) => {
           name="body_church_cmc_ludhiana"
           control={control}
           label="Name of Body"
-          options={ChurchBody}
+          options={data?.map(item => ({
+            value: item.name, 
+            label: item.name  
+          })) || []}
           placeholder="Select Church Body"
         />
       </div>

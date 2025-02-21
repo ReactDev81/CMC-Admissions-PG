@@ -19,7 +19,10 @@ const StudentRoutes = () => {
                 <Route index element={<StudentDashboard />} />
                 {resetPassword ? (
                     <>
-                        <Route path="application-form" element={<ApplicationForm />} />
+                        {userData.userDetails.application_status === "draft" ? 
+                            <Route path="application-form" element={<ApplicationForm />} />
+                            : <Route path="*" element={<Navigate to="/student" replace />} />
+                        }
                         <Route path="profile" element={<Profile />} />
                         <Route path="notifications" element={<Notifications />} />
                     </>

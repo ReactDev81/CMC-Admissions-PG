@@ -2,13 +2,11 @@ import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { PiChurch } from "react-icons/pi";
 import { CiLocationOn } from "react-icons/ci";
-import { PiUserCircleDuotone } from "react-icons/pi";
 import { UserContext } from "../../../../context/UserContext";
 import useAxios from "../../../../hooks/UseAxios";
 import ApplicationInfoCard from "../../../../components/Skeleton/ApplicationInfoCard";
 import SelectStatus from "../../../../components/SelectStatus";
 import Button from "../../../../components/ui/Button"; 
-import OutlineButton from "../../../../components/ui/OutlineButton"; 
 
 const ApplicationDetailCard = () => {
 
@@ -16,7 +14,7 @@ const ApplicationDetailCard = () => {
   const { userData } = useContext(UserContext);
 
   // get applicant information
-  const { data, loading, fetchData } = useAxios(`applications/${id}`, 'get', { headers: {Authorization: `Bearer ${userData.token}`} })
+  const { data, status, loading, fetchData } = useAxios(`applications/${id}`, 'get', { headers: {Authorization: `Bearer ${userData.token}`} })
 
   useEffect(() => {
     const getApplicationData = async () => {
@@ -86,9 +84,12 @@ const ApplicationDetailCard = () => {
 
       const profileDocId = documentsData.find(doc => doc.document_type === "profile_pic")?.id || '';
 
-      getApplicantProfile({
-        url: `applications/${id}/documents/${profileDocId}/file?thumb=true`
-      });
+      if(profileDocId){
+        getApplicantProfile({
+          url: `applications/${id}/documents/${profileDocId}/file?thumb=true`
+        });
+      }
+      
     }
   }, [documentStatus, documentsData])
   
@@ -116,27 +117,17 @@ const ApplicationDetailCard = () => {
               <div className="flex flex-wrap items-center">
                 {applicantProfile ? (
                   <img
-                    className="h-[177px] w-[138px] object-cover rounded-md"
+                    className="h-36 w-36 object-contain rounded-full bg-primary-100"
                     src={imageSrc}
                     alt=""
                   />
                   ) : ( 
                     <img
                       src="/assets/avatars/user-placeholder.png"
-                      className="h-[140px] w-[140px] [&]:max-w-[140px] rounded-full object-cover"
+                      className="h-36 w-36 object-contain rounded-full"
                       alt="User Profile Avatar"
                     />
                 )}
-                <div className="flex flex-col items-center ml-7">
-                  <OutlineButton
-                    text="Change"
-                    className="border-primary-default text-primary-default py-1 px-5 mb-3.5"
-                  />
-                  <Button
-                    text="Remove"
-                    classname="[&]:py-[5px] [&]:rounded-full border-0 [&]:text-black-300 [&]:bg-primary-100"
-                  />
-                </div>
               </div>
             </div>
             <div className="p-5 w-full">
@@ -145,8 +136,7 @@ const ApplicationDetailCard = () => {
                 <SelectStatus />
               </div>
               <div className="mb-8">
-                <p className="text-black-default">Registeration ID:</p>
-                <p className="text-black-default">{data?.bfuhs_regstration_id}</p>
+                <p className="text-black-default">Registeration ID: {data?.bfuhs_regstration_id}</p>
               </div>
               <div className="flex items-center gap-2 mb-1.5">
                 <span className="text-black-default text-2xl bg-black-100 rounded-full p-1">

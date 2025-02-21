@@ -17,7 +17,7 @@ const Maintenance = () => {
 
     useEffect(() => {
         if (getMaintenanceValue.status === 200) {
-            setToogleValue(getMaintenanceValue.data.data[0].value);
+            setToogleValue(getMaintenanceValue.data.data[0].value === "1");
             toast.success(getMaintenanceValue.data.message);
         }
     }, [getMaintenanceValue.loading])
@@ -30,7 +30,7 @@ const Maintenance = () => {
 
     const handleSubmit = async (toogleValue) => {
         setToogleValue(toogleValue);
-        await sendMaintenanceValue.fetchData({data: { status: toogleValue }});
+        await sendMaintenanceValue.fetchData({ data: { status: toogleValue ? "1" : "0" } });
     }
 
     return(
@@ -41,7 +41,7 @@ const Maintenance = () => {
             </div>
             <div>
                 <ToggleButton 
-                    value={isToogleEnabled === "0" ? false : true}
+                    value={isToogleEnabled}
                     onChange={(newValue) => handleSubmit(newValue)}
                 />
             </div>

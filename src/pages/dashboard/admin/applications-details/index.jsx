@@ -1,10 +1,13 @@
+import { FaRegUser } from "react-icons/fa";
+import { MdOutlinePayment } from "react-icons/md";
+import { IoDocumentTextOutline } from "react-icons/io5";
+import { HiOutlineAcademicCap } from "react-icons/hi2";
+import UseTab from "../../../../hooks/UseTab";
 import PersonalInformation from "./PersonalInformation";
 import AcademicDetail from "./academic-details/index";
 import ApplicationDocument from "./ApplicationDocument";
 import TransactionDetail from "./TransactionDetail";
 import ApplicationDetailCard from "./ApplicationDetailCard";
-import { FaRegUser } from "react-icons/fa";
-import UseTab from "../../../../hooks/UseTab";
 
 const ApplicationDetails = () => {
 
@@ -20,7 +23,7 @@ const ApplicationDetails = () => {
     },
     {
       label: {
-        icon: <FaRegUser />,
+        icon: <HiOutlineAcademicCap size={20} />,
         text: "Academic Details",
       },
       content: ({activeTab, setActiveTab}) => (
@@ -29,7 +32,7 @@ const ApplicationDetails = () => {
     },
     {
       label: {
-        icon: <FaRegUser />,
+        icon: <IoDocumentTextOutline size={20} />,
         text: "Documents",
       },
       content: ({activeTab, setActiveTab}) => (
@@ -38,7 +41,7 @@ const ApplicationDetails = () => {
     },
     {
       label: {
-        icon: <FaRegUser />,
+        icon: <MdOutlinePayment size={20} />,
         text: "Transaction Details",
       },
       content: ({activeTab, setActiveTab}) => (

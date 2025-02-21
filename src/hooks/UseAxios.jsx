@@ -50,6 +50,10 @@ const useAxios = (initialUrl = null, method = 'get', options = {}) => {
                         }
                     })
                 }
+                if (statusCode === 503){
+                    navigate('/maintenance-mode'); 
+                }
+
             } finally {
                 setLoading(false);
             }

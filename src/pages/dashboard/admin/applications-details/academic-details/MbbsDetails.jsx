@@ -1,6 +1,7 @@
 import InputField from "../../../../../components/forms/Inputfield";
 
 const MbbsDetails = ({ register, errors }) => {
+    const currentDate = new Date().toISOString().split("T")[0];
     return (
         <>
             <h2 className="text-black-default leading-5 capitalize mb-8">
@@ -20,12 +21,14 @@ const MbbsDetails = ({ register, errors }) => {
                 <InputField 
                     label="Date of Passing" 
                     type="date"
+                    max={currentDate}
                     {...register('mbbs_data_passing_date', {required: true})} 
                     error={errors.mbbs_data_passing_date?.type === 'required' ? 'Passing Date is Required' : undefined}
                 />
                 <InputField 
                     label="Intership Completion Date" 
-                    type="date" 
+                    type="date"
+                    max={currentDate} 
                     {...register('mbbs_internship_completion_date', {required: true})} 
                     error={errors.mbbs_internship_completion_date?.type === 'required' ? 'Intership Completion Date is Required' : undefined}
                 />

@@ -32,10 +32,9 @@ const ResetPassword = () => {
 
     useEffect(() => {
         if(status === 200) {
-            const { token, user: { role, permissions_list: permissions, id, name, email, password_changed} } = data;
-            const userDetails = { id, name, email, password_changed};
+            const { token, user: { role, permissions_list: permissions, id, name, email, password_changed, profile_pic_url, application_status} } = data;
+            const userDetails = { id, name, email, password_changed, profile_pic_url, application_status};
             setUserData({ token, role, permissions, userDetails});
-
             navigate('/student/application-form');
         }
     }, [data, status])

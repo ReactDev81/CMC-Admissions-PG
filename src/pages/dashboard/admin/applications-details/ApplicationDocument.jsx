@@ -1,16 +1,12 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { UserContext } from "../../../../context/UserContext";
 import { useParams } from "react-router-dom";
-import { toast } from 'react-toastify';
-import JSZip from "jszip";
-import { saveAs } from "file-saver";
 import { GrDocument } from "react-icons/gr";
 import { GrDocumentPdf } from "react-icons/gr";
 import { MdMessage } from "react-icons/md";
 import { HiFolderDownload } from "react-icons/hi";
 import Button from "../../../../components/ui/Button";
 import StudentsDocumentData from "./StudentsDocumentData";
-import useAxios from "../../../../hooks/UseAxios";
 import UploadDocumentPopup from "./popup/UploadDocumentPopup";
 import AddRemark from "./popup/AddRemark";
 import DocumentManagement from "./DocumentManagement";
@@ -34,7 +30,8 @@ const ApplicationDocument = ({activeTab, setActiveTab}) => {
     openPopup,
     setIsRemarkOpen,
     downloadZipFile,
-    formatDate
+    formatDate,
+    setIsPopupOpen
   } = DocumentManagement(id, Token);
 
   if (getAllDocumentFields.loading || getUploadedDocumentField.loading) {
@@ -117,7 +114,7 @@ const ApplicationDocument = ({activeTab, setActiveTab}) => {
         );
       })}
 
-      <div className="flex flex-wrap items-center justify-end gap-x-2 p-5">
+      <div className="flex flex-wrap items-center justify-between px-5 mt-8">
         <Button
           text="Previous"
           onclick={() => setActiveTab(activeTab - 1)}

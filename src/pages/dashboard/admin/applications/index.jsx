@@ -1,10 +1,5 @@
-import { useReactTable, getCoreRowModel, flexRender, getPaginationRowModel, getFilteredRowModel, getSortedRowModel } from "@tanstack/react-table"
 import { useState, useEffect, useContext, useMemo } from "react";
-import { UserContext } from "../../../../context/UserContext";
-import useAxios from "../../../../hooks/UseAxios";
-import TableColumn from "./TableColumn";
-import Searchbar from "../../../../components/ui/Searchbar";
-import Iconsbutton from "../../../../components/ui/Iconsbutton";
+import { useReactTable, getCoreRowModel, flexRender, getPaginationRowModel, getFilteredRowModel, getSortedRowModel } from "@tanstack/react-table";
 import { RiRefreshLine } from "react-icons/ri";
 import { TbFileExport } from "react-icons/tb";
 import { IoIosArrowDown } from "react-icons/io";
@@ -15,14 +10,20 @@ import { BsCalendar2Check } from "react-icons/bs";
 import { CgAddR } from "react-icons/cg";
 import "jspdf-autotable";
 import moment from 'moment';
-import {exportToCSV, exportToXML, exportToPDF} from "./UsersExportFileTypes";
-import Button from "../../../../components/ui/Button";
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css'; 
 import { DateRangePicker } from 'react-date-range';
 import { format  } from 'date-fns';
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
+import { UserContext } from "../../../../context/UserContext";
+import { exportToCSV, exportToXML, exportToPDF } from "./UsersExportFileTypes";
+import useAxios from "../../../../hooks/UseAxios";
+import TableColumn from "./TableColumn";
+import Searchbar from "../../../../components/ui/Searchbar";
+import Iconsbutton from "../../../../components/ui/Iconsbutton";
+import Button from "../../../../components/ui/Button";
+
 
 const Applications = () => {
 
@@ -123,9 +124,6 @@ const Applications = () => {
 
     const [sorting, setSorting] = useState([]);
     const [globalFilter, setGlobalFilter] = useState("");
-    const [showExportOptions, setShowExportOptions] = useState(false);
-    const [showColumn, setShowColumn] = useState(false);
-    const [showStatusOptions, setShowStatusOptions] = useState(false);
     const [showRangeDate, setShowRangeDate] = useState(false);
 
     const byDefaultRangeDate = [
@@ -235,9 +233,6 @@ const Applications = () => {
         table.setPageSize(5);
         
         // Reset any open dropdowns
-        setShowExportOptions(false);
-        setShowColumn(false);
-        setShowStatusOptions(false);
         setShowRangeDate(false);
         
         // Reset column visibility to show all columns
@@ -257,6 +252,7 @@ const Applications = () => {
                     icon={<CgAddR className="text-xl mr-2" />}
                     text="Add Students"
                     className="text-white-default"
+                    onclick={() => navigate('/admin/addnew-application')}
                 />
             </div>
 
@@ -300,16 +296,16 @@ const Applications = () => {
                         </div>
 
                         {/* Export Dropdown */}
-                        <div className="relative">
-                            <div className="flex items-center justify-center px-5 py-2.5 rounded-full bg-white-300 cursor-pointer" onClick={() => setShowExportOptions(!showExportOptions)}>
+                        <div className="relative group">
+                            <div className="flex items-center justify-center px-5 py-2.5 rounded-full bg-white-300 cursor-pointer">
                                 <TbFileExport className="text-black-300 mr-2" size={20} />
                                 <span className="text-black-300 capitalize text-base font-normal">
                                     Export
                                 </span>
-                                <IoIosArrowDown className={`text-black-default ml-2 ease-linear duration-300 ${showExportOptions ? 'rotate-180' : 'rotate-0'}`} />
+                                <IoIosArrowDown className='text-black-default ml-2 ease-linear duration-300 rotate-0 group-hover:rotate-180' />
                             </div>
-                            <div className={`absolute top-12 right-0 bg-white-default shadow-md rounded-md z-50 p-2 ease-linear duration-300
-                                ${showExportOptions ? 'visible opacity-100 translate-y-0' : 'invisible opacity-0 translate-y-[30px]'}`}>
+                            <div className='absolute top-12 right-0 bg-white-default shadow-md rounded-md z-50 p-2 ease-linear duration-300
+                                    invisible opacity-0 translate-y-[30px] group-hover:visible group-hover:opacity-100 group-hover:translate-y-0'>
                                 <button
                                     onClick={() => handleExport("csv")}
                                     className="block w-full text-left px-2 py-1 bg-white-300 hover:bg-gray-200 text-black-300 capitalize text-base font-medium"
@@ -332,16 +328,16 @@ const Applications = () => {
                         </div>
                         
                         {/* Status Dropdown */}
-                        <div className="relative">
-                            <div className="flex items-center justify-center px-5 py-2.5 rounded-full bg-white-300 cursor-pointer" onClick={() => setShowStatusOptions(!showStatusOptions)}>
+                        <div className="relative group">
+                            <div className="flex items-center justify-center px-5 py-2.5 rounded-full bg-white-300 cursor-pointer">
                                 <FiFilter className="text-black-300 mr-2" size={18} />
                                 <span className="text-black-300 text-base font-normal">
                                     Status
                                 </span>
-                                <IoIosArrowDown className={`text-black-default ml-2 ease-linear duration-300 ${showStatusOptions ? 'rotate-180' : 'rotate-0'}`} />
+                                <IoIosArrowDown className='text-black-default ml-2 ease-linear duration-300 rotate-0 group-hover:rotate-180' />
                             </div>
-                            <div className={`absolute top-12 right-0 bg-white-default shadow-md rounded-md z-50 ease-linear duration-300
-                                ${showStatusOptions ? 'visible opacity-100 translate-y-0' : 'invisible opacity-0 translate-y-[30px]'}`}>
+                            <div className='absolute top-12 right-0 bg-white-default shadow-md rounded-md z-50 ease-linear duration-300
+                                invisible opacity-0 translate-y-[30px] group-hover:visible group-hover:opacity-100 group-hover:translate-y-0'>
                                 {['draft', 'submitted', 'changes_requested', 'completed', 'cancelled'].map((status) => {
                                     return(
                                         <label key={status} className="flex items-center gap-x-2 py-2 px-2.5 cursor-pointer hover:bg-success-300">
@@ -362,19 +358,19 @@ const Applications = () => {
                         </div>
 
                         {/* Column Visibilty Dropdown */}
-                        <div className="relative">
+                        <div className="relative group">
 
-                            <div className="flex items-center justify-center px-5 py-2.5 rounded-full bg-white-300 cursor-pointer" onClick={() => setShowColumn(!showColumn)}>
+                            <div className="flex items-center justify-center px-5 py-2.5 rounded-full bg-white-300 cursor-pointer">
                                 <FaSortAmountDown className="text-black-300 mr-2" />
                                 <span className="text-black-300 capitalize text-base font-normal">
                                     Columns
                                 </span>
-                                <IoIosArrowDown className={`text-black-default ml-2 ease-linear duration-300 ${showColumn ? 'rotate-180' : 'rotate-0'}`} />
+                                <IoIosArrowDown className='text-black-default ml-2 ease-linear duration-300 group-hover:rotate-180 rotate-0' />
                             </div>
 
                             {/* Column Visibility Controls */}
-                            <div className={`flex flex-col w-48 bg-white-default absolute shadow-md top-12 right-0 rounded-md z-50 ease-linear duration-300 
-                                border border-solid border-black-100 ${showColumn ? 'visible opacity-100 translate-y-0' : 'invisible opacity-0 translate-y-[30px]'}`}>
+                            <div className='flex flex-col w-48 bg-white-default absolute shadow-md top-12 right-0 rounded-md z-50 ease-linear duration-300 
+                                border border-solid border-black-100 invisible opacity-0 translate-y-[30px] group-hover:visible group-hover:opacity-100 group-hover:translate-y-0'>
                                 {table.getAllColumns().map((column) => (
                                     <label key={column.id} className="flex items-center gap-x-2 py-2 px-2.5 cursor-pointer hover:bg-success-300">
                                         <input

@@ -1,6 +1,6 @@
 const MaintenanceMode = () => {
   return (
-    <div className="maintenance flex justify-center items-center">
+    <div className="maintenance flex justify-center items-center h-screen">
       <div className="wrapper text-center">
 
         <div className="image flex justify-center">

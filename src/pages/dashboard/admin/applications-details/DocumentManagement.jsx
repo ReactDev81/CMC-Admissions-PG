@@ -204,7 +204,8 @@ const DocumentManagement = (id, Token) => {
         openPopup,
         setIsRemarkOpen,
         downloadZipFile,
-        formatDate
+        formatDate,
+        setIsPopupOpen
     };
 };
 

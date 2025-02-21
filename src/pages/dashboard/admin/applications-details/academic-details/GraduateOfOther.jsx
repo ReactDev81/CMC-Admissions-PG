@@ -2,6 +2,7 @@ import InputField from "../../../../../components/forms/Inputfield";
 import RadioField from "../../../../../components/forms/RadioField";
 
 const GraduateOfOther = ({register, errors, control}) => {
+  const currentDate = new Date().toISOString().split("T")[0];
   return (
     <div className="mt-10">
       <h2 className="text-black-default leading-5 capitalize">
@@ -10,7 +11,8 @@ const GraduateOfOther = ({register, errors, control}) => {
       <div className="grid grid-cols-3 gap-7 mt-8">
         <InputField 
           label="Date of Joining" 
-          type="date" 
+          type="date"
+          max={currentDate} 
           {...register('mbbs_date_of_joining_other_college', {required: true})}
           error={errors.mbbs_date_of_joining_other_college?.type === 'required' ? 'Date of Joining is Required' : undefined}
         />
@@ -22,13 +24,13 @@ const GraduateOfOther = ({register, errors, control}) => {
         />
         <InputField 
           label="Date of Passing" 
-          type="date" 
+          type="date"
+          max={currentDate} 
           {...register('mbbs_date_of_passing_other_college', {required: true})}
           error={errors.mbbs_date_of_passing_other_college?.type === 'required' ? 'Date of Passing is Required' : undefined}
         />
         <InputField 
-          label="Name of College" 
-          type="date" 
+          label="Name of College"  
           {...register('mbbs_name_college_other_college', {required: true})}
           error={errors.mbbs_name_college_other_college?.type === 'required' ? 'Name of College is Required' : undefined}
         />

@@ -12,6 +12,7 @@ const Forgetpassword = lazy(() => import('../pages/auth/Forgetpassword'))
 const VerifyOtp = lazy(() => import('../pages/auth/VerifyOtp'))
 const ResetPassword = lazy(() => import('../pages/auth/ResetPassword'))
 const RegistrationForm = lazy(() => import('../pages/pg-registration-form/index'))
+const MaintenanceMode = lazy(() => import('../pages/MaintenanceMode'))
 
 const AppRoutes = () => {
 
@@ -36,6 +37,7 @@ const AppRoutes = () => {
                 <Route path="/forget-password" element={<Forgetpassword />} />
                 <Route path="/verify-otp" element={<VerifyOtp />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
+                <Route path="/maintenance-mode" element={<MaintenanceMode />} />
 
                 {/* Private Routes */}
                 {userData?.token ?   

@@ -1,14 +1,15 @@
-import InputField from "../../../../components/forms/Inputfield";
-import Button from "../../../../components/ui/Button";
-import { useForm } from "react-hook-form";
-import useAxios from "../../../../hooks/UseAxios";
 import { useContext, useEffect} from "react";
+import { useForm } from "react-hook-form";
 import { UserContext } from "../../../../context/UserContext"
 import { ApplicationContext } from "../../../../context/ApplicationContext";
+import useAxios from "../../../../hooks/UseAxios";
+import InputField from "../../../../components/forms/Inputfield";
+import Button from "../../../../components/ui/Button";
 
 const TransactionDetail = ({activeTab, setActiveTab}) => {
 
-const { userData } = useContext(UserContext);
+  const currentDate = new Date().toISOString().split("T")[0];
+  const { userData } = useContext(UserContext);
   const { applicationInfo, updateStepStatus } = useContext(ApplicationContext);
   const Token = userData.token;
   const ApplicationId = applicationInfo.application_id;
@@ -76,6 +77,7 @@ const { userData } = useContext(UserContext);
           <InputField 
             type="date" 
             label="Date of Transaction"
+            max={currentDate}
             {...register('date_of_transaction', {required: true})} 
             error={errors.date_of_transaction?.type === 'required' ? "Date of Transaction is Required" : undefined}  
           />
@@ -96,7 +98,13 @@ const { userData } = useContext(UserContext);
           />
         </div>
         {error && <p className="bg-red-100 py-2.5 px-5 text-red-800 mt-2 rounded-md font-normal" dangerouslySetInnerHTML={{ __html: error }}></p>}
-        <div className="text-left mt-6">
+        <div className="flex flex-wrap items-center justify-between mt-8">
+          <Button
+            type="button"
+            text="Previous"
+            onclick={() => setActiveTab(activeTab - 1)}
+            classname="[&]:py-2.5 [&]:px-7 [&]:rounded-full border-0 [&]:text-black-300 [&]:bg-primary-100"
+          />
           <Button
             type="submit"
             text={loading ? 'Loading....' : "Submit"}
@@ -104,13 +112,6 @@ const { userData } = useContext(UserContext);
           />
         </div>
       </form>
-      <div className="flex flex-wrap items-center justify-end -mt-[42px]">
-        <Button
-          text="Previous"
-          onclick={() => setActiveTab(activeTab - 1)}
-          classname="[&]:py-2.5 [&]:px-7 [&]:rounded-full border-0 [&]:text-black-300 [&]:bg-primary-100"
-        />
-      </div>
     </>
   );
 };

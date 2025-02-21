@@ -11,7 +11,6 @@ const Pages = lazy(() => import('../pages/dashboard/admin/pages/index'))
 const PgFormSettings = lazy(() => import('../pages/dashboard/admin/pg-form-settings/index'))
 const SystemSettings = lazy(() => import('../pages/dashboard/admin/system-settings/index'))
 const RolesPermissions = lazy(() => import('../pages/dashboard/admin/roles-permissions/index'))
-const MaintenanceMode = lazy(() => import('../pages/MaintenanceMode'))
 const MyAccount = lazy(() => import('../pages/dashboard/admin/my-acccount/index'))
 const Notification = lazy(() => import('../pages/dashboard/admin/Notification/index'))
 const PageNotFound = lazy(() => import('../pages/PageNotFound'))
@@ -23,14 +22,13 @@ const AdminRoutes = () => {
                 <Route index element={<Dashboard />} />
                 <Route path="users" element={<Users />} />
                 <Route path="applications" element={<Applications />} />
+                <Route path="addnew-application" element={<AddNewApplication />} />
                 <Route path="application/:id" element={<ApplicationDetails />} />
-                <Route path="application/addnew" element={<AddNewApplication />} />
                 <Route path="reports" element={<Reports />} />
                 <Route path="pages" element={<Pages />} />
                 <Route path="pg-form-settings" element={<PgFormSettings />} />
                 <Route path="system-settings" element={<SystemSettings />} />
                 <Route path="roles-permissions" element={<RolesPermissions />} />
-                <Route path="maintenance-mode" element={<MaintenanceMode />} />
                 <Route path="my-account" element={<MyAccount />} />
                 <Route path="notifications" element={<Notification />} />
                 

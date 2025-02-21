@@ -1,6 +1,7 @@
 import InputField from "../../../../../components/forms/Inputfield";
 
 const PeriodOfService = ({register, errors}) => {
+  const currentDate = new Date().toISOString().split("T")[0];
   return (
     <div className="mt-10">
       <h2 className="text-black-default leading-5 capitalize">
@@ -21,12 +22,14 @@ const PeriodOfService = ({register, errors}) => {
           <InputField 
             label="Period of Service From:" 
             type="date"
+            max={currentDate}
             {...register('mbbs_period_from_service_obligation', {required: true})}
             error={errors.mbbs_period_from_service_obligation?.type === 'required' ? 'Date of Joining is Required' : undefined} 
           />
           <InputField 
             label="To:" 
-            type="date" 
+            type="date"
+            max={currentDate} 
             {...register('mbbs_period_to_service_obligation', {required: true})}
             error={errors.mbbs_period_to_service_obligation?.type === 'required' ? 'Date of Joining is Required' : undefined}
           />

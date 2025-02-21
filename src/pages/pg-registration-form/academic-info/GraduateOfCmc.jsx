@@ -2,7 +2,7 @@ import InputField from "../../../components/forms/Inputfield"
 import RadioField from "../../../components/forms/RadioField"
 
 const GraduateOfCmc = ({register, errors, control}) => {
-
+  const currentDate = new Date().toISOString().split("T")[0];
   return (
     <div className="mt-10">
       <h2 className="text-black-default leading-5 capitalize">
@@ -12,6 +12,7 @@ const GraduateOfCmc = ({register, errors, control}) => {
         <InputField 
           label="Date of Joining" 
           type="date"
+          max={currentDate}
           {...register('mbbs_date_of_joining_cmc_ludhiana', {required: true})}
           error={errors.mbbs_date_of_joining_cmc_ludhiana?.type === 'required' ? 'Date of Joining is Required' : undefined}
         />
@@ -24,6 +25,7 @@ const GraduateOfCmc = ({register, errors, control}) => {
         <InputField 
           label="Date of Passing" 
           type="date" 
+          max={currentDate}
           {...register('mbbs_date_of_passing_cmc_ludhiana', {required: true})}
           error={errors.mbbs_date_of_passing_cmc_ludhiana?.type === 'required' ? 'Date of Passing is Required' : undefined}
         />

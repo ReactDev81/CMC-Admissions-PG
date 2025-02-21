@@ -17,7 +17,7 @@ const ChruchMembersBodies = () => {
 
   // get all chruch members bodies
   const getChurchMembers = useAxios('/churches', "get", { headers: { Authorization: `Bearer ${userData.token}` } });
-  const allChurchMembers = getChurchMembers.data?.data;
+  const allChurchMembers = getChurchMembers.data;
 
   // create church member body
   const createChurchMembers = useAxios('/churches', "post", { headers: { Authorization: `Bearer ${userData.token}` } });

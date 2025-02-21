@@ -16,7 +16,7 @@ const States = () => {
 
     // get all states
     const getStates = useAxios('/bible-centers', "get", { headers: { Authorization: `Bearer ${userData.token}` } });
-    const allStates = getStates.data?.data;
+    const allStates = getStates.data;
 
     // create states api
     const createStates = useAxios('/bible-centers', "post", { headers: { Authorization: `Bearer ${userData.token}` } });

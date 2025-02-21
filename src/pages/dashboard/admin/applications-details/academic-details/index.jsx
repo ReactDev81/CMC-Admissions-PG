@@ -1,15 +1,15 @@
 import { useForm } from "react-hook-form";
 import { useEffect, useContext } from 'react';
+import { UserContext } from "../../../../../context/UserContext"
+import { ApplicationContext } from '../../../../../context/ApplicationContext';
+import UseAxios from "../../../../../hooks/UseAxios";
 import MbbsDetails from "./MbbsDetails";
 import GraduateOfCmc from "./GraduateOfCmc";
 import PeriodOfService from "./PeriodOfService";
 import NeetPgDetails from "./NeetPgDetails";
 import GraduateOfOther from "./GraduateOfOther";
 import Button from '../../../../../components/ui/Button';
-import UseAxios from "../../../../../hooks/UseAxios";
-import { UserContext } from "../../../../../context/UserContext"
-import { ApplicationContext } from '../../../../../context/ApplicationContext';
-
+import OutlineButton from "../../../../../components/ui/OutlineButton";
 
 const AcademicDetail = ({activeTab, setActiveTab}) => {
 
@@ -18,7 +18,7 @@ const AcademicDetail = ({activeTab, setActiveTab}) => {
   const Token = userData.token;
   const ApplicationId = applicationInfo.application_id;
 
-  const {control, register, handleSubmit, reset, formState: { errors }} = useForm();
+  const { control, register, handleSubmit, reset, formState: { errors }} = useForm();
 
   const { loading, error, status, fetchData } = UseAxios(`/applications/${ApplicationId}`, 'put', {headers: {Authorization: `Bearer ${Token}`}})
 
@@ -121,35 +121,37 @@ const AcademicDetail = ({activeTab, setActiveTab}) => {
   }, [applicationData, reset]);
 
   return (
-    <>
     <form className='w-full mt-2.5' onSubmit={handleSubmit(onSubmit)}>
-        <MbbsDetails register={register} errors={errors} />
-        <GraduateOfCmc register={register} errors={errors} control={control} />
-        <GraduateOfOther register={register} errors={errors} control={control} />
-        <PeriodOfService register={register} errors={errors} />
-        <NeetPgDetails register={register} errors={errors} control={control} />
-        <div className="text-left mt-8">
+      <MbbsDetails register={register} errors={errors} />
+      <GraduateOfCmc register={register} errors={errors} control={control} />
+      <GraduateOfOther register={register} errors={errors} control={control} />
+      <PeriodOfService register={register} errors={errors} />
+      <NeetPgDetails register={register} errors={errors} control={control} />
+      <div className="flex flex-wrap items-center justify-between mt-8">
+        <div>
+          <Button
+            type="button"
+            text="Previous"
+            onclick={() => setActiveTab(activeTab - 1)}
+            classname="[&]:py-2.5 [&]:px-7 [&]:rounded-full border-0 [&]:text-black-300 [&]:bg-primary-100"
+          />
+        </div>
+        <div>
           <Button
             type="submit"
             text={loading ? 'Loading....' : "Save"}
             classname="[&]:rounded-full self-end [&]:px-10 [&]:py-2.5"
           />
+          <OutlineButton
+            type="button"
+            text="Next"
+            onclick={() => setActiveTab(activeTab + 1)}
+            className="rounded-full text-primary-default border-primary-default px-8 py-2 ml-2"
+          />
         </div>
-        {error && <p className="bg-red-100 py-2.5 px-5 text-red-800 mt-2 rounded-md font-normal" dangerouslySetInnerHTML={{ __html: error }}></p>}
-      </form>
-      <div className="flex flex-wrap items-center justify-end -mt-[42px] gap-x-2">
-        <Button
-          text="Previous"
-          onclick={() => setActiveTab(activeTab - 1)}
-          classname="[&]:py-2.5 [&]:px-7 [&]:rounded-full border-0 [&]:text-black-300 [&]:bg-primary-100"
-        />
-        <Button
-          text="Next"
-          onclick={() => setActiveTab(activeTab + 1)}
-          classname="[&]:rounded-full self-end [&]:px-10 [&]:py-2.5"
-        />
       </div>
-    </>
+      {error && <p className="bg-red-100 py-2.5 px-5 text-red-800 mt-2 rounded-md font-normal" dangerouslySetInnerHTML={{ __html: error }}></p>}
+    </form>
   );
 };
 
