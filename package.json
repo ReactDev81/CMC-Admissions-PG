@@ -14,8 +14,6 @@
         "@tinymce/tinymce-react": "^5.1.1",
         "axios": "^1.7.7",
         "clsx": "^2.1.1",
-        "datatables.net-dt": "^2.1.8",
-        "datatables.net-react": "^1.0.0",
         "date-fns": "^4.1.0",
         "file-saver": "^2.0.5",
         "jspdf": "^2.5.2",

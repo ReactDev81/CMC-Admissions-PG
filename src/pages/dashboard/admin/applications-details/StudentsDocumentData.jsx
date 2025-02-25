@@ -1,6 +1,7 @@
-import OutlineButton from '../../../../components/ui/OutlineButton' 
+import { FiEye } from "react-icons/fi";
+import OutlineButton from '../../../../components/ui/OutlineButton'; 
 
-const StudentsDocumentData = ({document, name, date, status, isUploaded, id, documentId, onVerifyStatus, onRemove, onUpload}) => {
+const StudentsDocumentData = ({document, name, date, status, isUploaded, id, documentId, onVerifyStatus, onRemove, onUpload, imageUrl}) => {
 
   const handleStatusChange = (e) => {
     const newStatus = e.target.value;
@@ -9,11 +10,32 @@ const StudentsDocumentData = ({document, name, date, status, isUploaded, id, doc
     }
   }
 
+  const handleViewImage = (imageUrl) => {
+    if (imageUrl.startsWith("data:image")) {
+      // Open Base64 Image Directly
+      const newTab = window.open();
+      newTab.document.write(`<img src="${imageUrl}" />`);
+    } else if (imageUrl) {
+      // Open Normal URL
+      window.open(imageUrl, "_blank");
+    } else {
+      console.error("Image URL is undefined");
+    }
+  };
+  
+
   return (
       <div className="grid grid-cols-5 border-b px-5 py-3 items-center" id={id}>
 
         <div className="text-base text-black-default font-medium leading-5">
-          {document}
+          <div className="relative group w-fit h-fit">
+            {document}
+            {imageUrl ? (
+                <button onClick={() => handleViewImage(imageUrl)} className="absolute w-full h-full top-0 left-0  items-center justify-center bg-[rgba(0,0,0,0.6)] hidden group-hover:flex">
+                  <FiEye color="#fff" size={18} />
+                </button>
+              ) : ''}
+          </div>
         </div>
 
         <div className="text-base text-black-default font-medium leading-5">

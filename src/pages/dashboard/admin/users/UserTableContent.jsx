@@ -128,16 +128,16 @@ const UserTableContent = ({data, onAction}) => {
                         onclick={resetFiltersAndSettings}
                     />
 
-                    <div className="relative">
-                        <div className="flex items-center justify-center px-5 py-2.5 rounded-full bg-white-300 cursor-pointer" onClick={() => setShowExportOptions(!showExportOptions)}>
+                    <div className="relative group">
+                        <div className="flex items-center justify-center px-5 py-2.5 rounded-full bg-white-300 cursor-pointer">
                             <TbFileExport className="text-black-300 mr-2" size={20} />
                             <span className="text-black-300 capitalize text-base font-normal">
                                 Export
                             </span>
-                            <IoIosArrowDown className={`text-black-default ml-2 ease-linear duration-300 ${showExportOptions ? 'rotate-180' : 'rotate-0'}`} />
+                            <IoIosArrowDown className='text-black-default ml-2 ease-linear duration-300 group-hover:rotate-180 rotate-0' />
                         </div>
-                        <div className={`absolute top-12 right-0 bg-white-default shadow-md rounded-md z-50 p-2 ease-linear duration-300
-                            ${showExportOptions ? 'visible opacity-100 translate-y-0' : 'invisible opacity-0 translate-y-[30px]'}`}>
+                        <div className='absolute top-12 right-0 bg-white-default shadow-md rounded-md z-50 p-2 ease-linear duration-300
+                            invisible opacity-0 translate-y-[30px] group-hover:visible group-hover:opacity-100 group-hover:translate-y-0'>
                             <button
                                 onClick={() => handleExport("csv")}
                                 className="block w-full text-left px-2 py-1 bg-white-300 hover:bg-gray-200 text-black-300 capitalize text-base font-medium"
@@ -159,19 +159,19 @@ const UserTableContent = ({data, onAction}) => {
                         </div>
                     </div>
 
-                    <div className="relative">
+                    <div className="relative group">
 
-                        <div className="flex items-center justify-center px-5 py-2.5 rounded-full bg-white-300 cursor-pointer" onClick={() => setShowColumn(!showColumn)}>
+                        <div className="flex items-center justify-center px-5 py-2.5 rounded-full bg-white-300 cursor-pointer">
                             <FaSortAmountDown className="text-black-300 mr-2" />
                             <span className="text-black-300 capitalize text-base font-normal">
                                 Columns
                             </span>
-                            <IoIosArrowDown className={`text-black-default ml-2 ease-linear duration-300 ${showColumn ? 'rotate-180' : 'rotate-0'}`} />
+                            <IoIosArrowDown className='text-black-default ml-2 ease-linear duration-300 group-hover:rotate-180 rotate-0' />
                         </div>
 
                         {/* Column Visibility Controls */}
-                        <div className={`flex flex-col bg-white-default w-full absolute shadow-md top-12 right-0 rounded-md z-50 ease-linear duration-300 
-                            border border-solid border-black-100 ${showColumn ? 'visible opacity-100 translate-y-0' : 'invisible opacity-0 translate-y-[30px]'}`}>
+                        <div className='flex flex-col bg-white-default w-full absolute shadow-md top-12 right-0 rounded-md z-50 ease-linear duration-300 
+                            border border-solid border-black-100 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 invisible opacity-0 translate-y-[30px]'>
                             {allColumns.map((column) => (
                                 <label className="flex items-center gap-x-2 py-2 px-2.5 cursor-pointer hover:bg-success-300" key={column.id}>
                                     <input

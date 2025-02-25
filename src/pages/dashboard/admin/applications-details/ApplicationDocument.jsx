@@ -102,6 +102,7 @@ const ApplicationDocument = ({activeTab, setActiveTab}) => {
                 )
               ) : ( <GrDocument size={70} className="text-black-200" /> )
             }
+            imageUrl={thumbnails[docinfo?.id]}
             name={field.label}
             date={docinfo ? formatDate(docinfo.created_at) : "N/A"}
             status={docinfo ? docinfo.status : "unverified"}
